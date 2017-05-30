@@ -1,0 +1,36 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+    http://www.springframework.org/schema/security 
+    http://www.springframework.org/schema/security/spring-security-4.2.xsd">
+      
+    <http auto-config="true" >
+    	<intercept-url pattern="/admin/index.do" access="hasRole('frsdflajsdfsa')" />
+    	<intercept-url pattern="/home.do" access="hasRole('ADMIN')" />
+    	<intercept-url pattern="/admin/user/login.do" access="permitAll" />
+    	<intercept-url pattern="/j_spring_security_logout" access="permitAll" />
+        <form-login
+		    login-page="/admin/user/login.do"
+		    login-processing-url="/j_spring_security_check"
+			authentication-failure-url="/admin/user/login.do?error"
+			default-target-url="/"
+		    always-use-default-target="true"/>
+		<logout 
+			invalidate-session="true"
+			logout-url="/admin/user/logout.do" 
+			logout-success-url="/admin/user/login.do?logout" 
+			delete-cookies="JSESSIONID" /><!-- 로그아웃 성공 후 -->
+		<csrf/>
+    </http>
+  	
+	<authentication-manager>
+        <authentication-provider user-service-ref="userDetailsServiceImpl">
+            <password-encoder ref="bcryptEncoder"/>
+        </authentication-provider>
+    </authentication-manager>
+    <beans:bean id="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+    <beans:bean id="userDetailsServiceImpl" class="com.spring.service.admin.UserDetailsServiceImpl" />
+
+</beans:beans>

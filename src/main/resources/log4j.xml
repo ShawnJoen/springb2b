@@ -12,7 +12,7 @@
 	
 	<!-- Application Loggers -->
 	<logger name="com.spring.b2b">
-		<level value="info" />
+		<level value="trace" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->

@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.spring.mapper.AdminUserMapper">
-	<select id="getTime" resultType="String">
-		select now()
+<mapper namespace="com.spring.mappers.AdminUserMapper">
+
+	<insert id="createAdminUser" parameterType="com.spring.model.admin.AdminUser">
+		INSERT INTO `admin_user`(`username`, `password`, `contactMobile`, `contactName`, `createTime`) VALUES
+		(#{username}, #{password}, #{contactMobile}, #{contactName}, #{createTime})
+	</insert>
+
+	<select id="getAdminUserByUsername" resultType="com.spring.model.admin.AdminUser">
+		SELECT `username`, `password`, `status` FROM `admin_user` WHERE `username`=#{username}
 	</select>
-	<!-- <insert id="insertMember" parameterType="com.spring.domain.AdminUserVO">
-		insert into member(id,mobile,name,logo,address,status,created_at)
-		values
-		(#{id},#{mobile},#{name},#{logo},#{address},#{status},now())
-	</insert> -->
+
+	<select id="getTime" resultType="String">
+		SELECT NOW()
+	</select>
+
 </mapper>

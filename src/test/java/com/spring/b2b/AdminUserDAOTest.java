@@ -2,11 +2,13 @@ package com.spring.b2b;
 
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
+
+import com.spring.dao.AdminUserDAO;
+
 import javax.inject.Inject;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.junit.Before;
 import org.junit.Test;
-import com.spring.persistence.AdminUserDAO;
 
 @RunWith(JUnit4ClassRunner.class)
 @ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/spring/*.xml"})

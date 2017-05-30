@@ -4,7 +4,8 @@
 </jsp:include>
 
 
-概况页
+概况页<br>
+로그인 통과
 
 
 <%@include file="/WEB-INF/views/admin/_layout/base_tail.htm"%>
