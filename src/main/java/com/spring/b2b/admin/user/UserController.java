@@ -1,6 +1,5 @@
 package com.spring.b2b.admin.user;
 
-import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,9 +18,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import com.spring.b2b.admin.ConfigController;
 import com.spring.model.admin.AdminUser;
+import com.spring.model.admin.AdminUserAuthentication;
 import com.spring.service.admin.AdminUserService;
-import com.spring.util.validation.ValidationResult;
-import com.spring.util.validation.ValidationUtils;
+import static com.spring.util.Common.output;
 /**
  * Handles requests for the application home page.
  */
@@ -40,37 +39,30 @@ public class UserController extends ConfigController {
 	public String loginForm(ModelMap model) {
 		
 		model.addAttribute("adminUser", new AdminUser());
-		
-		if(logger.isDebugEnabled()) {
-			//logger.debug("Welcome loginForm!.");
-		}
 		return "admin/user/login";
 	}
 	/*
 	 * 修改密码页 from
 	 * */
-	@RequestMapping(value = "/admin/user/password.do", method = RequestMethod.GET)
-	public String passwordForm() {
-		return "admin/user/password";
+	@RequestMapping(value = "/admin/user/modifyPassword.do", method = RequestMethod.GET)
+	public String modifyPasswordForm(ModelMap model) {
+		
+		model.addAttribute("adminUserAuthentication", new AdminUserAuthentication());
+		return "admin/user/modifyPassword";
 	}
 	/*
 	 * 修改密码处理
 	 * */
-	@RequestMapping(value = "/admin/user/password.do", method = RequestMethod.POST)
-	public @ResponseBody Map<String, String> password() {
+	@RequestMapping(value = "/admin/user/modifyPassword.do", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> modifyPassword(@ModelAttribute("adminUserAuthentication") AdminUserAuthentication adminUserAuthentication, 
+			BindingResult result) throws Exception {
 		
+		if (result.hasErrors()) {
+
+            return output("1", null, "程序错误");
+        }
 		
-		
-		
-		
-		Map<String, String> map = new HashMap<>();
-		map.put("id", "1");
-		
-		
-		
-		
-		
-		return map;
+		return adminUserService.modifyPassword(adminUserAuthentication);
 	}
 	/*
 	 * 创建用户 from
@@ -90,44 +82,10 @@ public class UserController extends ConfigController {
 		
 		if (result.hasErrors()) {
 
-            return this.output("1", null, "程序错误");
+            return output("1", null, "程序错误");
         }
 		
-		String fieldName = "username";
-		ValidationResult ValidResult = ValidationUtils.validateProperty(adminUser, fieldName);
-		if (ValidResult.isHasErrors()) {
-			
-			return this.output("1", null, 
-					ValidResult.getErrorMsg().get(fieldName));
-		}
-		
-		fieldName = "password";
-		ValidResult = ValidationUtils.validateProperty(adminUser, fieldName);
-		if (ValidResult.isHasErrors()) {
-			
-			return this.output("1", null, 
-					ValidResult.getErrorMsg().get(fieldName));
-		}
-		
-		fieldName = "contactMobile";
-		ValidResult = ValidationUtils.validateProperty(adminUser, fieldName);
-		if (ValidResult.isHasErrors()) {
-			
-			return this.output("1", null, 
-					ValidResult.getErrorMsg().get(fieldName));
-		}
-		
-		fieldName = "contactName";
-		ValidResult = ValidationUtils.validateProperty(adminUser, fieldName);
-		if (ValidResult.isHasErrors()) {
-			
-			return this.output("1", null, 
-					ValidResult.getErrorMsg().get(fieldName));
-		}
-		
-		adminUserService.createAdminUser(adminUser);
-		
-		return this.output("0", null, "创建成功");
+		return adminUserService.createAdminUser(adminUser);
 	}
 	/*
 	 * 退出登入

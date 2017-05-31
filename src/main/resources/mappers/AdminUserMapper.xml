@@ -7,9 +7,17 @@
 		INSERT INTO `admin_user`(`username`, `password`, `contactMobile`, `contactName`, `createTime`) VALUES
 		(#{username}, #{password}, #{contactMobile}, #{contactName}, #{createTime})
 	</insert>
-
+	
+	<update id="modifyPassword" parameterType="com.spring.model.admin.AdminUserAuthentication">
+		UPDATE `admin_user` SET `password`=#{password} WHERE `username`=#{username}
+	</update>
+	
 	<select id="getAdminUserByUsername" resultType="com.spring.model.admin.AdminUser">
 		SELECT `username`, `password`, `status` FROM `admin_user` WHERE `username`=#{username}
+	</select>
+
+	<select id="getAdminUserAuthentication" parameterType="com.spring.model.admin.AdminUserAuthentication" resultType="com.spring.model.admin.AdminUser">
+		SELECT `username`, `password`, `status` FROM `admin_user` WHERE `username`=#{username} AND `password`=#{password}
 	</select>
 
 	<select id="getTime" resultType="String">

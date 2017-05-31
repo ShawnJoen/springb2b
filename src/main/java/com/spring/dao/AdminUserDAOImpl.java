@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.model.admin.AdminUser;
+import com.spring.model.admin.AdminUserAuthentication;
 
 @Repository
 public class AdminUserDAOImpl implements AdminUserDAO {
@@ -27,5 +28,14 @@ public class AdminUserDAOImpl implements AdminUserDAO {
 		
 		return sqlSession.selectOne("com.spring.mappers.AdminUserMapper.getAdminUserByUsername", username);
 	}
-
+	@Override
+	public AdminUser getAdminUserAuthentication(AdminUserAuthentication adminUserAuthentication) {
+		
+		return sqlSession.selectOne("com.spring.mappers.AdminUserMapper.getAdminUserAuthentication", adminUserAuthentication);
+	}
+	@Override
+	public int modifyPassword(AdminUserAuthentication adminUserAuthentication) throws Exception {
+		
+		return sqlSession.update("com.spring.mappers.AdminUserMapper.modifyPassword", adminUserAuthentication);
+	}
 }

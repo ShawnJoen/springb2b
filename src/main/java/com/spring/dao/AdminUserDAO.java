@@ -1,17 +1,13 @@
 package com.spring.dao;
 
 import com.spring.model.admin.AdminUser;
+import com.spring.model.admin.AdminUserAuthentication;
 
 public interface AdminUserDAO {
 	
-	public void createAdminUser(AdminUser adminUser) throws Exception;
-	public AdminUser getAdminUserByUsername(String username);
-	
-		
-	
-	public String getTime();
-	//public void createMember(AdminUserVO adminUser) throws Exception;
-	//public void findById(int id);
-	//public void selectUserList();
-	//public void selectUserList();
+	void createAdminUser(AdminUser adminUser) throws Exception;
+	AdminUser getAdminUserByUsername(String username);
+	AdminUser getAdminUserAuthentication(AdminUserAuthentication adminUserAuthentication);
+	int modifyPassword(AdminUserAuthentication adminUserAuthentication) throws Exception;
+	String getTime();
 }

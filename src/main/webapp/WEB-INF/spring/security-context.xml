@@ -26,11 +26,13 @@
     </http>
   	
 	<authentication-manager>
-        <authentication-provider user-service-ref="userDetailsServiceImpl">
-            <password-encoder ref="bcryptEncoder"/>
-        </authentication-provider>
+		<authentication-provider user-service-ref="userDetailsServiceImpl">  
+            <password-encoder hash="md5" >  
+                <salt-source user-property="username" />  
+            </password-encoder>  
+        </authentication-provider>  
     </authentication-manager>
-    <beans:bean id="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+    <beans:bean id="md5PasswordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
     <beans:bean id="userDetailsServiceImpl" class="com.spring.service.admin.UserDetailsServiceImpl" />
 
 </beans:beans>

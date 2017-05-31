@@ -12,8 +12,8 @@
 	</c:if>
 
 	<h3>登入页</h3>
-	<form:input type="text" path="username" disableFromBinding="false"/><br>
-	<form:input type="password" path="password" disableFromBinding="false"/><br>
+	<form:input type="text" path="username" disableFromBinding="false" placeholder="아이디를 입력하세요."/><br>
+	<form:input type="password" path="password" disableFromBinding="false" placeholder="비밀번호를 입력하세요."/><br>
 	<div class="btn btn-default" onclick="login()">登 入</div>
 	<a class="btn btn-default" href="./password.do">密码修改</a>
 
