@@ -10,6 +10,7 @@ import com.spring.model.admin.AdminUserAuthentication;
 public interface AdminUserService {
 	
 	Map<String, Object> createAdminUser(AdminUser adminUser) throws Exception;
+	int hasAdminUserByUsername(String username);
 	AdminUser getAdminUserByUsername(String username);
 	AdminUser getAdminUserAuthentication(AdminUserAuthentication adminUserAuthentication);
 	Map<String, Object> modifyPassword(AdminUserAuthentication adminUserAuthentication) throws Exception;

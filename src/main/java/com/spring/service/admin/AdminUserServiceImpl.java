@@ -26,45 +26,36 @@ public class AdminUserServiceImpl implements AdminUserService {
 	
 	@Override
 	public Map<String, Object> createAdminUser(AdminUser adminUser) throws Exception {
+
+		String[] fieldNames = {"username","password","contactMobile","contactName"};
+		ValidationResult ValidResult = null;
+		for (String fieldName: fieldNames) {
 			
-		String fieldName = "username";
-		ValidationResult ValidResult = ValidationUtils.validateProperty(adminUser, fieldName);
-		if (ValidResult.isHasErrors()) {
-			
-			return output("1", null, 
-					ValidResult.getErrorMsg().get(fieldName));
+			ValidResult = ValidationUtils.validateProperty(adminUser, fieldName);
+			if (ValidResult.isHasErrors()) {
+				
+				return output("1", null, 
+						ValidResult.getErrorMsg().get(fieldName));
+			}
 		}
-		
-		fieldName = "password";
-		ValidResult = ValidationUtils.validateProperty(adminUser, fieldName);
-		if (ValidResult.isHasErrors()) {
-			
-			return output("1", null, 
-					ValidResult.getErrorMsg().get(fieldName));
-		}
-		
-		fieldName = "contactMobile";
-		ValidResult = ValidationUtils.validateProperty(adminUser, fieldName);
-		if (ValidResult.isHasErrors()) {
-			
-			return output("1", null, 
-					ValidResult.getErrorMsg().get(fieldName));
-		}
-		
-		fieldName = "contactName";
-		ValidResult = ValidationUtils.validateProperty(adminUser, fieldName);
-		if (ValidResult.isHasErrors()) {
-			
-			return output("1", null, 
-					ValidResult.getErrorMsg().get(fieldName));
-		}
-		
+
+		int hasAdminUser = this.hasAdminUserByUsername(adminUser.getUsername());
+        if(hasAdminUser > 0) {
+        	return output("1", null, "创建失败，此账号已注册");
+        }
+
 		adminUser.setPassword(passwordEncoder.encodePassword(adminUser.getPassword(), adminUser.getUsername()));
 		adminUser.setCreateTime(getTimeStampsLength10());
 		
 		adminUserDAO.createAdminUser(adminUser);
 		
 		return output("0", null, "创建成功");
+	}
+	
+	@Override
+	public int hasAdminUserByUsername(String username) {
+		
+		return adminUserDAO.hasAdminUserByUsername(username);
 	}
 	
 	@Override
@@ -82,28 +73,16 @@ public class AdminUserServiceImpl implements AdminUserService {
 	@Override
 	public Map<String, Object> modifyPassword(AdminUserAuthentication adminUserAuthentication) throws Exception {
 		
-		String fieldName = "username";
-		ValidationResult ValidResult = ValidationUtils.validateProperty(adminUserAuthentication, fieldName);
-		if (ValidResult.isHasErrors()) {
+		String[] fieldNames = {"username","password","newPassword"};
+		ValidationResult ValidResult = null;
+		for (String fieldName: fieldNames) {
 			
-			return output("1", null, 
-					ValidResult.getErrorMsg().get(fieldName));
-		}
-		
-		fieldName = "password";
-		ValidResult = ValidationUtils.validateProperty(adminUserAuthentication, fieldName);
-		if (ValidResult.isHasErrors()) {
-			
-			return output("1", null, 
-					ValidResult.getErrorMsg().get(fieldName));
-		}
-		
-		fieldName = "newPassword";
-		ValidResult = ValidationUtils.validateProperty(adminUserAuthentication, fieldName);
-		if (ValidResult.isHasErrors()) {
-			
-			return output("1", null, 
-					ValidResult.getErrorMsg().get(fieldName));
+			ValidResult = ValidationUtils.validateProperty(adminUserAuthentication, fieldName);
+			if (ValidResult.isHasErrors()) {
+				
+				return output("1", null, 
+						ValidResult.getErrorMsg().get(fieldName));
+			}
 		}
 
 		adminUserAuthentication.setPassword(passwordEncoder.encodePassword(adminUserAuthentication.getPassword(), adminUserAuthentication.getUsername()));
