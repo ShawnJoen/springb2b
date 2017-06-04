@@ -1,4 +1,4 @@
-package com.spring.dao;
+package com.spring.dao.admin;
 
 import java.util.List;
 import java.util.Map;

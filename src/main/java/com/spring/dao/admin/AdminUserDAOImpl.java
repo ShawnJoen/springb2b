@@ -1,4 +1,7 @@
-package com.spring.dao;
+package com.spring.dao.admin;
+
+import java.util.HashMap;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +47,20 @@ public class AdminUserDAOImpl implements AdminUserDAO {
 	public int modifyPassword(AdminUserAuthentication adminUserAuthentication) throws Exception {
 		
 		return sqlSession.update(ADMIN_USER_MAPPER + "modifyPassword", adminUserAuthentication);
+	}
+	@Override
+	public int modifyAdminUser(AdminUser adminUser) throws Exception {
+		
+		return sqlSession.update(ADMIN_USER_MAPPER + "modifyAdminUser", adminUser);
+	}
+	@Override
+	public int modifyAdminUserAndPassword(AdminUser adminUser) throws Exception {
+		
+		return sqlSession.update(ADMIN_USER_MAPPER + "modifyAdminUserAndPassword", adminUser);
+	}
+	@Override
+	public List<AdminUser> getAdminUsers(AdminUser adminUser) {
+		
+		return sqlSession.selectList(ADMIN_USER_MAPPER + "getAdminUsers", adminUser);
 	}
 }

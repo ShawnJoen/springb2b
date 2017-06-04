@@ -3,14 +3,14 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 
-<c:url value="/admin/user/createAdminUser.do" var="createUserUrl"/>
-<form:form method="post" modelAttribute="adminUser" action="${createUserUrl}" name="f" id="f">
+<c:url value="/admin/user/modifyAdminUser.do" var="modifyUserUrl"/>
+<form:form method="post" modelAttribute="adminUser" action="${modifyUserUrl}" name="f" id="f">
 	<input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-	<h3>创建管理员</h3><br>
+	<h3>修改管理员信息</h3><br>
 	아이디:
-	<form:input type="text" path="username" placeholder="아이디를 입력하세요."/><br>
+	${adminUser.getUsername()}<form:input type="hidden" path="username" placeholder="아이디를 입력하세요."/><br>
 	비밀번호:
-	<form:input type="text" path="password" disableFromBinding="false" placeholder="비밀번호를 입력하세요."/><br>
+	<input type="text" name="password" placeholder="비밀번호를 입력하세요."/><br>
 	연락전화번호:
 	<form:input type="text" path="contactMobile" placeholder="연락전화번호를 입력하세요."/><br>
 	연락처이름:
@@ -19,11 +19,19 @@
 	<select name="groupId">
 		<option value="0">选择管理组</option>
 	    <c:forEach items="${adminGroup}" var="value">
-	        <option value="${value.groupId}">${value.groupName}</option>
+		    <c:choose>
+				<c:when test="${value.groupId eq adminUser.groupId}">
+					<option value="${value.groupId}" selected="true">${value.groupName}</option>
+				</c:when>
+				<c:otherwise>
+					<option value="${value.groupId}">${value.groupName}</option>
+				</c:otherwise>
+			</c:choose> 
+	        
 	    </c:forEach>
 	</select>
 	
-	<div class="btn btn-default" onclick="createUser()">创建</div>
+	<div class="btn btn-default" onclick="createUser()">修改</div>
 
 </form:form>
 
@@ -42,11 +50,11 @@ function createUser() {
 		return;
 	}
 	params.password = $.trim(passwordInput.val()); 
-	if (!params.password) {
+	/*if (!params.password) {
 		alert('请输入密码');
 		passwordInput.select();
 		return;
-	}
+	}*/
 	params.contactMobile = $.trim(contactMobileInput.val()); 
 	if (!params.contactMobile) {
 		alert('请输入联系电话');
@@ -67,7 +75,7 @@ function createUser() {
 	}
 	params.${_csrf.parameterName} = '${_csrf.token}';
     $.ajax({
-        url: '${createUserUrl}',
+        url: '${modifyUserUrl}',
         type: "POST",
         dataType: "json",
         data: params,
@@ -77,7 +85,7 @@ function createUser() {
                 alert(result.message);
             }
             if (result.code == 0) {
-                location.replace('/admin/user/login.do');
+                location.replace('/admin/user/adminUserList.do');
             }
         }
     });

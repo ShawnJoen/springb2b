@@ -24,7 +24,7 @@
 	<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.4.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
-	
+	<script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.bootpag.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/jquery.form.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/underscore-min.js"></script>
 </head>

@@ -43,15 +43,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     	final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         
         final List<String> roles = adminUserService.getAdminRoleAccessByUsername(username);
-    	Iterator<String> iroles = roles.iterator();
-    	while(iroles.hasNext()) {
+        
+        if (roles.size() > 0) {
+        	
+        	Iterator<String> iroles = roles.iterator();
+        	while(iroles.hasNext()) {
 
-    		String role = iroles.next();
-    		
-    		System.out.println("AdminUserService:" + role);
-    		
-    		authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
-    	}
+        		String role = iroles.next();
+        		
+        		System.out.println("AdminUserService:" + role);
+        		
+        		authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+        	}
+        } else {
+        	
+        	authorities.add(new SimpleGrantedAuthority("ROLE_NO"));
+        }
         
         return authorities;
     }

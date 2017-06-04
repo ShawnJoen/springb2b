@@ -4,7 +4,7 @@
 
 
 <c:url value="/j_spring_security_check" var="loginUrl"/>
-<form:form method="post" modelAttribute="adminUser" action="${loginUrl}" name="f" id="f">
+<form:form method="post" action="${loginUrl}" name="f" id="f">
 <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
 
 	<c:if test="${param.error != null}">
@@ -12,8 +12,8 @@
 	</c:if>
 
 	<h3>登入页</h3>
-	<form:input type="text" path="username" disableFromBinding="false" placeholder="아이디를 입력하세요."/><br>
-	<form:input type="password" path="password" disableFromBinding="false" placeholder="비밀번호를 입력하세요."/><br>
+	<input type="text" name="username" placeholder="아이디를 입력하세요."/><br>
+	<input type="password" name="password" placeholder="비밀번호를 입력하세요."/><br>
 	<div class="btn btn-default" onclick="login()">登 入</div>
 	<a class="btn btn-default" href="./password.do">密码修改</a>
 
@@ -39,22 +39,6 @@ function login() {
 		return;
 	}
 	$('#f').submit();
-    /*$("#form1").ajaxSubmit({
-        url: './jlogin.do',
-        type: "post",
-        dataType: "json",
-        data: params,
-        success:function(result) {
-            if (result.msg)
-            {
-                alert(result.msg);
-            }
-            if (result.code === 0)
-            {
-                location.replace('/admin/index.do');
-            }
-        }
-    });*/
 }
 </script>
 

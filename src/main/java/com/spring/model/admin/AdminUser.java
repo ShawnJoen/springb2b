@@ -1,5 +1,6 @@
 package com.spring.model.admin;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
@@ -8,14 +9,16 @@ import org.hibernate.validator.constraints.NotBlank;
 public class AdminUser {
 
 	private int id;
-	private int rid;
+	
+	@Min(value=1, message="请选择管理组")
+	private short groupId;
 	
 	@NotBlank(message="账号不能为空")
 	@Length(min=5,max=10,message="账号必须由5~12个字组成")
 	private String username = "";
 	
 	@Pattern(regexp="(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}",message="密码必须是6~12位数字和字母的组合")
-	private String password;
+	private String password = "";
 	
 	@NotBlank(message="联系人电话不能为空")
 	@Pattern(regexp="1\\d{10}",message="联系人电话格式错误")
@@ -25,15 +28,21 @@ public class AdminUser {
 	private String contactName = "";
 	
 	private long loginTime;
+	private long updateTime;
 	private long createTime;
-	private int status;
+	private byte status;
 	private String loginIp;
-	//private Set<AdminRoleAccess> adminRoleAccess = new HashSet<>();
+	private byte isDel;
+	
+	//联表admin_group
+	private String groupName;
+	//管理人员列表搜索
+	private String keywords = "";
 	
 	public AdminUser() {
 		super();
 	}
-	public AdminUser(String username, String contactMobile, String contactName, long createTime, int status) {
+	public AdminUser(String username, String contactMobile, String contactName, long createTime, byte status) {
 		this.username = username;
 		this.contactMobile = contactMobile;
 		this.contactName = contactName;
@@ -46,11 +55,11 @@ public class AdminUser {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getRid() {
-		return rid;
+	public short getGroupId() {
+		return groupId;
 	}
-	public void setRid(int rid) {
-		this.rid = rid;
+	public void setGroupId(short groupId) {
+		this.groupId = groupId;
 	}
 	public String getUsername() {
 		return username;
@@ -82,17 +91,29 @@ public class AdminUser {
 	public void setLoginTime(long loginTime) {
 		this.loginTime = loginTime;
 	}
+	public long getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(long updateTime) {
+		this.updateTime = updateTime;
+	}
 	public long getCreateTime() {
 		return createTime;
 	}
 	public void setCreateTime(long createTime) {
 		this.createTime = createTime;
 	}
-	public int getStatus() {
+	public byte getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(byte status) {
 		this.status = status;
+	}
+	public byte getIsDel() {
+		return isDel;
+	}
+	public void setIsDel(byte isDel) {
+		this.isDel = isDel;
 	}
 	public String getLoginIp() {
 		return loginIp;
@@ -100,14 +121,17 @@ public class AdminUser {
 	public void setLoginIp(String loginIp) {
 		this.loginIp = loginIp;
 	}
-	/*public Set<AdminRoleAccess> getAdminRoleAccess() {
-		return adminRoleAccess;
+	public String getGroupName() {
+		return groupName;
 	}
-	public void setAdminRoleAccess(Set<AdminRoleAccess> adminRoleAccess) {
-		this.adminRoleAccess = adminRoleAccess;
-	}*/
-	
-	
-	
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+	public String getKeywords() {
+		return keywords;
+	}
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
 	
 }

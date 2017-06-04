@@ -28,5 +28,4 @@ public class Common {
 						).substring(0, 10)
 				);
 	}
-
 }
