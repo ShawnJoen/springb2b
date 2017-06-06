@@ -1,11 +1,10 @@
 package com.spring.b2b.admin.user;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -17,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.spring.b2b.admin.ConfigController;
+import com.spring.model.admin.AdminGroup;
 import com.spring.model.admin.AdminUser;
 import com.spring.model.admin.AdminUserAuthentication;
 import com.spring.service.admin.AdminUserService;
@@ -35,11 +34,12 @@ import static com.spring.util.Common.output;
 @RequestMapping("/admin/user")
 public class UserController extends ConfigController {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	@Autowired
-	AdminUserService adminUserService;
-
+	private AdminUserService adminUserService;
+	@Autowired
+    private MessageSource messageSource;
 	/*
 	 * 登入页 from
 	 * */
@@ -70,11 +70,12 @@ public class UserController extends ConfigController {
 	 * */
 	@RequestMapping(value = "/modifyPassword.do", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> modifyPassword(@ModelAttribute("adminUserAuthentication") AdminUserAuthentication adminUserAuthentication, 
-			BindingResult result) throws Exception {
+			BindingResult result,
+			Locale locale) throws Exception {
 		
 		if (result.hasErrors()) {
 
-            return output("1", null, "程序错误");
+            return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
 		final String username = super.getLogInUsername();
@@ -83,7 +84,7 @@ public class UserController extends ConfigController {
 			adminUserAuthentication.setUsername(username);
 		}
 		
-		return adminUserService.modifyPassword(adminUserAuthentication);
+		return adminUserService.modifyPassword(adminUserAuthentication, locale);
 	}
 	/*
 	 * 创建用户 from
@@ -93,7 +94,7 @@ public class UserController extends ConfigController {
 
 		model.addAttribute("adminUser", new AdminUser());
 		
-		List<HashMap<String,Object>> adminGroups = adminUserService.getAdminGroups();
+		List<AdminGroup> adminGroups = adminUserService.getAdminGroupSelectBox();
 		model.addAttribute("adminGroup", adminGroups);
 		
 		return "admin/user/createAdminUser";
@@ -103,14 +104,15 @@ public class UserController extends ConfigController {
 	 * */
 	@RequestMapping(value = "/createAdminUser.do", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> createAdminUser(@ModelAttribute("adminUser") AdminUser adminUser, 
-			BindingResult result) throws Exception {
+			BindingResult result,
+			Locale locale) throws Exception {
 		
 		if (result.hasErrors()) {
 
-            return output("1", null, "程序错误");
+            return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
-		return adminUserService.createAdminUser(adminUser);
+		return adminUserService.createAdminUser(adminUser, locale);
 	}
 	/*
 	 * 修改用户 from
@@ -130,7 +132,7 @@ public class UserController extends ConfigController {
 		final AdminUser adminUser = adminUserService.getAdminUserByUsername(toUsername);
 		model.addAttribute("adminUser", adminUser);
 		
-		final List<HashMap<String,Object>> adminGroups = adminUserService.getAdminGroups();
+		final List<AdminGroup> adminGroups = adminUserService.getAdminGroupSelectBox();
 		model.addAttribute("adminGroup", adminGroups);
 		
 		return "admin/user/modifyAdminUser";
@@ -140,19 +142,20 @@ public class UserController extends ConfigController {
 	 * */
 	@RequestMapping(value = "/modifyAdminUser.do", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> modifyAdminUser(@ModelAttribute("adminUser") AdminUser adminUser, 
-			BindingResult result) throws Exception {
+			BindingResult result,
+			Locale locale) throws Exception {
 		
 		if (result.hasErrors()) {
 
-            return output("1", null, "程序错误");
+            return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
 		if ("".equals(adminUser.getPassword())) {
 			
-			return adminUserService.modifyAdminUser(adminUser);
+			return adminUserService.modifyAdminUser(adminUser, locale);
 		} else {
 			
-			return adminUserService.modifyAdminUserAndPassword(adminUser);
+			return adminUserService.modifyAdminUserAndPassword(adminUser, locale);
 		}
 	}
 	/*
@@ -170,7 +173,7 @@ public class UserController extends ConfigController {
 		
 		PageInfo<AdminUser> pageInfo = new PageInfo<AdminUser>(adminUsers);
 		model.addAttribute("pageInfo", pageInfo);
-		
+
 		//搜索框绑定搜索字段
 		model.addAttribute("adminUser", adminUser);
 		
@@ -179,12 +182,18 @@ public class UserController extends ConfigController {
 	/*
 	 * 管理员用户删除
 	 * */
-	/*@RequestMapping(value = "/deleteAdminUser.do", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> deleteAdminUser(@RequestParam(value = "username", required = false, defaultValue="") String username) throws Exception {
-
+	@RequestMapping(value = "/deleteAdminUser.do", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> deleteAdminUser(@ModelAttribute("adminUser") AdminUser adminUser, 
+			BindingResult result,
+			Locale locale) throws Exception {
 		
-		return adminUserService.deleteAdminUser(username);
-	}*/
+		if (result.hasErrors()) {
+
+            return output("1", null, messageSource.getMessage("program_error", null, locale));
+        }
+		
+		return adminUserService.deleteAdminUser(adminUser, locale);
+	}
 	/*
 	 * 退出登入
 	 * */
@@ -198,4 +207,96 @@ public class UserController extends ConfigController {
 		
 		return "redirect:/admin/user/login.do?logout";
 	}
+	/*
+	 * 创建管理组 from
+	 * */
+	@RequestMapping(value = "/createAdminGroup.do", method = RequestMethod.GET)
+	public String createAdminGroupForm() {
+
+		return "admin/user/createAdminGroup";
+	}
+	/*
+	 * 创建管理组处理
+	 * */
+	@RequestMapping(value = "/createAdminGroup.do", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> createAdminGroup(@ModelAttribute("adminGroup") AdminGroup adminGroup, 
+			BindingResult result,
+			Locale locale) throws Exception {
+		
+		if (result.hasErrors()) {
+
+            return output("1", null, messageSource.getMessage("program_error", null, locale));
+        }
+		
+		return adminUserService.createAdminGroup(adminGroup, locale);
+	}
+	/*
+	 * 修改管理组 from
+	 * */
+	@RequestMapping(value = "/modifyAdminGroup.do", method = RequestMethod.GET)
+	public String modifyAdminGroupForm(@RequestParam(value = "groupId", required = false, defaultValue="0") Integer groupId, 
+			ModelMap model) {
+
+		if (super.isNotLogIn(super.getLogInUsername())) {
+			
+			return "admin/user/login";
+		}
+		
+		
+		final AdminGroup adminGroup = adminUserService.getAdminGroup(groupId);
+		model.addAttribute("adminGroup", adminGroup);
+		
+		return "admin/user/modifyAdminGroup";
+	}
+	/*
+	 * 修改管理组 处理
+	 * */
+	@RequestMapping(value = "/modifyAdminGroup.do", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> modifyAdminGroup(@ModelAttribute("adminGroup") AdminGroup adminGroup, 
+			BindingResult result,
+			Locale locale) throws Exception {
+		
+		if (result.hasErrors()) {
+
+            return output("1", null, messageSource.getMessage("program_error", null, locale));
+        }
+		
+		return adminUserService.modifyAdminGroup(adminGroup, locale);
+	}
+	/*
+	 * 管理组 列表
+	 * */
+	@RequestMapping(value = "/adminGroupList.do", method = RequestMethod.GET)
+	public String adminGroupList(@RequestParam(value = "pageNum", required = false, defaultValue="1") Integer pageNum,
+            @RequestParam(value = "pageSize", required = false, defaultValue="20") Integer pageSize, 
+            ModelMap model) {
+
+		super.setPageHelper(pageNum, pageSize);
+		
+		List<AdminGroup> adminGroups = adminUserService.getAdminGroups();
+		
+		PageInfo<AdminGroup> pageInfo = new PageInfo<AdminGroup>(adminGroups);
+		model.addAttribute("pageInfo", pageInfo);
+		
+		return "admin/user/adminGroupList";
+	}
+	/*
+	 * 管理组 删除
+	 * */
+	@RequestMapping(value = "/deleteAdminGroup.do", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> deleteAdminGroup(@ModelAttribute("adminGroup") AdminGroup adminGroup, 
+			BindingResult result,
+			Locale locale) throws Exception {
+		
+		if (result.hasErrors()) {
+
+            return output("1", null, messageSource.getMessage("program_error", null, locale));
+        }
+		
+		return adminUserService.deleteAdminGroup(adminGroup, locale);
+	}
+	
+	
+	
+	
 }

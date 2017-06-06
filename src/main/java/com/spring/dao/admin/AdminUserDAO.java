@@ -1,8 +1,6 @@
 package com.spring.dao.admin;
 
-import java.util.HashMap;
 import java.util.List;
-
 import com.spring.model.admin.AdminUser;
 import com.spring.model.admin.AdminUserAuthentication;
 
@@ -16,6 +14,6 @@ public interface AdminUserDAO {
 	int modifyAdminUser(AdminUser adminUser) throws Exception;
 	int modifyAdminUserAndPassword(AdminUser adminUser) throws Exception;
 	List<AdminUser> getAdminUsers(AdminUser adminUser);
-	
+	int deleteAdminUser(AdminUser adminUser) throws Exception;
 	String getTime();
 }

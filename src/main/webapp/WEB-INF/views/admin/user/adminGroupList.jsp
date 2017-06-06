@@ -3,45 +3,37 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <div>
-	<c:url value="/admin/user/adminUserList.do" var="adminUserListUrl"/>
-	<form:form method="get" modelAttribute="adminUser" action="${adminUserListUrl}" name="form">
+	<c:url value="/admin/user/adminGroupList.do" var="adminGroupListUrl"/>
+	<form method="get" action="${adminGroupListUrl}" name="form">
 		<input type="hidden" name="pageNum" id="pageNum" value="${pageInfo.pageNum}"/>
 		<input type="hidden" name="pageSize" id="pageSize" value="${pageInfo.pageSize}"/>
-		<form:input type="text" path="keywords" style="width:160px" placeholder="请输入要搜索的账号"/>
-		<input type="submit" id="searchButton" value="검색"/>
-	</form:form>
+	</form>
 </div>
 
-<h3>管理员用户列表</h3><br>
+<h3>管理组列表</h3><br>
 
 <table >
 <tr>
-	<td width="100">账号</td>
-	<td width="100">管理组</td>
-	<td width="120">联系电话</td>
-	<td width="120">联系名称</td>
-	<td width="100">状态</td>
-	<td width="100">操作</td>
+	<td width="100">编号</td>
+	<td width="100">管理组名称</td>
+	<td width="120">状态</td>
 </tr>
 <tbody id="content">
-<c:forEach items="${pageInfo.list}" var="adminUser">
+<c:forEach items="${pageInfo.list}" var="adminGroup">
 <tr>
-	<td>${adminUser.username}</td>
-	<td>${adminUser.groupName}</td>
-	<td>${adminUser.contactMobile}</td>
-	<td>${adminUser.contactName}</td>
+	<td>${adminGroup.groupId}</td>
+	<td>${adminGroup.groupName}</td>
 	<td>
 		<c:choose>
-			<c:when test="${adminUser.status == 0}">
+			<c:when test="${adminGroup.status == 0}">
 				停用
 			</c:when>
 			<c:otherwise>
 				正常
 			</c:otherwise>
 		</c:choose> 
-		<c:if test="${adminUser.isDel > 0}">已删除</c:if>
 	</td>
-	<td><a href="/admin/user/modifyAdminUser.do?username=${adminUser.username}">编辑</a>/<a onclick="deleteAdminUser('${adminUser.username}')">删除</a></td>
+	<td><a href="/admin/user/modifyAdminGroup.do?groupId=${adminGroup.groupId}">编辑</a>/<a onclick="deleteAdminGroup('${adminGroup.groupId}')">删除</a></td>
 </tr>
 </c:forEach>
 </tbody>
@@ -59,18 +51,17 @@ $('#page-selection').bootpag({
 	$('[name=form]').submit();
 });
 </script>
-
 	
 <script type="text/javascript">
-function deleteAdminUser(username) {
+function deleteAdminGroup(groupId) {
 	
-	if (confirm('确定要删除此管理账号吗？')) {
+	if (confirm('确定要删除此管理组吗？')) {
 		
 		var params = {};
-		params.username = username;
+		params.groupId = groupId;
 		params.${_csrf.parameterName} = '${_csrf.token}';
 	    $.ajax({
-	        url: '/admin/user/deleteAdminUser.do',
+	        url: '/admin/user/deleteAdminGroup.do',
 	        type: "POST",
 	        dataType: "json",
 	        data: params,

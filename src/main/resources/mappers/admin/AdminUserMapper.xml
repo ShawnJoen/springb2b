@@ -46,6 +46,9 @@
 		ORDER BY `admin_user`.`id` DESC
 	</select>
 	
+	<update id="deleteAdminUser" parameterType="com.spring.model.admin.AdminUser">
+		UPDATE `admin_user` SET `isDel`=1, `updateTime`=#{updateTime} WHERE `username`=#{username}
+	</update>
 
 	<select id="getTime" resultType="String">
 		SELECT NOW()

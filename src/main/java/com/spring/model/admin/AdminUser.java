@@ -10,21 +10,21 @@ public class AdminUser {
 
 	private int id;
 	
-	@Min(value=1, message="请选择管理组")
+	@Min(value=1, message="{10007}")//请选择管理组
 	private short groupId;
 	
-	@NotBlank(message="账号不能为空")
-	@Length(min=5,max=10,message="账号必须由5~12个字组成")
+	@NotBlank(message="{10001}")//账号不能为空
+	@Length(min=5,max=10,message="{10002}")//账号必须由5~12个字组成
 	private String username = "";
 	
-	@Pattern(regexp="(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}",message="密码必须是6~12位数字和字母的组合")
+	@Pattern(regexp="(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}",message="{10003}")//密码必须是6~12位数字和字母的组合
 	private String password = "";
 	
-	@NotBlank(message="联系人电话不能为空")
-	@Pattern(regexp="1\\d{10}",message="联系人电话格式错误")
+	@NotBlank(message="{10004}")//联系人电话不能为空
+	@Pattern(regexp="1\\d{10}",message="{10005}")//联系人电话格式错误
 	private String contactMobile = "";
 	
-	@NotBlank(message="联系人名称不能为空")
+	@NotBlank(message="{10006}")//联系人名称不能为空
 	private String contactName = "";
 	
 	private long loginTime;

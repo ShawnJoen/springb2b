@@ -77,6 +77,22 @@
 	class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
 	    <property name="maxInactiveIntervalInSeconds" value="1500" />
 	</bean>
+	
+	<bean name="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="defaultEncoding" value="UTF-8"/>
+		<property name="basenames">
+			<list>
+				<value>classpath:ValidationAdmin</value>
+				<value>classpath:ValidationMessages</value>
+			</list> 
+		</property>
+	</bean>
+	<!-- <bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="validationMessageSource">
+			<ref bean="messageSource" />
+		</property>
+	</bean> -->
 
 	<context:component-scan base-package="com.spring.dao" />
 	<context:component-scan base-package="com.spring.service" />

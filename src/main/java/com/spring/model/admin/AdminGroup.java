@@ -6,10 +6,11 @@ public class AdminGroup {
 	
 	private short groupId;
 	
-	@NotBlank(message="管理组名称不能为空")
+	@NotBlank(message="{10008}")//管理组名称不能为空
 	private String groupName;
 	
 	private byte status;
+	private byte isDel;
 	
 	public AdminGroup() {
 		super();
@@ -32,4 +33,11 @@ public class AdminGroup {
 	public void setStatus(byte status) {
 		this.status = status;
 	}
+	public byte getIsDel() {
+		return isDel;
+	}
+	public void setIsDel(byte isDel) {
+		this.isDel = isDel;
+	}
+	
 }

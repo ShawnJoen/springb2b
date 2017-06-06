@@ -1,8 +1,6 @@
 package com.spring.dao.admin;
 
-import java.util.HashMap;
 import java.util.List;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -21,10 +19,29 @@ public class AdminGroupDAOImpl implements AdminGroupDAO {
 		
 		sqlSession.insert(ADMIN_GROUP_MAPPER + "createAdminGroup", adminGroup);
 	}
-
 	@Override
-	public List<HashMap<String,Object>> getAdminGroups() {
+	public List<AdminGroup> getAdminGroupSelectBox() {
 		
+		return sqlSession.selectList(ADMIN_GROUP_MAPPER + "getAdminGroupSelectBox");
+	}
+	@Override
+	public List<AdminGroup> getAdminGroups() {
+
 		return sqlSession.selectList(ADMIN_GROUP_MAPPER + "getAdminGroups");
+	}
+	@Override
+	public AdminGroup getAdminGroup(int groupId) {
+
+		return sqlSession.selectOne(ADMIN_GROUP_MAPPER + "getAdminGroup", groupId);
+	}
+	@Override
+	public int modifyAdminGroup(AdminGroup adminGroup) throws Exception {
+
+		return sqlSession.update(ADMIN_GROUP_MAPPER + "modifyAdminGroup", adminGroup);
+	}
+	@Override
+	public int deleteAdminGroup(AdminGroup adminGroup) throws Exception {
+
+		return sqlSession.update(ADMIN_GROUP_MAPPER + "deleteAdminGroup", adminGroup);
 	}
 }

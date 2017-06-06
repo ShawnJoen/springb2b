@@ -63,4 +63,10 @@ public class AdminUserDAOImpl implements AdminUserDAO {
 		
 		return sqlSession.selectList(ADMIN_USER_MAPPER + "getAdminUsers", adminUser);
 	}
+	@Override
+	public int deleteAdminUser(AdminUser adminUser) throws Exception {
+		
+		return sqlSession.update(ADMIN_USER_MAPPER + "deleteAdminUser", adminUser);
+	}
+	
 }

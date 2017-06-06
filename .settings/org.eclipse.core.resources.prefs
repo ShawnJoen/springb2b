@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//src/main/java/com/spring/b2b/admin/user/UserController.java=UTF-8
 encoding//src/main/java/com/spring/dao/admin/AdminUserDAOImpl.java=UTF-8
+encoding//src/main/resources/ValidationAdmin_zh_CN.properties=UTF-8
 encoding//src/main/webapp/WEB-INF/views/admin/_layout/base_head.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/home.jsp=UTF-8
 encoding//src/test/java/com/spring/b2b/MysqlConnectTest.java=UTF-8

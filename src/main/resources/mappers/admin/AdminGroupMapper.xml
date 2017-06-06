@@ -3,18 +3,36 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.mappers.AdminGroupMapper">
 
-	<!--<insert id="createAdminGroup" parameterType="com.spring.model.admin.AdminGroup">
-		INSERT INTO `admin_group`(`username`, `password`, `contactMobile`, `contactName`, `createTime`) VALUES
-		(#{username}, #{password}, #{contactMobile}, #{contactName}, #{createTime})
-	</insert>-->
+	<insert id="createAdminGroup" parameterType="com.spring.model.admin.AdminGroup">
+		INSERT INTO `admin_group`(`groupName`) VALUES (#{groupName})
+	</insert>
 	
-	<select id="getAdminGroups" resultType="map">
-		SELECT `groupId`, `groupName` FROM `admin_group` WHERE `status`=1
+	<update id="modifyAdminGroup" parameterType="com.spring.model.admin.AdminGroup">
+		UPDATE `admin_group` SET `groupName`=#{groupName} WHERE `groupId`=#{groupId}
+	</update>
+	
+	<update id="deleteAdminGroup" parameterType="com.spring.model.admin.AdminGroup">
+		UPDATE `admin_group` SET `isDel`=1 WHERE `groupId`=#{groupId}
+	</update>
+	
+	<!-- for selectBox -->
+	<select id="getAdminGroupSelectBox" resultType="com.spring.model.admin.AdminGroup">
+		SELECT `groupId`, `groupName` FROM `admin_group` WHERE `isDel`=0 AND `status`=1
 	</select>
-
-	<!-- <select id="getAdminUserAuthentication" parameterType="com.spring.model.admin.AdminUserAuthentication" resultType="com.spring.model.admin.AdminUser">
-		SELECT `username`, `password`, `status` FROM `admin_user` WHERE `username`=#{username} AND `password`=#{password}
-	</select> -->
-
+	<!-- for List -->
+	<select id="getAdminGroups" resultType="com.spring.model.admin.AdminGroup">
+		SELECT 
+			`groupId`, `groupName`, `status` 
+		FROM 
+			`admin_group` 
+		WHERE 
+			`isDel`=0
+		ORDER BY 
+			`groupId` ASC
+	</select>
+	<!-- for One -->
+	<select id="getAdminGroup" resultType="com.spring.model.admin.AdminGroup">
+		SELECT `groupId`, `groupName`, `status` FROM `admin_group` WHERE `groupId`=#{groupId}
+	</select>
 
 </mapper>
