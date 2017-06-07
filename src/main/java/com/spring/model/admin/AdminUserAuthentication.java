@@ -19,6 +19,9 @@ public class AdminUserAuthentication {
 	
 	private byte status;
 	
+	public AdminUserAuthentication() {
+		super();
+	}
 	public String getUsername() {
 		return username;
 	}

@@ -87,6 +87,9 @@ function createUser() {
             if (result.code == 0) {
                 location.replace('/admin/user/adminUserList.do');
             }
+        },
+        error: function() {
+            alert('<s:message code="program_error"/>');
         }
     });
 }

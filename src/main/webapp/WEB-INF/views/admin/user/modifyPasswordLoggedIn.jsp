@@ -70,6 +70,9 @@ function findPassword() {
             if (result.code == 0) {
                 location.replace('/admin/index.do');
             }
+        },
+        error: function() {
+            alert('<s:message code="program_error"/>');
         }
     });
 }

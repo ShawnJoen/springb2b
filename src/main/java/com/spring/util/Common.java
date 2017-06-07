@@ -4,7 +4,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+
 public class Common {
+	
+	public static String getLogInUsername() {
+		
+		return SecurityContextHolder.getContext().getAuthentication().getName();
+	}
 	
 	public static Map<String, Object> output(String code, Object object, String message) {
 		

@@ -38,6 +38,9 @@ function createAdminGroup() {
             if (result.code == 0) {
                 location.replace('/admin/user/adminGroupList.do');
             }
+        },
+        error: function() {
+            alert('<s:message code="program_error"/>');
         }
     });
 }

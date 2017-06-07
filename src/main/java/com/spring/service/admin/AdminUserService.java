@@ -10,6 +10,7 @@ import com.spring.model.admin.AdminGroup;
 import com.spring.model.admin.AdminRoleAccess;
 import com.spring.model.admin.AdminUser;
 import com.spring.model.admin.AdminUserAuthentication;
+import com.spring.model.admin.OperationRecord;
 
 public interface AdminUserService {
 	/*
@@ -80,4 +81,13 @@ public interface AdminUserService {
 	 * 删除管理组
 	 * */
 	Map<String, Object> deleteAdminGroup(AdminGroup adminGroup, Locale locale) throws Exception;
+	/*
+	 * 创建操作记录
+	 * */
+	void createOperationRecord(String content, long createTime) throws Exception;
+	/*
+	 * 操作记录列表
+	 * */
+	List<OperationRecord> getOperationRecords(OperationRecord operationRecord);
+	
 }

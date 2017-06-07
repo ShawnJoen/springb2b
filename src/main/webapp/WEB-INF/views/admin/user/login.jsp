@@ -5,7 +5,7 @@
 
 <c:url value="/j_spring_security_check" var="loginUrl"/>
 <form:form method="post" action="${loginUrl}" name="f" id="f">
-<input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+<input type="hidden"  name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
 	<c:if test="${param.error != null}">
 	login error<br>

@@ -82,6 +82,9 @@ function deleteAdminUser(username) {
 	            if (result.code == 0) {
 	                location.reload();
 	            }
+	        },
+	        error: function() {
+	            alert('<s:message code="program_error"/>');
 	        }
 	    });
 	}

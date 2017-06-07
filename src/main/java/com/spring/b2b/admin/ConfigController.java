@@ -5,10 +5,10 @@ import com.spring.b2b.ViewController;
 
 public class ConfigController extends ViewController {
 	
-	protected String getLogInUsername() {
+	/*protected String getLogInUsername() {
 		
 		return SecurityContextHolder.getContext().getAuthentication().getName();
-	}
+	}*/
 	
 	protected boolean isLogIn(String username) {
 		

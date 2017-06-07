@@ -79,6 +79,9 @@ function createUser() {
             if (result.code == 0) {
                 location.replace('/admin/user/login.do');
             }
+        },
+        error: function() {
+            alert('<s:message code="program_error"/>');
         }
     });
 }

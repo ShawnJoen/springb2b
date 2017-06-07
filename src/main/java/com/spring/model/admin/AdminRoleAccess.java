@@ -5,6 +5,9 @@ public class AdminRoleAccess {
 	private String username = "";
 	private String role = "";
 	
+	public AdminRoleAccess() {
+		super();
+	}
 	public String getUsername() {
 		return username;
 	}

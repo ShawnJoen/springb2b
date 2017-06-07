@@ -25,7 +25,10 @@ import com.spring.b2b.admin.ConfigController;
 import com.spring.model.admin.AdminGroup;
 import com.spring.model.admin.AdminUser;
 import com.spring.model.admin.AdminUserAuthentication;
+import com.spring.model.admin.OperationRecord;
 import com.spring.service.admin.AdminUserService;
+import com.spring.util.Common;
+
 import static com.spring.util.Common.output;
 /**
  * Handles requests for the application home page.
@@ -56,7 +59,7 @@ public class UserController extends ConfigController {
 		
 		model.addAttribute("adminUserAuthentication", new AdminUserAuthentication());
 
-		final String username = super.getLogInUsername();
+		final String username = Common.getLogInUsername();
 		if (super.isNotLogIn(username)) {
 			
 			return "admin/user/modifyPasswordNotLoggedIn";
@@ -78,7 +81,7 @@ public class UserController extends ConfigController {
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
-		final String username = super.getLogInUsername();
+		final String username = Common.getLogInUsername();
 		if (super.isLogIn(username)) {
 			
 			adminUserAuthentication.setUsername(username);
@@ -106,7 +109,7 @@ public class UserController extends ConfigController {
 	public @ResponseBody Map<String, Object> createAdminUser(@ModelAttribute("adminUser") AdminUser adminUser, 
 			BindingResult result,
 			Locale locale) throws Exception {
-		
+
 		if (result.hasErrors()) {
 
             return output("1", null, messageSource.getMessage("program_error", null, locale));
@@ -121,7 +124,7 @@ public class UserController extends ConfigController {
 	public String modifyAdminUserForm(@RequestParam(value = "username", required = false, defaultValue="") String username, 
 			ModelMap model) {
 
-		final String logInUsername = super.getLogInUsername();
+		final String logInUsername = Common.getLogInUsername();
 		if (super.isNotLogIn(logInUsername)) {
 			
 			return "admin/user/login";
@@ -171,7 +174,7 @@ public class UserController extends ConfigController {
 		
 		List<AdminUser> adminUsers = adminUserService.getAdminUsers(adminUser);
 		
-		PageInfo<AdminUser> pageInfo = new PageInfo<AdminUser>(adminUsers);
+		PageInfo<AdminUser> pageInfo = new PageInfo<>(adminUsers);
 		model.addAttribute("pageInfo", pageInfo);
 
 		//搜索框绑定搜索字段
@@ -237,7 +240,7 @@ public class UserController extends ConfigController {
 	public String modifyAdminGroupForm(@RequestParam(value = "groupId", required = false, defaultValue="0") Integer groupId, 
 			ModelMap model) {
 
-		if (super.isNotLogIn(super.getLogInUsername())) {
+		if (super.isNotLogIn(Common.getLogInUsername())) {
 			
 			return "admin/user/login";
 		}
@@ -275,7 +278,7 @@ public class UserController extends ConfigController {
 		
 		List<AdminGroup> adminGroups = adminUserService.getAdminGroups();
 		
-		PageInfo<AdminGroup> pageInfo = new PageInfo<AdminGroup>(adminGroups);
+		PageInfo<AdminGroup> pageInfo = new PageInfo<>(adminGroups);
 		model.addAttribute("pageInfo", pageInfo);
 		
 		return "admin/user/adminGroupList";
@@ -295,7 +298,27 @@ public class UserController extends ConfigController {
 		
 		return adminUserService.deleteAdminGroup(adminGroup, locale);
 	}
-	
+	/*
+	 * 管理员用户 列表
+	 * */
+	@RequestMapping(value = "/operationRecordList.do", method = RequestMethod.GET)
+	public String operationRecordList(@RequestParam(value = "pageNum", required = false, defaultValue="1") Integer pageNum,
+            @RequestParam(value = "pageSize", required = false, defaultValue="20") Integer pageSize, 
+            @ModelAttribute("operationRecord") OperationRecord operationRecord, 
+            ModelMap model) {
+
+		super.setPageHelper(pageNum, pageSize);
+		
+		List<OperationRecord> operationRecords = adminUserService.getOperationRecords(operationRecord);
+		
+		PageInfo<OperationRecord> pageInfo = new PageInfo<>(operationRecords);
+		model.addAttribute("pageInfo", pageInfo);
+
+		//搜索框绑定搜索字段
+		model.addAttribute("operationRecord", operationRecord);
+		
+		return "admin/user/operationRecordList";
+	}
 	
 	
 	

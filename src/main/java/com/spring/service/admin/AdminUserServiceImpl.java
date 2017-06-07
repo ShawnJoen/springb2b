@@ -1,6 +1,5 @@
 package com.spring.service.admin;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -8,14 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.spring.dao.admin.AdminGroupDAO;
 import com.spring.dao.admin.AdminRoleAccessDAO;
 import com.spring.dao.admin.AdminUserDAO;
+import com.spring.dao.admin.OperationRecordDAO;
 import com.spring.model.admin.AdminGroup;
 import com.spring.model.admin.AdminRoleAccess;
 import com.spring.model.admin.AdminUser;
 import com.spring.model.admin.AdminUserAuthentication;
+import com.spring.model.admin.OperationRecord;
+import com.spring.util.Common;
 import com.spring.util.validation.ValidationResult;
 import com.spring.util.validation.ValidationUtils;
 import static com.spring.util.Common.*;
@@ -30,14 +32,17 @@ public class AdminUserServiceImpl implements AdminUserService {
 	@Autowired
 	private AdminGroupDAO adminGroupDAO;
 	@Autowired
+	private OperationRecordDAO operationRecordDAO;
+	@Autowired
     private Md5PasswordEncoder passwordEncoder;
 	@Autowired
     private MessageSource messageSource;
 	
+	@Transactional("transaction")
 	@Override
 	public Map<String, Object> createAdminUser(AdminUser adminUser, Locale locale) throws Exception {
 
-		String[] fieldNames = {"username","password","contactMobile","contactName","groupId"};
+		final String[] fieldNames = {"username","password","contactMobile","contactName","groupId"};
 		ValidationResult ValidResult = null;
 		for (String fieldName: fieldNames) {
 			
@@ -49,22 +54,27 @@ public class AdminUserServiceImpl implements AdminUserService {
 			}
 		}
 
-		int hasAdminUser = this.hasAdminUserByUsername(adminUser.getUsername());
+		final int hasAdminUser = this.hasAdminUserByUsername(adminUser.getUsername());
         if(hasAdminUser > 0) {
         	return output("1", null, messageSource.getMessage("id_already_used", null, locale));
         }
 
 		adminUser.setPassword(passwordEncoder.encodePassword(adminUser.getPassword(), adminUser.getUsername()));
-		adminUser.setCreateTime(getTimeStampsLength10());
 		
+		final long timeStamps = getTimeStampsLength10();
+		adminUser.setCreateTime(timeStamps);
+
 		adminUserDAO.createAdminUser(adminUser);
 		
+		this.createOperationRecord("创建管理员  账号：" + adminUser.getUsername(), timeStamps);
+
 		return output("0", null, messageSource.getMessage("create_seccess", null, locale));
 	}
+	@Transactional("transaction")
 	@Override
 	public Map<String, Object> modifyAdminUser(AdminUser adminUser, Locale locale) throws Exception {
 
-		String[] fieldNames = {"username","contactMobile","contactName","groupId"};
+		final String[] fieldNames = {"username","contactMobile","contactName","groupId"};
 		ValidationResult ValidResult = null;
 		for (String fieldName: fieldNames) {
 			
@@ -76,12 +86,13 @@ public class AdminUserServiceImpl implements AdminUserService {
 			}
 		}
 		
-		int hasAdminUser = this.hasAdminUserByUsername(adminUser.getUsername());
+		final int hasAdminUser = this.hasAdminUserByUsername(adminUser.getUsername());
         if(hasAdminUser == 0) {
         	return output("1", null, messageSource.getMessage("id_not_found", null, locale));
         }
         
-		adminUser.setUpdateTime(getTimeStampsLength10());
+        final long timeStamps = getTimeStampsLength10();
+		adminUser.setUpdateTime(timeStamps);
 		
 		final int result = adminUserDAO.modifyAdminUser(adminUser);
 		if (result == 0) {
@@ -89,13 +100,16 @@ public class AdminUserServiceImpl implements AdminUserService {
 			return output("1", null, messageSource.getMessage("modify_fail", null, locale));
 		} else {
 			
+			this.createOperationRecord("修改管理员信息  账号：" + adminUser.getUsername(), timeStamps);
+			
 			return output("0", null, messageSource.getMessage("modify_seccess", null, locale));
 		}
 	}
+	@Transactional("transaction")
 	@Override
 	public Map<String, Object> modifyAdminUserAndPassword(AdminUser adminUser, Locale locale) throws Exception {
 		
-		String[] fieldNames = {"username","password","contactMobile","contactName","groupId"};
+		final String[] fieldNames = {"username","password","contactMobile","contactName","groupId"};
 		ValidationResult ValidResult = null;
 		for (String fieldName: fieldNames) {
 			
@@ -107,19 +121,23 @@ public class AdminUserServiceImpl implements AdminUserService {
 			}
 		}
 		
-		int hasAdminUser = this.hasAdminUserByUsername(adminUser.getUsername());
+		final int hasAdminUser = this.hasAdminUserByUsername(adminUser.getUsername());
         if(hasAdminUser == 0) {
         	return output("1", null, messageSource.getMessage("id_not_found", null, locale));
         }
         
 		adminUser.setPassword(passwordEncoder.encodePassword(adminUser.getPassword(), adminUser.getUsername()));
-		adminUser.setUpdateTime(getTimeStampsLength10());
+		
+		final long timeStamps = getTimeStampsLength10();
+		adminUser.setUpdateTime(timeStamps);
 		
 		final int result = adminUserDAO.modifyAdminUserAndPassword(adminUser);
 		if (result == 0) {
 			
 			return output("1", null, messageSource.getMessage("modify_fail", null, locale));
 		} else {
+			
+			this.createOperationRecord("修改管理员密码和信息  账号：" + adminUser.getUsername(), timeStamps);
 			
 			return output("0", null, messageSource.getMessage("modify_seccess", null, locale));
 		}
@@ -139,10 +157,11 @@ public class AdminUserServiceImpl implements AdminUserService {
 		
 		return adminUserDAO.getAdminUserAuthentication(adminUserAuthentication);
 	}
+	@Transactional("transaction")
 	@Override
 	public Map<String, Object> modifyPassword(AdminUserAuthentication adminUserAuthentication, Locale locale) throws Exception {
 		
-		String[] fieldNames = {"username","password","newPassword"};
+		final String[] fieldNames = {"username","password","newPassword"};
 		ValidationResult ValidResult = null;
 		for (String fieldName: fieldNames) {
 			
@@ -176,9 +195,12 @@ public class AdminUserServiceImpl implements AdminUserService {
 			return output("1", null, messageSource.getMessage("modify_fail", null, locale));
 		} else {
 			
+			this.createOperationRecord("修改管理员密码  账号：" + adminUserAuthentication.getUsername(), getTimeStampsLength10());
+			
 			return output("0", null, messageSource.getMessage("modify_seccess", null, locale));
 		}
 	}
+	@Transactional("transaction")
 	@Override
 	public void createAdminRoleAccess(AdminRoleAccess adminRoleAccess) throws Exception {
 		
@@ -199,23 +221,29 @@ public class AdminUserServiceImpl implements AdminUserService {
 		
 		return adminUserDAO.getAdminUsers(adminUser);
 	}
+	@Transactional("transaction")
 	@Override
 	public Map<String, Object> deleteAdminUser(AdminUser adminUser, Locale locale) throws Exception {
 		
-		adminUser.setUpdateTime(getTimeStampsLength10());
+		final long timeStamps = getTimeStampsLength10();
+		adminUser.setUpdateTime(timeStamps);
+		
 		final int result = adminUserDAO.deleteAdminUser(adminUser);
 		if (result == 0) {
 			
 			return output("1", null, messageSource.getMessage("delete_fail", null, locale));
 		} else {
 			
+			this.createOperationRecord("删除管理员  账号：" + adminUser.getUsername(), timeStamps);
+			
 			return output("0", null, messageSource.getMessage("delete_seccess", null, locale));
 		}
 	}
+	@Transactional("transaction")
 	@Override
 	public Map<String, Object> createAdminGroup(AdminGroup adminGroup, Locale locale) throws Exception {
 
-		String[] fieldNames = {"groupName"};
+		final String[] fieldNames = {"groupName"};
 		ValidationResult ValidResult = null;
 		for (String fieldName: fieldNames) {
 			
@@ -229,6 +257,8 @@ public class AdminUserServiceImpl implements AdminUserService {
 		
 		adminGroupDAO.createAdminGroup(adminGroup);
 		
+		this.createOperationRecord("创建管理组  名称：" + adminGroup.getGroupName(), getTimeStampsLength10());
+		
 		return output("0", null, messageSource.getMessage("create_seccess", null, locale));
 	}
 	@Override
@@ -241,10 +271,11 @@ public class AdminUserServiceImpl implements AdminUserService {
 		
 		return adminGroupDAO.getAdminGroup(groupId);
 	}
+	@Transactional("transaction")
 	@Override
 	public Map<String, Object> modifyAdminGroup(AdminGroup adminGroup, Locale locale) throws Exception {
 		
-		String[] fieldNames = {"groupName"};
+		final String[] fieldNames = {"groupName"};
 		ValidationResult ValidResult = null;
 		for (String fieldName: fieldNames) {
 			
@@ -262,9 +293,12 @@ public class AdminUserServiceImpl implements AdminUserService {
 			return output("1", null, messageSource.getMessage("modify_fail", null, locale));
 		} else {
 			
+			this.createOperationRecord("修改管理组  名称：" + adminGroup.getGroupName(), getTimeStampsLength10());
+			
 			return output("0", null, messageSource.getMessage("modify_seccess", null, locale));
 		}
 	}
+	@Transactional("transaction")
 	@Override
 	public Map<String, Object> deleteAdminGroup(AdminGroup adminGroup, Locale locale) throws Exception {
 	
@@ -273,11 +307,27 @@ public class AdminUserServiceImpl implements AdminUserService {
 			
 			return output("1", null, messageSource.getMessage("delete_fail", null, locale));
 		} else {
+
+			this.createOperationRecord("删除管理组  编号：" + adminGroup.getGroupId(), getTimeStampsLength10());
 			
 			return output("0", null, messageSource.getMessage("delete_seccess", null, locale));
 		}
 	}
-	
-	
+	@Override
+	public List<OperationRecord> getOperationRecords(OperationRecord operationRecord) {
+
+		return operationRecordDAO.getOperationRecords(operationRecord);
+	}
+	@Override
+	public void createOperationRecord(String content, long createTime) throws Exception {
+		
+		operationRecordDAO.createOperationRecord(
+				new OperationRecord(
+					Common.getLogInUsername(), 
+					content, 
+					createTime
+				)
+			);
+	}
 	
 }
