@@ -1,16 +1,15 @@
 package com.spring.service.admin;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
-import com.spring.model.admin.AdminGroup;
-import com.spring.model.admin.AdminRoleAccess;
-import com.spring.model.admin.AdminUser;
-import com.spring.model.admin.AdminUserAuthentication;
-import com.spring.model.admin.OperationRecord;
+import com.spring.dto.admin.AdminGroup;
+import com.spring.dto.admin.AdminRole;
+import com.spring.dto.admin.AdminRoleAccess;
+import com.spring.dto.admin.AdminUser;
+import com.spring.dto.admin.AdminUserAuthentication;
+import com.spring.dto.admin.OperationRecord;
 
 public interface AdminUserService {
 	/*
@@ -26,6 +25,10 @@ public interface AdminUserService {
 	 * */
 	AdminUser getAdminUserByUsername(String username);
 	/*
+	 * 用账户获取管理组编号
+	 * */
+	int getGroupIdByUsername(String username);
+	/*
 	 * 用账户获取管理员登入 账户,密码 修改密码等 比较老密码时用
 	 * */
 	AdminUser getAdminUserAuthentication(AdminUserAuthentication adminUserAuthentication);
@@ -36,11 +39,15 @@ public interface AdminUserService {
 	/*
 	 * 设置管理员页面登入权限
 	 * */
-	void createAdminRoleAccess(AdminRoleAccess adminRoleAccess) throws Exception;
+	void createAdminRoleAccess(List<AdminRoleAccess> adminRoleAccess) throws Exception;
 	/*
 	 * 获取管理员页面登入权限列表
 	 * */
-	List<String> getAdminRoleAccessByUsername(String username);
+	List<String> getAdminRoleAccessByGroupId(int groupId);
+	/*
+	 * 删除指定管理组权限
+	 * */
+	void deleteAdminRoleAccess(int groupId) throws Exception;
 	/*
 	 * 获取管理组列表
 	 * */
@@ -76,7 +83,7 @@ public interface AdminUserService {
 	/*
 	 * 修改管理组
 	 * */
-	Map<String, Object> modifyAdminGroup(AdminGroup adminGroup, Locale locale) throws Exception;
+	Map<String, Object> modifyAdminGroup(AdminGroup adminGroup, List<AdminRoleAccess> selectedRoleCode, Locale locale) throws Exception;
 	/*
 	 * 删除管理组
 	 * */
@@ -89,5 +96,20 @@ public interface AdminUserService {
 	 * 操作记录列表
 	 * */
 	List<OperationRecord> getOperationRecords(OperationRecord operationRecord);
-	
+	/*
+	 * 获取管理Menu
+	 * */
+	Map<String, List<AdminRole>> getAdminRolesForMenu(String pagePath);
+	/*
+	 * 获取管理权限列表
+	 * */
+	List<AdminRole> getAdminRoles(AdminRole adminRole);
+	/*
+	 * 获取已授权的权限列表
+	 * */
+	List<AdminRole> getAdminRoleAccessByPageDeepNGroupId(AdminRole adminRole);
+	/*
+	 * 使用urlPath获取pageTree
+	 * */
+	String getPageTreeByRoleCode(AdminRole adminRole);
 }

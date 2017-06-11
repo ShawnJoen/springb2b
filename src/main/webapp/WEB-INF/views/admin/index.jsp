@@ -1,11 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=utf8" 
-	pageEncoding="utf8"%><jsp:include page="/WEB-INF/views/admin/_layout/base_head.jsp">
-	<jsp:param name="xxxxxxxxxxxxxxx" value="hello world"/>
-</jsp:include>
+	pageEncoding="utf8"%><%@include file="/WEB-INF/views/admin/_layout/baseHead.jsp"%>
 
 
 概况页<br>
-로그인 통과
 
 
-<%@include file="/WEB-INF/views/admin/_layout/base_tail.htm"%>
+
+<%@include file="/WEB-INF/views/admin/_layout/baseTail.htm"%>

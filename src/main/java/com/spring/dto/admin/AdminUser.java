@@ -1,8 +1,7 @@
-package com.spring.model.admin;
+package com.spring.dto.admin;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
-
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 

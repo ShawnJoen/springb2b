@@ -1,5 +1,6 @@
 package com.spring.b2b.admin.user;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -15,18 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import com.github.pagehelper.PageInfo;
 import com.spring.b2b.admin.ConfigController;
-import com.spring.model.admin.AdminGroup;
-import com.spring.model.admin.AdminUser;
-import com.spring.model.admin.AdminUserAuthentication;
-import com.spring.model.admin.OperationRecord;
-import com.spring.service.admin.AdminUserService;
+import com.spring.dto.admin.AdminGroup;
+import com.spring.dto.admin.AdminRoleAccess;
+import com.spring.dto.admin.AdminUser;
+import com.spring.dto.admin.AdminUserAuthentication;
+import com.spring.dto.admin.OperationRecord;
 import com.spring.util.Common;
 
 import static com.spring.util.Common.output;
@@ -38,11 +37,6 @@ import static com.spring.util.Common.output;
 public class UserController extends ConfigController {
 
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
-	
-	@Autowired
-	private AdminUserService adminUserService;
-	@Autowired
-    private MessageSource messageSource;
 	/*
 	 * 登入页 from
 	 * */
@@ -127,7 +121,7 @@ public class UserController extends ConfigController {
 		final String logInUsername = Common.getLogInUsername();
 		if (super.isNotLogIn(logInUsername)) {
 			
-			return "admin/user/login";
+			return "redirect:/admin/user/login.do";
 		}
 		
 		final String toUsername = "".equals(username) ? logInUsername : username;
@@ -239,12 +233,11 @@ public class UserController extends ConfigController {
 	@RequestMapping(value = "/modifyAdminGroup.do", method = RequestMethod.GET)
 	public String modifyAdminGroupForm(@RequestParam(value = "groupId", required = false, defaultValue="0") Integer groupId, 
 			ModelMap model) {
-
-		if (super.isNotLogIn(Common.getLogInUsername())) {
-			
-			return "admin/user/login";
-		}
 		
+		if (groupId == 0) {
+			
+			return "redirect:/admin/user/adminGroupList";
+		}
 		
 		final AdminGroup adminGroup = adminUserService.getAdminGroup(groupId);
 		model.addAttribute("adminGroup", adminGroup);
@@ -256,6 +249,7 @@ public class UserController extends ConfigController {
 	 * */
 	@RequestMapping(value = "/modifyAdminGroup.do", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> modifyAdminGroup(@ModelAttribute("adminGroup") AdminGroup adminGroup, 
+			@RequestParam(value = "roleCode[]", required = false) String[] roleCode,
 			BindingResult result,
 			Locale locale) throws Exception {
 		
@@ -263,8 +257,21 @@ public class UserController extends ConfigController {
 
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
-		
-		return adminUserService.modifyAdminGroup(adminGroup, locale);
+
+		final List<AdminRoleAccess> selectedRoleCode = new ArrayList<>();
+		if (roleCode != null) {
+
+			for (String role : roleCode) {
+				
+				AdminRoleAccess adminRoleAccess = new AdminRoleAccess();
+				adminRoleAccess.setGroupId(adminGroup.getGroupId());
+				adminRoleAccess.setRole(role);
+				
+				selectedRoleCode.add(adminRoleAccess);
+			}
+		}
+
+		return adminUserService.modifyAdminGroup(adminGroup, selectedRoleCode, locale);
 	}
 	/*
 	 * 管理组 列表

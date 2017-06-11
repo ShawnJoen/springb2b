@@ -11,7 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.spring.model.admin.AdminUser;
+
+import com.spring.dto.admin.AdminUser;
 
 @Service("userDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -35,14 +36,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         System.out.println("AdminUser:" + adminUser);
 
         return new org.springframework.security.core.userdetails.User(adminUser.getUsername(), adminUser.getPassword(), 
-            		adminUser.getStatus() == 1, true, true, true, getGrantedAuthorities(username));
+            		adminUser.getStatus() == 1, true, true, true, getGrantedAuthorities(adminUser.getGroupId()));
     }
     
-    private List<GrantedAuthority> getGrantedAuthorities(String username) {
+    private List<GrantedAuthority> getGrantedAuthorities(short groupId) {
     	
     	final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         
-        final List<String> roles = adminUserService.getAdminRoleAccessByUsername(username);
+        final List<String> roles = adminUserService.getAdminRoleAccessByGroupId(groupId);
         
         if (roles.size() > 0) {
         	

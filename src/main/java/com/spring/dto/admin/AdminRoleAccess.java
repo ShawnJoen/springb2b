@@ -1,18 +1,20 @@
-package com.spring.model.admin;
+package com.spring.dto.admin;
+
+import java.util.List;
 
 public class AdminRoleAccess {
 	
-	private String username = "";
+	private int groupId;
 	private String role = "";
 	
 	public AdminRoleAccess() {
 		super();
 	}
-	public String getUsername() {
-		return username;
+	public int getGroupId() {
+		return groupId;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setGroupId(int groupId) {
+		this.groupId = groupId;
 	}
 	public String getRole() {
 		return role;

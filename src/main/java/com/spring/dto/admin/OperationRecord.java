@@ -1,4 +1,4 @@
-package com.spring.model.admin;
+package com.spring.dto.admin;
 
 public class OperationRecord {
 	

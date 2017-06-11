@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Handles requests for the application home page.
  */
 @Controller
-public class IndexController {
+public class IndexController extends ConfigController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 

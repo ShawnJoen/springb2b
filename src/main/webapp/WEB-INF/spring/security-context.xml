@@ -7,10 +7,24 @@
     http://www.springframework.org/schema/security/spring-security-4.2.xsd">
       
     <http auto-config="true" >
-    	<intercept-url pattern="/admin/index.do" access="hasRole('frsdflajsdfsa')" />
-    	<intercept-url pattern="/home.do" access="hasRole('ADMIN')" />
+    	<!-- 管理员 -->
+        <intercept-url pattern="/home.do" access="permitAll" />
     	<intercept-url pattern="/admin/user/login.do" access="permitAll" />
     	<intercept-url pattern="/j_spring_security_logout" access="permitAll" />
+    	<intercept-url pattern="/admin/user/login.do" access="permitAll" />
+    	<intercept-url pattern="/admin/user/logout.do" access="permitAll" />
+    	<intercept-url pattern="/admin/user/modifyPassword.do" access="permitAll" />
+    	<intercept-url pattern="/admin/index.do" access="permitAll" />
+    	<intercept-url pattern="/admin/user/adminUserList.do" access="hasRole('AdminUserList')" />
+    	<intercept-url pattern="/admin/user/createAdminUser.do" access="hasRole('CreateAdminUser')"/>
+    	<intercept-url pattern="/admin/user/modifyAdminUser.do" access="hasRole('ModifyAdminUser')"/>
+    	<intercept-url pattern="/admin/user/deleteAdminUser.do" access="hasRole('DeleteAdminUser')" />
+    	<intercept-url pattern="/admin/user/adminGroupList.do" access="hasRole('AdminGroupList')" />
+    	<intercept-url pattern="/admin/user/createAdminGroup.do" access="hasRole('CreateAdminGroup')"/>
+    	<intercept-url pattern="/admin/user/modifyAdminGroup.do" access="hasRole('ModifyAdminGroup')"/>
+    	<intercept-url pattern="/admin/user/deleteAdminGroup.do" access="hasRole('DeleteAdminGroup')" />
+    	<intercept-url pattern="/admin/user/operationRecordList.do" access="hasRole('OperationRecordList')" />
+    	
         <form-login
 		    login-page="/admin/user/login.do"
 		    login-processing-url="/j_spring_security_check"

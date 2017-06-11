@@ -1,14 +1,11 @@
 package com.spring.dao.admin;
 
-import java.util.HashMap;
 import java.util.List;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import com.spring.model.admin.AdminUser;
-import com.spring.model.admin.AdminUserAuthentication;
+import com.spring.dto.admin.AdminUser;
+import com.spring.dto.admin.AdminUserAuthentication;
 
 @Repository
 public class AdminUserDAOImpl implements AdminUserDAO {
@@ -37,6 +34,12 @@ public class AdminUserDAOImpl implements AdminUserDAO {
 	public AdminUser getAdminUserByUsername(String username) {
 
 		return sqlSession.selectOne(ADMIN_USER_MAPPER + "getAdminUserByUsername", username);
+	}
+	
+	@Override
+	public int getGroupIdByUsername(String username) {
+		
+		return sqlSession.selectOne(ADMIN_USER_MAPPER + "getGroupIdByUsername", username);
 	}
 	@Override
 	public AdminUser getAdminUserAuthentication(AdminUserAuthentication adminUserAuthentication) {

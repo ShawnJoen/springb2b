@@ -3,24 +3,24 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.mappers.AdminGroupMapper">
 
-	<insert id="createAdminGroup" parameterType="com.spring.model.admin.AdminGroup">
+	<insert id="createAdminGroup" parameterType="com.spring.dto.admin.AdminGroup">
 		INSERT INTO `admin_group`(`groupName`) VALUES (#{groupName})
 	</insert>
 	
-	<update id="modifyAdminGroup" parameterType="com.spring.model.admin.AdminGroup">
+	<update id="modifyAdminGroup" parameterType="com.spring.dto.admin.AdminGroup">
 		UPDATE `admin_group` SET `groupName`=#{groupName} WHERE `groupId`=#{groupId}
 	</update>
 	
-	<update id="deleteAdminGroup" parameterType="com.spring.model.admin.AdminGroup">
+	<update id="deleteAdminGroup" parameterType="com.spring.dto.admin.AdminGroup">
 		UPDATE `admin_group` SET `isDel`=1 WHERE `groupId`=#{groupId}
 	</update>
 	
 	<!-- for selectBox -->
-	<select id="getAdminGroupSelectBox" resultType="com.spring.model.admin.AdminGroup">
+	<select id="getAdminGroupSelectBox" resultType="com.spring.dto.admin.AdminGroup">
 		SELECT `groupId`, `groupName` FROM `admin_group` WHERE `isDel`=0 AND `status`=1
 	</select>
 	<!-- for List -->
-	<select id="getAdminGroups" resultType="com.spring.model.admin.AdminGroup">
+	<select id="getAdminGroups" resultType="com.spring.dto.admin.AdminGroup">
 		SELECT 
 			`groupId`, `groupName`, `status` 
 		FROM 
@@ -31,7 +31,7 @@
 			`groupId` ASC
 	</select>
 	<!-- for One -->
-	<select id="getAdminGroup" resultType="com.spring.model.admin.AdminGroup">
+	<select id="getAdminGroup" resultType="com.spring.dto.admin.AdminGroup">
 		SELECT `groupId`, `groupName`, `status` FROM `admin_group` WHERE `groupId`=#{groupId}
 	</select>
 

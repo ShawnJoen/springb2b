@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf8" 
-	pageEncoding="utf8"%><%@include file="/WEB-INF/views/admin/_layout/login_head.jsp"%>
+	pageEncoding="utf8"%><%@include file="/WEB-INF/views/admin/_layout/loginHead.jsp"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 
@@ -87,4 +87,4 @@ function createUser() {
 }
 </script>
 
-<%@include file="/WEB-INF/views/admin/_layout/base_tail.htm"%>
+<%@include file="/WEB-INF/views/admin/_layout/baseTail.htm"%>

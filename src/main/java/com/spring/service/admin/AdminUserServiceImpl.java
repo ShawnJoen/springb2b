@@ -1,8 +1,13 @@
 package com.spring.service.admin;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
@@ -10,17 +15,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.spring.dao.admin.AdminGroupDAO;
 import com.spring.dao.admin.AdminRoleAccessDAO;
+import com.spring.dao.admin.AdminRoleDAO;
 import com.spring.dao.admin.AdminUserDAO;
 import com.spring.dao.admin.OperationRecordDAO;
-import com.spring.model.admin.AdminGroup;
-import com.spring.model.admin.AdminRoleAccess;
-import com.spring.model.admin.AdminUser;
-import com.spring.model.admin.AdminUserAuthentication;
-import com.spring.model.admin.OperationRecord;
+import com.spring.dto.admin.AdminGroup;
+import com.spring.dto.admin.AdminRole;
+import com.spring.dto.admin.AdminRoleAccess;
+import com.spring.dto.admin.AdminUser;
+import com.spring.dto.admin.AdminUserAuthentication;
+import com.spring.dto.admin.OperationRecord;
 import com.spring.util.Common;
 import com.spring.util.validation.ValidationResult;
 import com.spring.util.validation.ValidationUtils;
 import static com.spring.util.Common.*;
+import static java.util.stream.Collectors.*; 
 
 @Service("adminUserServiceImpl")
 public class AdminUserServiceImpl implements AdminUserService {
@@ -33,6 +41,8 @@ public class AdminUserServiceImpl implements AdminUserService {
 	private AdminGroupDAO adminGroupDAO;
 	@Autowired
 	private OperationRecordDAO operationRecordDAO;
+	@Autowired
+	private AdminRoleDAO adminRoleDAO;
 	@Autowired
     private Md5PasswordEncoder passwordEncoder;
 	@Autowired
@@ -202,14 +212,19 @@ public class AdminUserServiceImpl implements AdminUserService {
 	}
 	@Transactional("transaction")
 	@Override
-	public void createAdminRoleAccess(AdminRoleAccess adminRoleAccess) throws Exception {
+	public void createAdminRoleAccess(List<AdminRoleAccess> adminRoleAccess) throws Exception {
 		
 		adminRoleAccessDAO.createAdminRoleAccess(adminRoleAccess);
 	}
 	@Override
-	public List<String> getAdminRoleAccessByUsername(String username) {
+	public void deleteAdminRoleAccess(int groupId) throws Exception {
 		
-		return adminRoleAccessDAO.getAdminRoleAccessByUsername(username);
+		adminRoleAccessDAO.deleteAdminRoleAccess(groupId);
+	}
+	@Override
+	public List<String> getAdminRoleAccessByGroupId(int groupId) {
+		
+		return adminRoleAccessDAO.getAdminRoleAccessByGroupId(groupId);
 	}
 	@Override
 	public List<AdminGroup> getAdminGroupSelectBox() {
@@ -269,11 +284,47 @@ public class AdminUserServiceImpl implements AdminUserService {
 	@Override
 	public AdminGroup getAdminGroup(int groupId) {
 		
-		return adminGroupDAO.getAdminGroup(groupId);
+		final AdminGroup adminGroup = adminGroupDAO.getAdminGroup(groupId);
+		
+		//获取指定管理组权限
+		final List<String> adminRoleAccess = this.getAdminRoleAccessByGroupId(groupId);
+		adminGroup.setAdminRoleAccess(adminRoleAccess);
+		/*
+		 * 权限列表
+		 * */
+		AdminRole adminRole = new AdminRole();
+		//一级
+		final List<AdminRole> adminRoles = this.getAdminRoles(adminRole);
+		int deep0Count = adminRoles.size();
+		for (int deep0 = 0; deep0 < deep0Count; deep0++) {
+			
+			adminRole.setPageDeep(adminRoles.get(deep0).getPageDeep() + 1);
+			adminRole.setPageTree(adminRoles.get(deep0).getPageTree());
+			//二级
+			adminRoles.get(deep0).setAdminRoles(
+						this.getAdminRoles(adminRole)
+					);
+			
+			int deep1Count = adminRoles.get(deep0).getAdminRoles().size();
+			for (int deep1 = 0; deep1 < deep1Count; deep1++) {
+				
+				adminRole.setPageDeep(adminRoles.get(deep0).getAdminRoles().get(deep1).getPageDeep() + 1);
+				adminRole.setPageTree(adminRoles.get(deep0).getAdminRoles().get(deep1).getPageTree());
+				//三级
+				adminRoles.get(deep0).getAdminRoles().get(deep1).setAdminRoles(
+							this.getAdminRoles(adminRole)
+						);
+
+			}
+		}
+		
+		adminGroup.setAdminRoles(adminRoles);
+		
+		return adminGroup;
 	}
 	@Transactional("transaction")
 	@Override
-	public Map<String, Object> modifyAdminGroup(AdminGroup adminGroup, Locale locale) throws Exception {
+	public Map<String, Object> modifyAdminGroup(AdminGroup adminGroup, List<AdminRoleAccess> selectedRoleCode, Locale locale) throws Exception {
 		
 		final String[] fieldNames = {"groupName"};
 		ValidationResult ValidResult = null;
@@ -285,6 +336,12 @@ public class AdminUserServiceImpl implements AdminUserService {
 				return output("1", null, 
 						ValidResult.getErrorMsg().get(fieldName));
 			}
+		}
+		
+		this.deleteAdminRoleAccess(adminGroup.getGroupId());
+		if (selectedRoleCode.size() > 0)
+		{
+			this.createAdminRoleAccess(selectedRoleCode);
 		}
 		
 		final int result = adminGroupDAO.modifyAdminGroup(adminGroup);
@@ -328,6 +385,81 @@ public class AdminUserServiceImpl implements AdminUserService {
 					createTime
 				)
 			);
+	}
+	@Override
+	public Map<String, List<AdminRole>> getAdminRolesForMenu(String pagePath) {
+		
+		final Map<String, List<AdminRole>> menuAll = new HashMap<>();
+		final AdminRole adminRole = new AdminRole(0);
+		//1级目录 TOP
+		final List<AdminRole> adminTopMenu = adminRoleDAO.getAdminRolesForMenu(adminRole);
+		//获取已授权的2级所有权限
+		adminRole.setPageDeep(1);
+		adminRole.setGroupId(
+					this.getGroupIdByUsername(
+						Common.getLogInUsername()
+					)
+				);
+		final List<AdminRole> adminRoleAccess = this.getAdminRoleAccessByPageDeepNGroupId(adminRole);
+		final Map<String, String> menuPageTreeURI = new HashMap<>();
+		for (AdminRole role : adminRoleAccess) {
+			//每一个一级目录只会加一次URI
+			String pageTree = role.getPageTree().substring(0, 3);
+			if (!menuPageTreeURI.containsKey(pageTree)) {
+				
+				menuPageTreeURI.put(pageTree, role.getPageURI());
+			}
+		}
+		for (AdminRole role : adminTopMenu) {
+			
+			String pageURI = menuPageTreeURI.get(role.getPageTree());
+			if (pageURI != null) {
+				
+				role.setPageURI(pageURI);
+			}
+		}
+		//1级目录 TOP
+		menuAll.put("top", adminTopMenu);
+		//使用urlPath获取pageTree
+		adminRole.setRoleCode(
+				Common.upperCase(
+					Arrays.asList(pagePath.split("[\\/]+"))
+						.parallelStream()
+						.filter(path -> path.endsWith(".do"))
+						.map(path -> path.replace(".do", ""))
+						.collect(joining())
+					)
+				);
+		final String currentPageTree = this.getPageTreeByRoleCode(adminRole);
+		if(currentPageTree != null) {
+
+			//2级目录 LEFT
+			//adminRole.setPageDeep(1);
+			adminRole.setPageTree(currentPageTree.substring(0, 3));
+			menuAll.put("left", adminRoleDAO.getAdminRolesForMenu(adminRole));
+		}
+		
+		return menuAll;
+	}
+	@Override
+	public List<AdminRole> getAdminRoleAccessByPageDeepNGroupId(AdminRole adminRole) {
+		
+		return adminRoleDAO.getAdminRoleAccessByPageDeepNGroupId(adminRole);
+	}
+	@Override
+	public int getGroupIdByUsername(String username) {
+		
+		return adminUserDAO.getGroupIdByUsername(username);
+	}
+	@Override
+	public List<AdminRole> getAdminRoles(AdminRole adminRole) {
+
+		return adminRoleDAO.getAdminRoles(adminRole);
+	}
+	@Override
+	public String getPageTreeByRoleCode(AdminRole adminRole) {
+		
+		return adminRoleDAO.getPageTreeByRoleCode(adminRole);
 	}
 	
 }

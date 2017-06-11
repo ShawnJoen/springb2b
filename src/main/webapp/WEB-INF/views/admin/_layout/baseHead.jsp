@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf8"
-    pageEncoding="utf8"%><%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%><%@ taglib uri="http://www.springframework.org/tags" prefix="s"%><!DOCTYPE html>
+    pageEncoding="utf8"%><%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%><%@ taglib uri="http://www.springframework.org/tags" prefix="s"%><%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%><!DOCTYPE html>
 <!--[if IE 6]><html lang="zh-CN" class="ie6 ie9- ie8-"><![endif]-->
 <!--[if IE 7]><html lang="zh-CN" class="ie7 ie9- ie8-"><![endif]-->
 <!--[if IE 8]><html lang="zh-CN" class="ie8 ie9-"><![endif]-->
@@ -36,17 +36,32 @@
 	width:100px;
 	border:1px solid red;
 }
+#left_menu_ul li {
+	clear:both;
+	width:100px;
+	border:1px solid blue;
+}
 </style>
 
 <ul id="top_menu_ul">
-<li>概况</li>
-<li>商品</li>
-<li>订单</li>
-<li>环境设置</li>
+<c:forEach items="${adminMenu.top}" var="topMenu">
+	<sec:authorize access="hasRole('${topMenu.roleCode}')">
+		<li onclick="location.href='${topMenu.pageURI}';">
+			${topMenu.pageName}, pageTree:${topMenu.pageTree}, childCount:${topMenu.childCount}
+		</li>
+	</sec:authorize>
+</c:forEach>
 </ul>
-<hr style="float:clear;">
-<%  
-	//String str = request.getParameter("xxxxxxxxxxxxxxx");  
-	//int n = Integer.parseInt(str);  
-%> 
-<%//=str %>
+
+<hr style="clear:both;"><br>
+
+<ul id="left_menu_ul">
+<c:forEach items="${adminMenu.left}" var="leftMenu">
+	<sec:authorize access="hasRole('${leftMenu.roleCode}')">
+		<li onclick="location.href='${leftMenu.pageURI}';">
+			${leftMenu.pageName}, pageTree:${leftMenu.pageTree}, childCount:${leftMenu.childCount}
+		</li>
+	</sec:authorize>
+</c:forEach>
+</ul>
+<hr style="clear:both;">

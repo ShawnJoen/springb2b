@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf8" 
-	pageEncoding="utf8"%><%@include file="/WEB-INF/views/admin/_layout/base_head.jsp"%>
+	pageEncoding="utf8"%><%@include file="/WEB-INF/views/admin/_layout/baseHead.jsp"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <div>
@@ -10,6 +10,7 @@
 	</form>
 </div>
 
+<input type="button" value="创建管理组" onclick="location.href='/admin/user/createAdminGroup.do';" class="btn btn-default"/><br>
 <h3>管理组列表</h3><br>
 
 <table >
@@ -82,4 +83,4 @@ function deleteAdminGroup(groupId) {
 }
 </script>
 
-<%@include file="/WEB-INF/views/admin/_layout/base_tail.htm"%>
+<%@include file="/WEB-INF/views/admin/_layout/baseTail.htm"%>

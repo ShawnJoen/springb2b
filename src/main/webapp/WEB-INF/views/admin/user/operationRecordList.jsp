@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf8" 
-	pageEncoding="utf8"%><%@include file="/WEB-INF/views/admin/_layout/base_head.jsp"%>
+	pageEncoding="utf8"%><%@include file="/WEB-INF/views/admin/_layout/baseHead.jsp"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <div>
@@ -46,4 +46,4 @@ $('#page-selection').bootpag({
 });
 </script>
 
-<%@include file="/WEB-INF/views/admin/_layout/base_tail.htm"%>
+<%@include file="/WEB-INF/views/admin/_layout/baseTail.htm"%>

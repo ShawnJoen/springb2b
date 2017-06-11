@@ -1,14 +1,15 @@
 package com.spring.dao.admin;
 
 import java.util.List;
-import com.spring.model.admin.AdminUser;
-import com.spring.model.admin.AdminUserAuthentication;
+import com.spring.dto.admin.AdminUser;
+import com.spring.dto.admin.AdminUserAuthentication;
 
 public interface AdminUserDAO {
 	
 	void createAdminUser(AdminUser adminUser) throws Exception;
 	int hasAdminUserByUsername(String username);
 	AdminUser getAdminUserByUsername(String username);
+	int getGroupIdByUsername(String username);
 	AdminUser getAdminUserAuthentication(AdminUserAuthentication adminUserAuthentication);
 	int modifyPassword(AdminUserAuthentication adminUserAuthentication) throws Exception;
 	int modifyAdminUser(AdminUser adminUser) throws Exception;

@@ -1,7 +1,8 @@
 package com.spring.dao.admin;
 
 import java.util.List;
-import com.spring.model.admin.AdminGroup;
+
+import com.spring.dto.admin.AdminGroup;
 
 public interface AdminGroupDAO {
 	

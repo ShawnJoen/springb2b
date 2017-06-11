@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.mappers.AdminRoleMapper">
+
+	<select id="getAdminRolesForMenu" parameterType="com.spring.dto.admin.AdminRole" resultType="com.spring.dto.admin.AdminRole">
+		SELECT 
+			`pageTree`, `pageName`, `roleCode`, `pageURI`, `childCount`
+		FROM 
+			`admin_role` 
+		WHERE 
+			`isDel`=0
+			AND 
+			`pageDeep` = #{pageDeep}
+		<if test="pageTree !=''">
+			AND `pageTree` LIKE CONCAT(#{pageTree}, '%')
+		</if>
+		ORDER BY 
+			`sort` ASC
+	</select>
+	
+	<select id="getPageTreeByRoleCode" parameterType="com.spring.dto.admin.AdminRole" resultType="String">
+		SELECT 
+			`pageTree`
+		FROM 
+			`admin_role` 
+		WHERE 
+			`isDel`=0
+			AND 
+			`roleCode` = #{roleCode}
+	</select>
+		
+	<select id="getAdminRoleAccessByPageDeepNGroupId" parameterType="com.spring.dto.admin.AdminRole" resultType="com.spring.dto.admin.AdminRole">
+		SELECT  
+			`admin_role`.pageURI, `admin_role`.pageTree
+		FROM 
+			`admin_role`
+		LEFT JOIN 
+			`admin_role_access`
+		ON
+			`admin_role`.`roleCode`=`admin_role_access`.`role`
+		WHERE
+			`admin_role`.`isDel`=0
+		AND
+			`admin_role`.`pageDeep`=#{pageDeep}
+		AND
+			`admin_role_access`.groupId=#{groupId}
+		ORDER BY 
+			`admin_role`.`sort` ASC
+	</select>
+		
+	<select id="getAdminRoles" parameterType="com.spring.dto.admin.AdminRole" resultType="com.spring.dto.admin.AdminRole">
+		SELECT 
+			`pageTree`, `pageName`, `roleCode`, `pageDeep`
+		FROM 
+			`admin_role` 
+		WHERE 
+			`isDel`=0
+			AND 
+			`pageDeep` = #{pageDeep}
+		<if test="pageTree !=''">
+			AND `pageTree` LIKE CONCAT(#{pageTree}, '%')
+		</if>
+		ORDER BY 
+			`sort` ASC
+	</select>
+
+</mapper>

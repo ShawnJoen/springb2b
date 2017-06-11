@@ -1,4 +1,4 @@
-package com.spring.model.admin;
+package com.spring.dto.admin;
 
 import javax.validation.constraints.Pattern;
 

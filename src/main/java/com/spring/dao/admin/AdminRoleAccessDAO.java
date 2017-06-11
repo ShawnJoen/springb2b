@@ -3,10 +3,12 @@ package com.spring.dao.admin;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import com.spring.model.admin.AdminRoleAccess;
+
+import com.spring.dto.admin.AdminRoleAccess;
 
 public interface AdminRoleAccessDAO {
 	
-	public void createAdminRoleAccess(AdminRoleAccess adminRoleAccess) throws Exception;
-	public List<String> getAdminRoleAccessByUsername(String username);
+	public void createAdminRoleAccess(List<AdminRoleAccess> adminRoleAccess) throws Exception;
+	public void deleteAdminRoleAccess(int groupId) throws Exception;
+	public List<String> getAdminRoleAccessByGroupId(int groupId);
 }

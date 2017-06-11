@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf8" 
-	pageEncoding="utf8"%><%@include file="/WEB-INF/views/admin/_layout/base_head.jsp"%>
+	pageEncoding="utf8"%><%@include file="/WEB-INF/views/admin/_layout/baseHead.jsp"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <div>
@@ -12,6 +12,7 @@
 	</form:form>
 </div>
 
+<input type="button" value="创建管理员" onclick="location.href='/admin/user/createAdminUser.do';" class="btn btn-default"/><br>
 <h3>管理员用户列表</h3><br>
 
 <table >
@@ -84,11 +85,11 @@ function deleteAdminUser(username) {
 	            }
 	        },
 	        error: function() {
-	            alert('<s:message code="program_error"/>');
+	            alert('<m:message code="program_error"/>');
 	        }
 	    });
 	}
 }
 </script>
 
-<%@include file="/WEB-INF/views/admin/_layout/base_tail.htm"%>
+<%@include file="/WEB-INF/views/admin/_layout/baseTail.htm"%>

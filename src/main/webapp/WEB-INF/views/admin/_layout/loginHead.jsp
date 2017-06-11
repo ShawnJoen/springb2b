@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf8"
-    pageEncoding="utf8"%><%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%><%@ taglib uri="http://www.springframework.org/tags" prefix="s"%><!DOCTYPE html>
+    pageEncoding="utf8"%><%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%><%@ taglib uri="http://www.springframework.org/tags" prefix="m"%><!DOCTYPE html>
 <!--[if IE 6]><html lang="zh-CN" class="ie6 ie9- ie8-"><![endif]-->
 <!--[if IE 7]><html lang="zh-CN" class="ie7 ie9- ie8-"><![endif]-->
 <!--[if IE 8]><html lang="zh-CN" class="ie8 ie9-"><![endif]-->

@@ -1,7 +1,8 @@
 package com.spring.dao.admin;
 
 import java.util.List;
-import com.spring.model.admin.OperationRecord;
+
+import com.spring.dto.admin.OperationRecord;
 
 public interface OperationRecordDAO {
 	void createOperationRecord(OperationRecord operationRecord) throws Exception;
