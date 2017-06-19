@@ -1,7 +1,5 @@
 package com.spring.dto.admin;
 
-import java.util.List;
-
 public class AdminRoleAccess {
 	
 	private int groupId;

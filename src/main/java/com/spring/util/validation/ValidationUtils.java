@@ -17,7 +17,7 @@ public class ValidationUtils {
 		
 		ValidationResult result = new ValidationResult();
 		
-		Set<ConstraintViolation<T>> set = validator.validate(obj,Default.class);
+		Set<ConstraintViolation<T>> set = validator.validate(obj, Default.class);
 		if (CollectionUtils.isNotEmpty(set)) {
 			
 			result.setHasErrors(true);
@@ -38,7 +38,7 @@ public class ValidationUtils {
 		
 		ValidationResult result = new ValidationResult();
 		
-		Set<ConstraintViolation<T>> set = validator.validateProperty(obj,propertyName,Default.class);
+		Set<ConstraintViolation<T>> set = validator.validateProperty(obj,propertyName, Default.class);
 		if (CollectionUtils.isNotEmpty(set)) {	 
 			
 			result.setHasErrors(true);
@@ -51,6 +51,25 @@ public class ValidationUtils {
 			}
 			
 			result.setErrorMsg(errorMsg);
+		}
+		
+		return result;
+	}
+	
+	public static <T> ValidationResult validation(T obj) {
+		
+		ValidationResult result = new ValidationResult();
+		
+		Set<ConstraintViolation<T>> set = validator.validate(obj, Default.class);
+		if (CollectionUtils.isNotEmpty(set)) {
+			
+			result.setHasErrors(true);
+			for (ConstraintViolation<T> cv : set) {
+				
+				result.setErrorMessage(cv.getMessage());
+				
+				break;
+			}
 		}
 		
 		return result;

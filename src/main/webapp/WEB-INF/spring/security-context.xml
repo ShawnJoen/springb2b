@@ -8,28 +8,36 @@
       
     <http auto-config="true" >
     	<!-- 管理员 -->
-        <intercept-url pattern="/home.do" access="permitAll" />
-    	<intercept-url pattern="/admin/user/login.do" access="permitAll" />
-    	<intercept-url pattern="/j_spring_security_logout" access="permitAll" />
-    	<intercept-url pattern="/admin/user/login.do" access="permitAll" />
-    	<intercept-url pattern="/admin/user/logout.do" access="permitAll" />
-    	<intercept-url pattern="/admin/user/modifyPassword.do" access="permitAll" />
-    	<intercept-url pattern="/admin/index.do" access="permitAll" />
-    	<intercept-url pattern="/admin/user/adminUserList.do" access="hasRole('AdminUserList')" />
+        <intercept-url pattern="/home.do" access="permitAll"/>
+    	<intercept-url pattern="/admin/user/login.do" access="permitAll"/>
+    	<intercept-url pattern="/j_spring_security_logout" access="permitAll"/>
+    	<intercept-url pattern="/admin/user/login.do" access="permitAll"/>
+    	<intercept-url pattern="/admin/user/logout.do" access="permitAll"/>
+    	<intercept-url pattern="/admin/user/modifyPassword.do" access="permitAll"/>
+    	<intercept-url pattern="/admin/statistics.do" access="hasRole('Statistics')"/>
+    	<intercept-url pattern="/admin/user/adminUserList.do" access="hasRole('AdminUserList')"/>
     	<intercept-url pattern="/admin/user/createAdminUser.do" access="hasRole('CreateAdminUser')"/>
     	<intercept-url pattern="/admin/user/modifyAdminUser.do" access="hasRole('ModifyAdminUser')"/>
-    	<intercept-url pattern="/admin/user/deleteAdminUser.do" access="hasRole('DeleteAdminUser')" />
-    	<intercept-url pattern="/admin/user/adminGroupList.do" access="hasRole('AdminGroupList')" />
+    	<intercept-url pattern="/admin/user/deleteAdminUser.do" access="hasRole('DeleteAdminUser')"/>
+    	<intercept-url pattern="/admin/user/adminGroupList.do" access="hasRole('AdminGroupList')"/>
     	<intercept-url pattern="/admin/user/createAdminGroup.do" access="hasRole('CreateAdminGroup')"/>
     	<intercept-url pattern="/admin/user/modifyAdminGroup.do" access="hasRole('ModifyAdminGroup')"/>
-    	<intercept-url pattern="/admin/user/deleteAdminGroup.do" access="hasRole('DeleteAdminGroup')" />
-    	<intercept-url pattern="/admin/user/operationRecordList.do" access="hasRole('OperationRecordList')" />
+    	<intercept-url pattern="/admin/user/deleteAdminGroup.do" access="hasRole('DeleteAdminGroup')"/>
+    	<intercept-url pattern="/admin/user/operationRecordList.do" access="hasRole('OperationRecordList')"/>
+    	<!-- 用户端广告 -->
+    	<intercept-url pattern="/admin/buyer/buyerAppBannerList.do" access="hasRole('BuyerAppBannerList')"/>
+    	<intercept-url pattern="/admin/buyer/createBuyerAppBanner.do" access="hasRole('CreateBuyerAppBanner')"/>
+    	<intercept-url pattern="/admin/buyer/modifyBuyerAppBanner.do" access="hasRole('ModifyBuyerAppBanner')"/>
+    	<intercept-url pattern="/admin/buyer/ddeleteBuyerAppBanner.do" access="hasRole('DeleteBuyerAppBanner')"/>
+    	<!-- APP配置 -->
+    	<intercept-url pattern="/admin/config/buyerAppConfigList.do" access="hasRole('BuyerAppConfigList')"/>
+    	<intercept-url pattern="/admin/config/modifySiteConfig.do" access="hasRole('ModifySiteConfig')"/>
     	
         <form-login
 		    login-page="/admin/user/login.do"
 		    login-processing-url="/j_spring_security_check"
 			authentication-failure-url="/admin/user/login.do?error"
-			default-target-url="/"
+			default-target-url="/admin/statistics.do"
 		    always-use-default-target="true"/>
 		<logout 
 			invalidate-session="true"
@@ -46,7 +54,8 @@
             </password-encoder>  
         </authentication-provider>  
     </authentication-manager>
+    
     <beans:bean id="md5PasswordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
-    <beans:bean id="userDetailsServiceImpl" class="com.spring.service.admin.UserDetailsServiceImpl" />
+    <beans:bean id="userDetailsServiceImpl" class="com.spring.service.admin.user.UserDetailsServiceImpl" />
 
 </beans:beans>

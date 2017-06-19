@@ -17,7 +17,9 @@ public class AdminUserAuthentication {
 	@Pattern(regexp="(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}",message="{10003}")//密码必须是6~12位数字和字母的组合
 	private String newPassword = "";
 	
-	private byte status;
+	private int status;
+	
+	private String updateTime;
 	
 	public AdminUserAuthentication() {
 		super();
@@ -40,10 +42,17 @@ public class AdminUserAuthentication {
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
 	}
-	public byte getStatus() {
+	public int getStatus() {
 		return status;
 	}
-	public void setStatus(byte status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
+	public String getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
+	}
+	
 }

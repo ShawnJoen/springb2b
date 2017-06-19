@@ -1,7 +1,6 @@
 package com.spring.dao.admin;
 
 import java.util.List;
-
 import com.spring.dto.admin.OperationRecord;
 
 public interface OperationRecordDAO {

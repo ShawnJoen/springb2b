@@ -16,27 +16,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import com.github.pagehelper.PageInfo;
-import com.spring.b2b.admin.ConfigController;
+import com.spring.b2b.admin.EnvController;
 import com.spring.dto.admin.AdminGroup;
 import com.spring.dto.admin.AdminRoleAccess;
 import com.spring.dto.admin.AdminUser;
 import com.spring.dto.admin.AdminUserAuthentication;
 import com.spring.dto.admin.OperationRecord;
-import com.spring.util.Common;
-
-import static com.spring.util.Common.output;
+import com.spring.service.admin.OperationRecordService;
+import static com.spring.util.Common.*;
+import com.spring.util.validation.ValidationResult;
+import com.spring.util.validation.ValidationUtils;
 /**
  * Handles requests for the application home page.
  */
 @Controller
 @RequestMapping("/admin/user")
-public class UserController extends ConfigController {
+public class UserController extends EnvController {
 
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
+	
+	@Autowired
+    private OperationRecordService operationRecordService;
+	@Autowired
+    private MessageSource messageSource;
+	
 	/*
 	 * 登入页 from
 	 * */
@@ -46,21 +55,24 @@ public class UserController extends ConfigController {
 		return "admin/user/login";
 	}
 	/*
-	 * 修改密码页 from
+	 * 修改密码页 from 未登录
 	 * */
-	@RequestMapping(value = "/modifyPassword.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/modifyPasswordNotLoggedIn.do", method = RequestMethod.GET)
 	public String modifyPasswordForm(ModelMap model) {
 		
 		model.addAttribute("adminUserAuthentication", new AdminUserAuthentication());
 
-		final String username = Common.getLogInUsername();
-		if (super.isNotLogIn(username)) {
+		return "admin/user/modifyPasswordNotLoggedIn";
+	}
+	/*
+	 * 修改密码页 from 已登录
+	 * */
+	@RequestMapping(value = "/modifyPassword.do", method = RequestMethod.GET)
+	public String modifyPasswordLoggedInForm(ModelMap model) {
+		
+		model.addAttribute("adminUserAuthentication", new AdminUserAuthentication());
 			
-			return "admin/user/modifyPasswordNotLoggedIn";
-		} else {
-			
-			return "admin/user/modifyPasswordLoggedIn";
-		}
+		return "admin/user/modifyPasswordLoggedIn";
 	}
 	/*
 	 * 修改密码处理
@@ -75,8 +87,14 @@ public class UserController extends ConfigController {
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
-		final String username = Common.getLogInUsername();
-		if (super.isLogIn(username)) {
+		final ValidationResult ValidResult = ValidationUtils.validation(adminUserAuthentication);
+		if (ValidResult.isHasErrors()) {
+			
+			return output("1", null, ValidResult.getErrorMessage());
+		}
+		
+		final String username = getLogInUsername();
+		if (isLogIn(username)) {
 			
 			adminUserAuthentication.setUsername(username);
 		}
@@ -109,6 +127,12 @@ public class UserController extends ConfigController {
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
+		final ValidationResult ValidResult = ValidationUtils.validation(adminUser);
+		if (ValidResult.isHasErrors()) {
+			
+			return output("1", null, ValidResult.getErrorMessage());
+		}
+		
 		return adminUserService.createAdminUser(adminUser, locale);
 	}
 	/*
@@ -118,8 +142,8 @@ public class UserController extends ConfigController {
 	public String modifyAdminUserForm(@RequestParam(value = "username", required = false, defaultValue="") String username, 
 			ModelMap model) {
 
-		final String logInUsername = Common.getLogInUsername();
-		if (super.isNotLogIn(logInUsername)) {
+		final String logInUsername = getLogInUsername();
+		if (isNotLogIn(logInUsername)) {
 			
 			return "redirect:/admin/user/login.do";
 		}
@@ -147,6 +171,12 @@ public class UserController extends ConfigController {
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
+		final ValidationResult ValidResult = ValidationUtils.validation(adminUser);
+		if (ValidResult.isHasErrors()) {
+			
+			return output("1", null, ValidResult.getErrorMessage());
+		}
+
 		if ("".equals(adminUser.getPassword())) {
 			
 			return adminUserService.modifyAdminUser(adminUser, locale);
@@ -225,6 +255,12 @@ public class UserController extends ConfigController {
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
+		final ValidationResult ValidResult = ValidationUtils.validation(adminGroup);
+		if (ValidResult.isHasErrors()) {
+			
+			return output("1", null, ValidResult.getErrorMessage());
+		}
+		
 		return adminUserService.createAdminGroup(adminGroup, locale);
 	}
 	/*
@@ -257,6 +293,12 @@ public class UserController extends ConfigController {
 
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
+		
+		final ValidationResult ValidResult = ValidationUtils.validation(adminGroup);
+		if (ValidResult.isHasErrors()) {
+			
+			return output("1", null, ValidResult.getErrorMessage());
+		}
 
 		final List<AdminRoleAccess> selectedRoleCode = new ArrayList<>();
 		if (roleCode != null) {
@@ -316,7 +358,7 @@ public class UserController extends ConfigController {
 
 		super.setPageHelper(pageNum, pageSize);
 		
-		List<OperationRecord> operationRecords = adminUserService.getOperationRecords(operationRecord);
+		List<OperationRecord> operationRecords = operationRecordService.getOperationRecords(operationRecord);
 		
 		PageInfo<OperationRecord> pageInfo = new PageInfo<>(operationRecords);
 		model.addAttribute("pageInfo", pageInfo);

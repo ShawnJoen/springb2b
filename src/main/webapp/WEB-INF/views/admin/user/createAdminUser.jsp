@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf8" 
-	pageEncoding="utf8"%><%@include file="/WEB-INF/views/admin/_layout/loginHead.jsp"%>
+	pageEncoding="utf8"%><%@include file="/WEB-INF/views/admin/_layout/baseHead.jsp"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 

@@ -4,8 +4,8 @@
 <mapper namespace="com.spring.mappers.AdminUserMapper">
 
 	<insert id="createAdminUser" parameterType="com.spring.dto.admin.AdminUser">
-		INSERT INTO `admin_user`(`groupId`, `username`, `password`, `contactMobile`, `contactName`, `createTime`) VALUES
-		(#{groupId}, #{username}, #{password}, #{contactMobile}, #{contactName}, #{createTime})
+		INSERT INTO `admin_user`(`groupId`, `username`, `password`, `contactMobile`, `contactName`) VALUES
+		(#{groupId}, #{username}, #{password}, #{contactMobile}, #{contactName})
 	</insert>
 	
 	<update id="modifyAdminUser" parameterType="com.spring.dto.admin.AdminUser">
@@ -17,7 +17,7 @@
 	</update>
 	
 	<update id="modifyPassword" parameterType="com.spring.dto.admin.AdminUserAuthentication">
-		UPDATE `admin_user` SET `password`=#{password} WHERE `username`=#{username}
+		UPDATE `admin_user` SET `password`=#{password}, `updateTime`=#{updateTime} WHERE `username`=#{username}
 	</update>
 	
 	<select id="hasAdminUserByUsername" resultType="int">

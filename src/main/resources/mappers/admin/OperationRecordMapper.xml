@@ -4,7 +4,7 @@
 <mapper namespace="com.spring.mappers.OperationRecordMapper">
 
 	<insert id="createOperationRecord" parameterType="com.spring.dto.admin.OperationRecord">
-		INSERT INTO `operation_record`(`username`, `content`, `createTime`) VALUES (#{username}, #{content}, #{createTime})
+		INSERT INTO `operation_record`(`username`, `content`) VALUES (#{username}, #{content})
 	</insert>
 	
 	<!-- for List -->

@@ -3,7 +3,7 @@ package com.spring.b2b;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 
-import com.spring.dao.admin.AdminUserDAO;
+import com.spring.dao.admin.user.AdminUserDAO;
 
 import javax.inject.Inject;
 import org.apache.log4j.xml.DOMConfigurator;

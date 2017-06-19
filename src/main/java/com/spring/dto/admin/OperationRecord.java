@@ -1,22 +1,24 @@
 package com.spring.dto.admin;
 
+import java.util.Date;
+
 public class OperationRecord {
 	
 	private int id;
 	private String username;
 	private String content;
-	private long createTime;
+	private Date createTime;
 	
 	//管理人员列表搜索
 	private String keywords = "";
+	
 	public OperationRecord() {
 		super();
 	}
-	public OperationRecord(String username, String content, long createTime) {
+	public OperationRecord(String username, String content) {
 		super();
 		this.username = username;
 		this.content = content;
-		this.createTime = createTime;
 	}
 	public int getId() {
 		return id;
@@ -36,10 +38,10 @@ public class OperationRecord {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public long getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(long createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 	public String getKeywords() {

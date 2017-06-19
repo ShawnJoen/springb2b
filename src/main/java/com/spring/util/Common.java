@@ -1,9 +1,12 @@
 package com.spring.util;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class Common {
@@ -11,6 +14,16 @@ public class Common {
 	public static String getLogInUsername() {
 		
 		return SecurityContextHolder.getContext().getAuthentication().getName();
+	}
+	
+	public static boolean isLogIn(String username) {
+		
+		return !username.equals("anonymousUser");
+	}
+	
+	public static boolean isNotLogIn(String username) {
+		
+		return username.equals("anonymousUser");
 	}
 	
 	public static Map<String, Object> output(String code, Object object, String message) {
@@ -22,20 +35,6 @@ public class Common {
 		return map;
 	}
 	
-	public static long getTimeStamps() {
-		
-		return new Date().getTime();
-	}
-	
-	public static long getTimeStampsLength10() {
-		
-		return Long.parseLong(
-				String.valueOf(
-						com.spring.util.Common.getTimeStamps()
-						).substring(0, 10)
-				);
-	}
-	
 	public static String upperCase(String str) { 
 		
 	    char[] ch = str.toCharArray();  
@@ -45,4 +44,32 @@ public class Common {
 	    }  
 	    return new String(ch);  
 	}
+	
+	public static String getTimeStamps() {
+		
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
+	}
+	
+	public static <T> List<T> compareDifferentArray(T[] baseArray, T[] differentArray) {
+	
+		List<T> baseList = Arrays.asList(baseArray);
+		List<T> resultList = new ArrayList<>();
+		for (T element : differentArray) {
+			
+			if (!baseList.contains(element)) {
+			
+				resultList.add(element);    
+			}
+		}
+		  
+		return resultList;    
+	}
+	/*public static long getTimeStampsLength10() {
+		
+		return Long.parseLong(
+				String.valueOf(
+						com.spring.util.Common.getTimeStamps()
+						).substring(0, 10)
+				);
+	}*/
 }

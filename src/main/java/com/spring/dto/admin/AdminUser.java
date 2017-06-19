@@ -10,7 +10,7 @@ public class AdminUser {
 	private int id;
 	
 	@Min(value=1, message="{10007}")//请选择管理组
-	private short groupId;
+	private int groupId;
 	
 	@NotBlank(message="{10001}")//账号不能为空
 	@Length(min=5,max=10,message="{10002}")//账号必须由5~12个字组成
@@ -25,13 +25,12 @@ public class AdminUser {
 	
 	@NotBlank(message="{10006}")//联系人名称不能为空
 	private String contactName = "";
-	
-	private long loginTime;
-	private long updateTime;
-	private long createTime;
-	private byte status;
+	private String loginTime;
+	private String updateTime;
+	private String createTime;
+	private int status;
 	private String loginIp;
-	private byte isDel;
+	private int isDel;
 	
 	//联表admin_group
 	private String groupName;
@@ -41,7 +40,7 @@ public class AdminUser {
 	public AdminUser() {
 		super();
 	}
-	public AdminUser(String username, String contactMobile, String contactName, long createTime, byte status) {
+	public AdminUser(String username, String contactMobile, String contactName, String createTime, int status) {
 		this.username = username;
 		this.contactMobile = contactMobile;
 		this.contactName = contactName;
@@ -54,10 +53,10 @@ public class AdminUser {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public short getGroupId() {
+	public int getGroupId() {
 		return groupId;
 	}
-	public void setGroupId(short groupId) {
+	public void setGroupId(int groupId) {
 		this.groupId = groupId;
 	}
 	public String getUsername() {
@@ -84,34 +83,34 @@ public class AdminUser {
 	public void setContactName(String contactName) {
 		this.contactName = contactName;
 	}
-	public long getLoginTime() {
+	public String getLoginTime() {
 		return loginTime;
 	}
-	public void setLoginTime(long loginTime) {
+	public void setLoginTime(String loginTime) {
 		this.loginTime = loginTime;
 	}
-	public long getUpdateTime() {
+	public String getUpdateTime() {
 		return updateTime;
 	}
-	public void setUpdateTime(long updateTime) {
+	public void setUpdateTime(String updateTime) {
 		this.updateTime = updateTime;
 	}
-	public long getCreateTime() {
+	public String getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(long createTime) {
+	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
-	public byte getStatus() {
+	public int getStatus() {
 		return status;
 	}
-	public void setStatus(byte status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
-	public byte getIsDel() {
+	public int getIsDel() {
 		return isDel;
 	}
-	public void setIsDel(byte isDel) {
+	public void setIsDel(int isDel) {
 		this.isDel = isDel;
 	}
 	public String getLoginIp() {
@@ -132,5 +131,4 @@ public class AdminUser {
 	public void setKeywords(String keywords) {
 		this.keywords = keywords;
 	}
-	
 }

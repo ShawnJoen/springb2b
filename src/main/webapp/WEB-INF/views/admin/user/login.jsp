@@ -15,7 +15,7 @@
 	<input type="text" name="username" placeholder="아이디를 입력하세요."/><br>
 	<input type="password" name="password" placeholder="비밀번호를 입력하세요."/><br>
 	<div class="btn btn-default" onclick="login()">登 入</div>
-	<a class="btn btn-default" href="./password.do">密码修改</a>
+	<a class="btn btn-default" href="./modifyPasswordNotLoggedIn.do">密码修改</a>
 
 </form:form>
 

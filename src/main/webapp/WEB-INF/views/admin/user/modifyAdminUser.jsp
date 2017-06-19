@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf8" 
-	pageEncoding="utf8"%><%@include file="/WEB-INF/views/admin/_layout/loginHead.jsp"%>
+	pageEncoding="utf8"%><%@include file="/WEB-INF/views/admin/_layout/baseHead.jsp"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 
@@ -37,7 +37,7 @@
 
 <script type="text/javascript">
 function createUser() {
-	var params = {},
+	var password, params = {},
 		usernameInput = $('[name=username]'), 
 		passwordInput = $('[name=password]'), 
 		contactMobileInput = $('[name=contactMobile]'), 
@@ -49,12 +49,10 @@ function createUser() {
 		usernameInput.select();
 		return;
 	}
-	params.password = $.trim(passwordInput.val()); 
-	/*if (!params.password) {
-		alert('请输入密码');
-		passwordInput.select();
-		return;
-	}*/
+	password = $.trim(passwordInput.val()); 
+	if (password) {
+		params.password = password;
+	}
 	params.contactMobile = $.trim(contactMobileInput.val()); 
 	if (!params.contactMobile) {
 		alert('请输入联系电话');

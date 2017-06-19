@@ -2,18 +2,15 @@ package com.spring.dto.admin;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class AdminGroup {
 	
-	private short groupId = 0;
-	
+	private int groupId = 0;
 	@NotBlank(message="{10008}")//管理组名称不能为空
 	private String groupName;
-	
-	private byte status;
-	private byte isDel;
+	private int status;
+	private int isDel;
 	
 	//修改管理组 列出所有权限可供选择
 	private List<AdminRole> adminRoles;
@@ -23,10 +20,10 @@ public class AdminGroup {
 	public AdminGroup() {
 		super();
 	}
-	public short getGroupId() {
+	public int getGroupId() {
 		return groupId;
 	}
-	public void setGroupId(short groupId) {
+	public void setGroupId(int groupId) {
 		this.groupId = groupId;
 	}
 	public String getGroupName() {
@@ -35,16 +32,16 @@ public class AdminGroup {
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
-	public byte getStatus() {
+	public int getStatus() {
 		return status;
 	}
-	public void setStatus(byte status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
-	public byte getIsDel() {
+	public int getIsDel() {
 		return isDel;
 	}
-	public void setIsDel(byte isDel) {
+	public void setIsDel(int isDel) {
 		this.isDel = isDel;
 	}
 	public List<AdminRole> getAdminRoles() {

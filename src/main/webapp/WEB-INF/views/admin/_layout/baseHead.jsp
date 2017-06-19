@@ -27,6 +27,9 @@
 	<script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.bootpag.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/jquery.form.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/underscore-min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/ImageMultiUpload.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/kindeditor/kindeditor-all-min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/kindeditor/lang/zh-CN.js"></script>
 </head>
 <body>
 <style>
@@ -41,24 +44,32 @@
 	width:100px;
 	border:1px solid blue;
 }
+#top_menu_ul .nav_background, #left_menu_ul .nav_background {
+	background:cyan;
+}
 </style>
 
 <ul id="top_menu_ul">
 <c:forEach items="${adminMenu.top}" var="topMenu">
 	<sec:authorize access="hasRole('${topMenu.roleCode}')">
-		<li onclick="location.href='${topMenu.pageURI}';">
+		<li onclick="location.href='${topMenu.pageURI}';" class="<c:if test="${topMenu.selected}">nav_background</c:if>">
 			${topMenu.pageName}, pageTree:${topMenu.pageTree}, childCount:${topMenu.childCount}
 		</li>
 	</sec:authorize>
 </c:forEach>
 </ul>
 
+<sec:authorize access="isAuthenticated()">
+    <a href="${pageContext.request.contextPath}/admin/user/logout.do">logout</a>
+    <a href="${pageContext.request.contextPath}/admin/user/modifyPassword.do">修改密码</a>
+</sec:authorize>
+
 <hr style="clear:both;"><br>
 
 <ul id="left_menu_ul">
 <c:forEach items="${adminMenu.left}" var="leftMenu">
 	<sec:authorize access="hasRole('${leftMenu.roleCode}')">
-		<li onclick="location.href='${leftMenu.pageURI}';">
+		<li onclick="location.href='${leftMenu.pageURI}';" class="<c:if test="${leftMenu.selected}">nav_background</c:if>">
 			${leftMenu.pageName}, pageTree:${leftMenu.pageTree}, childCount:${leftMenu.childCount}
 		</li>
 	</sec:authorize>

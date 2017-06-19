@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Handles requests for the application home page.
  */
 @Controller
-public class IndexController extends ConfigController {
+public class IndexController extends EnvController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-	@RequestMapping(value = "/admin/index.do", method = RequestMethod.GET)
-	public String index() {
-		return "admin/index";
+	@RequestMapping(value = "/admin/statistics.do", method = RequestMethod.GET)
+	public String statistics() {
+		return "admin/statistics";
 	}
 	
 }

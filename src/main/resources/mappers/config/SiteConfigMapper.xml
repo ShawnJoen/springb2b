@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.mappers.SiteConfigMapper">
+	
+	<update id="modifySiteConfig" parameterType="com.spring.dto.config.SiteConfig">
+		UPDATE `site_config` SET `configVal`=#{configVal}, `isShow`=#{isShow} WHERE `configCode`=#{configCode}
+	</update>
+	
+	<select id="getSiteConfigs"  parameterType="com.spring.dto.config.SiteConfig" resultType="com.spring.dto.config.SiteConfig">
+		SELECT 
+			`configCode`, `configName`, `configVal`, `editType`
+		FROM 
+			`site_config`
+		WHERE 
+			`isShow` = 1
+		<if test="configCode !=''">
+			AND `configCode` LIKE CONCAT(#{configCode},'%')
+		</if>
+		ORDER BY 
+			`sort` ASC
+	</select>
+
+</mapper>

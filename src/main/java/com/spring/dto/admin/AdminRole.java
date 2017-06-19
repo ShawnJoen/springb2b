@@ -13,6 +13,10 @@ public class AdminRole {
 	private int childCount = 0;
 	private int sort;
 	private int isDel;
+	
+	//被选中menu
+	private boolean selected;
+	
 	private List<AdminRole> adminRoles;
 	
 	//获取已授权的权限Menu列表时
@@ -78,6 +82,12 @@ public class AdminRole {
 	}
 	public void setIsDel(int isDel) {
 		this.isDel = isDel;
+	}
+	public boolean isSelected() {
+		return selected;
+	}
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 	public List<AdminRole> getAdminRoles() {
 		return adminRoles;
