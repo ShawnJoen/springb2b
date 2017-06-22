@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.spring.dto.admin.AdminUser;
+import com.spring.vo.admin.AdminUserVO;
 
 @Service("userDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
-    	AdminUser adminUser = adminUserService.getAdminUserByUsername(username);
+    	AdminUserVO adminUser = adminUserService.getAdminUserByUsername(username);
         
         if(adminUser == null) {
         	
@@ -36,14 +36,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         System.out.println("AdminUser:" + adminUser);
 
         return new org.springframework.security.core.userdetails.User(adminUser.getUsername(), adminUser.getPassword(), 
-            		adminUser.getStatus() == 1, true, true, true, getGrantedAuthorities(adminUser.getGroupId()));
+            		adminUser.getStatus() == 1, true, true, true, getGrantedAuthorities(adminUser));
     }
     
-    private List<GrantedAuthority> getGrantedAuthorities(int groupId) {
+    private List<GrantedAuthority> getGrantedAuthorities(AdminUserVO adminUser) {
     	
     	final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         
-        final List<String> roles = adminUserService.getAdminRoleAccessByGroupId(groupId);
+        final List<String> roles = adminUserService.getAdminRoleAccessByGroupId(adminUser.getGroupId());
+        
+        if ("admin".equals(adminUser.getUsername())) {
+        	
+        	authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
         
         if (roles.size() > 0) {
         	

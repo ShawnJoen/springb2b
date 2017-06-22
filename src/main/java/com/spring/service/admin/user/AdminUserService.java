@@ -3,103 +3,103 @@ package com.spring.service.admin.user;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import com.spring.dto.admin.AdminGroup;
-import com.spring.dto.admin.AdminRole;
-import com.spring.dto.admin.AdminRoleAccess;
-import com.spring.dto.admin.AdminUser;
-import com.spring.dto.admin.AdminUserAuthentication;
+import com.spring.vo.admin.AdminGroupVO;
+import com.spring.vo.admin.AdminRoleVO;
+import com.spring.vo.admin.AdminRoleAccessVO;
+import com.spring.vo.admin.AdminUserVO;
+import com.spring.vo.admin.AdminUserAuthenticationVO;
 
 public interface AdminUserService {
 	/*
-	 * ´´½¨¹ÜÀíÔ±
+	 * åˆ›å»ºç®¡ç†å‘˜
 	 * */
-	Map<String, Object> createAdminUser(AdminUser adminUser, Locale locale) throws Exception;
+	Map<String, Object> createAdminUser(AdminUserVO adminUserVO, Locale locale) throws Exception;
 	/*
-	 * ÓÃÕË»§²éÑ¯´æÔÚ´Ë¹ÜÀíÔ±Óë·ñ
+	 * ç”¨è´¦æˆ·æŸ¥è¯¢å­˜åœ¨æ­¤ç®¡ç†å‘˜ä¸å¦
 	 * */
 	int hasAdminUserByUsername(String username);
 	/*
-	 * ÓÃÕË»§»ñÈ¡¹ÜÀíÔ±ĞÅÏ¢
+	 * ç”¨è´¦æˆ·è·å–ç®¡ç†å‘˜ä¿¡æ¯
 	 * */
-	AdminUser getAdminUserByUsername(String username);
+	AdminUserVO getAdminUserByUsername(String username);
 	/*
-	 * ÓÃÕË»§»ñÈ¡¹ÜÀí×é±àºÅ
+	 * ç”¨è´¦æˆ·è·å–ç®¡ç†ç»„ç¼–å·
 	 * */
 	int getGroupIdByUsername(String username);
 	/*
-	 * ÓÃÕË»§»ñÈ¡¹ÜÀíÔ±µÇÈë ÕË»§,ÃÜÂë ĞŞ¸ÄÃÜÂëµÈ ±È½ÏÀÏÃÜÂëÊ±ÓÃ
+	 * ç”¨è´¦æˆ·è·å–ç®¡ç†å‘˜ç™»å…¥ è´¦æˆ·,å¯†ç  ä¿®æ”¹å¯†ç ç­‰ æ¯”è¾ƒè€å¯†ç æ—¶ç”¨
 	 * */
-	AdminUser getAdminUserAuthentication(AdminUserAuthentication adminUserAuthentication);
+	AdminUserVO getAdminUserAuthentication(AdminUserAuthenticationVO adminUserAuthenticationVO);
 	/*
-	 * ĞŞ¸Ä¹ÜÀíÔ±ÃÜÂë
+	 * ä¿®æ”¹ç®¡ç†å‘˜å¯†ç 
 	 * */
-	Map<String, Object> modifyPassword(AdminUserAuthentication adminUserAuthentication, Locale locale) throws Exception;
+	Map<String, Object> modifyPassword(AdminUserAuthenticationVO adminUserAuthenticationVO, Locale locale) throws Exception;
 	/*
-	 * ÉèÖÃ¹ÜÀíÔ±Ò³ÃæµÇÈëÈ¨ÏŞ
+	 * è®¾ç½®ç®¡ç†å‘˜é¡µé¢ç™»å…¥æƒé™
 	 * */
-	void createAdminRoleAccess(List<AdminRoleAccess> adminRoleAccess) throws Exception;
+	void createAdminRoleAccess(List<AdminRoleAccessVO> adminRoleAccessVO) throws Exception;
 	/*
-	 * »ñÈ¡¹ÜÀíÔ±Ò³ÃæµÇÈëÈ¨ÏŞÁĞ±í
+	 * è·å–ç®¡ç†å‘˜é¡µé¢ç™»å…¥æƒé™åˆ—è¡¨
 	 * */
 	List<String> getAdminRoleAccessByGroupId(int groupId);
 	/*
-	 * É¾³ıÖ¸¶¨¹ÜÀí×éÈ¨ÏŞ
+	 * åˆ é™¤æŒ‡å®šç®¡ç†ç»„æƒé™
 	 * */
 	void deleteAdminRoleAccess(int groupId) throws Exception;
 	/*
-	 * »ñÈ¡¹ÜÀí×éÁĞ±í
+	 * è·å–ç®¡ç†ç»„åˆ—è¡¨
 	 * */
-	List<AdminGroup> getAdminGroupSelectBox();
+	List<AdminGroupVO> getAdminGroupSelectBox();
 	/*
-	 * ĞŞ¸Ä¹ÜÀíÔ±ĞÅÏ¢³ıÁËÃÜÂë
+	 * ä¿®æ”¹ç®¡ç†å‘˜ä¿¡æ¯é™¤äº†å¯†ç 
 	 * */
-	Map<String, Object> modifyAdminUser(AdminUser adminUser, Locale locale) throws Exception;
+	Map<String, Object> modifyAdminUser(AdminUserVO adminUserVO, Locale locale) throws Exception;
 	/*
-	 * ĞŞ¸Ä¹ÜÀíÔ±ĞÅÏ¢°üÀ¨ÃÜÂë
+	 * ä¿®æ”¹ç®¡ç†å‘˜ä¿¡æ¯åŒ…æ‹¬å¯†ç 
 	 * */
-	Map<String, Object> modifyAdminUserAndPassword(AdminUser adminUser, Locale locale) throws Exception;
+	Map<String, Object> modifyAdminUserAndPassword(AdminUserVO adminUserVO, Locale locale) throws Exception;
 	/*
-	 * ¹ÜÀíÈËÔ±ÁĞ±í
+	 * ç®¡ç†äººå‘˜åˆ—è¡¨
 	 * */
-	List<AdminUser> getAdminUsers(AdminUser adminUser);
+	List<AdminUserVO> getAdminUsers(AdminUserVO adminUserVO);
 	/*
-	 * É¾³ı¹ÜÀíÕËºÅ
+	 * åˆ é™¤ç®¡ç†è´¦å·
 	 * */
-	Map<String, Object> deleteAdminUser(AdminUser adminUser, Locale locale) throws Exception;
+	Map<String, Object> deleteAdminUser(AdminUserVO adminUserVO, Locale locale) throws Exception;
 	/*
-	 * ´´½¨¹ÜÀí×é
+	 * åˆ›å»ºç®¡ç†ç»„
 	 * */
-	Map<String, Object> createAdminGroup(AdminGroup adminGroup, Locale locale) throws Exception;
+	Map<String, Object> createAdminGroup(AdminGroupVO adminGroupVO, Locale locale) throws Exception;
 	/*
-	 * ¹ÜÀí×éÁĞ±í
+	 * ç®¡ç†ç»„åˆ—è¡¨
 	 * */
-	List<AdminGroup> getAdminGroups();
+	List<AdminGroupVO> getAdminGroups();
 	/*
-	 * ¹ÜÀí×éĞÅÏ¢
+	 * ç®¡ç†ç»„ä¿¡æ¯
 	 * */
-	AdminGroup getAdminGroup(int groupId);
+	AdminGroupVO getAdminGroup(int groupId);
 	/*
-	 * ĞŞ¸Ä¹ÜÀí×é
+	 * ä¿®æ”¹ç®¡ç†ç»„
 	 * */
-	Map<String, Object> modifyAdminGroup(AdminGroup adminGroup, List<AdminRoleAccess> selectedRoleCode, Locale locale) throws Exception;
+	Map<String, Object> modifyAdminGroup(AdminGroupVO adminGroupVO, List<AdminRoleAccessVO> selectedRoleCodeVO, Locale locale) throws Exception;
 	/*
-	 * É¾³ı¹ÜÀí×é
+	 * åˆ é™¤ç®¡ç†ç»„
 	 * */
-	Map<String, Object> deleteAdminGroup(AdminGroup adminGroup, Locale locale) throws Exception;
+	Map<String, Object> deleteAdminGroup(AdminGroupVO adminGroupVO, Locale locale) throws Exception;
 	/*
-	 * »ñÈ¡¹ÜÀíMenu
+	 * è·å–ç®¡ç†Menu
 	 * */
-	Map<String, List<AdminRole>> getAdminRolesForMenu(String pagePath);
+	Map<String, List<AdminRoleVO>> getAdminRolesForMenu(String pagePath);
 	/*
-	 * »ñÈ¡¹ÜÀíÈ¨ÏŞÁĞ±í
+	 * è·å–ç®¡ç†æƒé™åˆ—è¡¨
 	 * */
-	List<AdminRole> getAdminRoles(AdminRole adminRole);
+	List<AdminRoleVO> getAdminRoles(AdminRoleVO adminRoleVO);
 	/*
-	 * »ñÈ¡ÒÑÊÚÈ¨µÄÈ¨ÏŞÁĞ±í
+	 * è·å–å·²æˆæƒçš„æƒé™åˆ—è¡¨
 	 * */
-	List<AdminRole> getAdminRoleAccessByPageDeepNGroupId(AdminRole adminRole);
+	List<AdminRoleVO> getAdminRoleAccessByPageDeepNGroupId(AdminRoleVO adminRoleVO);
 	/*
-	 * Ê¹ÓÃurlPath»ñÈ¡pageTree
+	 * ä½¿ç”¨urlPathè·å–pageTree
 	 * */
-	String getPageTreeByRoleCode(AdminRole adminRole);
+	String getPageTreeByRoleCode(AdminRoleVO adminRoleVO);
 }

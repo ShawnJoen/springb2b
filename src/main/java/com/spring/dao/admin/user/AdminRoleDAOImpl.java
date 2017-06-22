@@ -1,12 +1,10 @@
 package com.spring.dao.admin.user;
 
 import java.util.List;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import com.spring.dto.admin.AdminRole;
+import com.spring.vo.admin.AdminRoleVO;
 
 @Repository
 public class AdminRoleDAOImpl implements AdminRoleDAO {
@@ -17,27 +15,26 @@ public class AdminRoleDAOImpl implements AdminRoleDAO {
 	static final String ADMIN_ROLE_MAPPER = "com.spring.mappers.AdminRoleMapper.";
 	
 	@Override
-	public List<AdminRole> getAdminRolesForMenu(AdminRole adminRole) {
+	public List<AdminRoleVO> getAdminRolesForMenu(AdminRoleVO adminRoleVO) {
 		
-		return sqlSession.selectList(ADMIN_ROLE_MAPPER + "getAdminRolesForMenu", adminRole);
+		return sqlSession.selectList(ADMIN_ROLE_MAPPER + "getAdminRolesForMenu", adminRoleVO);
 	}
 
 	@Override
-	public List<AdminRole> getAdminRoles(AdminRole adminRole) {
+	public List<AdminRoleVO> getAdminRoles(AdminRoleVO adminRoleVO) {
 		
-		return sqlSession.selectList(ADMIN_ROLE_MAPPER + "getAdminRoles", adminRole);
+		return sqlSession.selectList(ADMIN_ROLE_MAPPER + "getAdminRoles", adminRoleVO);
 	}
 
 	@Override
-	public List<AdminRole> getAdminRoleAccessByPageDeepNGroupId(AdminRole adminRole) {
+	public List<AdminRoleVO> getAdminRoleAccessByPageDeepNGroupId(AdminRoleVO adminRoleVO) {
 		
-		return sqlSession.selectList(ADMIN_ROLE_MAPPER + "getAdminRoleAccessByPageDeepNGroupId", adminRole);
+		return sqlSession.selectList(ADMIN_ROLE_MAPPER + "getAdminRoleAccessByPageDeepNGroupId", adminRoleVO);
 	}
 
 	@Override
-	public String getPageTreeByRoleCode(AdminRole adminRole) {
+	public String getPageTreeByRoleCode(AdminRoleVO adminRoleVO) {
 		
-		return sqlSession.selectOne(ADMIN_ROLE_MAPPER + "getPageTreeByRoleCode", adminRole);
+		return sqlSession.selectOne(ADMIN_ROLE_MAPPER + "getPageTreeByRoleCode", adminRoleVO);
 	}
-	
 }

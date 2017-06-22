@@ -5,3 +5,4 @@ encoding//src/main/resources/ValidationAdmin_zh_CN.properties=UTF-8
 encoding//src/main/webapp/WEB-INF/views/admin/_layout/baseHead.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/home.jsp=UTF-8
 encoding//src/test/java/com/spring/b2b/MysqlConnectTest.java=UTF-8
+encoding/<project>=UTF-8

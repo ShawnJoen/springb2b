@@ -1,21 +1,14 @@
 package com.spring.dto.admin;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class AdminGroup {
 	
 	private int groupId = 0;
-	@NotBlank(message="{10008}")//¹ÜÀí×éÃû³Æ²»ÄÜÎª¿Õ
+	@NotBlank(message="{10008}")//ç®¡ç†ç»„åç§°ä¸èƒ½ä¸ºç©º
 	private String groupName;
 	private int status;
 	private int isDel;
-	
-	//ĞŞ¸Ä¹ÜÀí×é ÁĞ³öËùÓĞÈ¨ÏŞ¿É¹©Ñ¡Ôñ
-	private List<AdminRole> adminRoles;
-	//ĞŞ¸Ä¹ÜÀí×é ÁĞ³öµÄÈ¨ÏŞÖĞ Æ¥Åä¹ÜÀí×éÈ¨ÏŞ
-	private List<String> adminRoleAccess = new ArrayList<>();
 	
 	public AdminGroup() {
 		super();
@@ -43,17 +36,5 @@ public class AdminGroup {
 	}
 	public void setIsDel(int isDel) {
 		this.isDel = isDel;
-	}
-	public List<AdminRole> getAdminRoles() {
-		return adminRoles;
-	}
-	public void setAdminRoles(List<AdminRole> adminRoles) {
-		this.adminRoles = adminRoles;
-	}
-	public List<String> getAdminRoleAccess() {
-		return adminRoleAccess;
-	}
-	public void setAdminRoleAccess(List<String> adminRoleAccess) {
-		this.adminRoleAccess = adminRoleAccess;
 	}
 }

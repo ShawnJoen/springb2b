@@ -3,20 +3,19 @@ package com.spring.dto.buyer;
 import java.util.Date;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class BuyerAppBanner {
 	
 	private int adId;
-	@NotBlank(message="{10009}")//¹ã¸æÃû³Æ²»ÄÜÎª¿Õ
+	@NotBlank(message="{10009}")//å¹¿å‘Šåç§°ä¸èƒ½ä¸ºç©º
 	private String adName = "";
 	private String adImage = "";
-	@Min(value=0,message="{10010}")//ÅÅĞò±àºÅ±ØĞëÊäÈë0~255·¶Î§ÊıÖµ
-	@Max(value=255,message="{10010}")//ÅÅĞò±àºÅ±ØĞëÊäÈë0~255·¶Î§ÊıÖµ
+	@Min(value=0,message="{10010}")//æ’åºç¼–å·å¿…é¡»è¾“å…¥0~255èŒƒå›´æ•°å€¼
+	@Max(value=255,message="{10010}")//æ’åºç¼–å·å¿…é¡»è¾“å…¥0~255èŒƒå›´æ•°å€¼
 	private int sort;
-	@Min(value=0,message="{10011}")//ÇëÑ¡Ôñ×´Ì¬
-	@Max(value=1,message="{10011}")//ÇëÑ¡Ôñ×´Ì¬
+	@Min(value=0,message="{10011}")//è¯·é€‰æ‹©çŠ¶æ€
+	@Max(value=1,message="{10011}")//è¯·é€‰æ‹©çŠ¶æ€
 	private int status = 1;
 	private Date createTime;
 	private int isDel;

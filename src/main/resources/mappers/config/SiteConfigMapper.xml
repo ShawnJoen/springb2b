@@ -3,11 +3,11 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.mappers.SiteConfigMapper">
 	
-	<update id="modifySiteConfig" parameterType="com.spring.dto.config.SiteConfig">
+	<update id="modifySiteConfig" parameterType="com.spring.vo.config.SiteConfigVO">
 		UPDATE `site_config` SET `configVal`=#{configVal}, `isShow`=#{isShow} WHERE `configCode`=#{configCode}
 	</update>
 	
-	<select id="getSiteConfigs"  parameterType="com.spring.dto.config.SiteConfig" resultType="com.spring.dto.config.SiteConfig">
+	<select id="getSiteConfigs"  parameterType="com.spring.vo.config.SiteConfigVO" resultType="com.spring.vo.config.SiteConfigVO">
 		SELECT 
 			`configCode`, `configName`, `configVal`, `editType`
 		FROM 

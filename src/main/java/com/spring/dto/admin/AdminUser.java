@@ -9,21 +9,21 @@ public class AdminUser {
 
 	private int id;
 	
-	@Min(value=1, message="{10007}")//ÇëÑ¡Ôñ¹ÜÀí×é
+	@Min(value=1, message="{10007}")//è¯·é€‰æ‹©ç®¡ç†ç»„
 	private int groupId;
 	
-	@NotBlank(message="{10001}")//ÕËºÅ²»ÄÜÎª¿Õ
-	@Length(min=5,max=10,message="{10002}")//ÕËºÅ±ØĞëÓÉ5~12¸ö×Ö×é³É
+	@NotBlank(message="{10001}")//è´¦å·ä¸èƒ½ä¸ºç©º
+	@Length(min=5,max=10,message="{10002}")//è´¦å·å¿…é¡»ç”±5~12ä¸ªå­—ç»„æˆ
 	private String username = "";
 	
-	@Pattern(regexp="(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}",message="{10003}")//ÃÜÂë±ØĞëÊÇ6~12Î»Êı×ÖºÍ×ÖÄ¸µÄ×éºÏ
+	@Pattern(regexp="(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}",message="{10003}")//å¯†ç å¿…é¡»æ˜¯6~12ä½æ•°å­—å’Œå­—æ¯çš„ç»„åˆ
 	private String password = "";
 	
-	@NotBlank(message="{10004}")//ÁªÏµÈËµç»°²»ÄÜÎª¿Õ
-	@Pattern(regexp="1\\d{10}",message="{10005}")//ÁªÏµÈËµç»°¸ñÊ½´íÎó
+	@NotBlank(message="{10004}")//è”ç³»äººç”µè¯ä¸èƒ½ä¸ºç©º
+	@Pattern(regexp="1\\d{10}",message="{10005}")//è”ç³»äººç”µè¯æ ¼å¼é”™è¯¯
 	private String contactMobile = "";
 	
-	@NotBlank(message="{10006}")//ÁªÏµÈËÃû³Æ²»ÄÜÎª¿Õ
+	@NotBlank(message="{10006}")//è”ç³»äººåç§°ä¸èƒ½ä¸ºç©º
 	private String contactName = "";
 	private String loginTime;
 	private String updateTime;
@@ -31,11 +31,6 @@ public class AdminUser {
 	private int status;
 	private String loginIp;
 	private int isDel;
-	
-	//Áª±íadmin_group
-	private String groupName;
-	//¹ÜÀíÈËÔ±ÁĞ±íËÑË÷
-	private String keywords = "";
 	
 	public AdminUser() {
 		super();
@@ -118,17 +113,5 @@ public class AdminUser {
 	}
 	public void setLoginIp(String loginIp) {
 		this.loginIp = loginIp;
-	}
-	public String getGroupName() {
-		return groupName;
-	}
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
-	public String getKeywords() {
-		return keywords;
-	}
-	public void setKeywords(String keywords) {
-		this.keywords = keywords;
 	}
 }

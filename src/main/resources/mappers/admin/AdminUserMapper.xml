@@ -3,20 +3,20 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.mappers.AdminUserMapper">
 
-	<insert id="createAdminUser" parameterType="com.spring.dto.admin.AdminUser">
+	<insert id="createAdminUser" parameterType="com.spring.vo.admin.AdminUserVO">
 		INSERT INTO `admin_user`(`groupId`, `username`, `password`, `contactMobile`, `contactName`) VALUES
 		(#{groupId}, #{username}, #{password}, #{contactMobile}, #{contactName})
 	</insert>
 	
-	<update id="modifyAdminUser" parameterType="com.spring.dto.admin.AdminUser">
+	<update id="modifyAdminUser" parameterType="com.spring.vo.admin.AdminUserVO">
 		UPDATE `admin_user` SET `groupId`=#{groupId}, `contactMobile`=#{contactMobile}, `contactName`=#{contactName}, `updateTime`=#{updateTime} WHERE `username`=#{username}
 	</update>
 	
-	<update id="modifyAdminUserAndPassword" parameterType="com.spring.dto.admin.AdminUser">
+	<update id="modifyAdminUserAndPassword" parameterType="com.spring.vo.admin.AdminUserVO">
 		UPDATE `admin_user` SET `groupId`=#{groupId}, `password`=#{password}, `contactMobile`=#{contactMobile}, `contactName`=#{contactName}, `updateTime`=#{updateTime} WHERE `username`=#{username}
 	</update>
 	
-	<update id="modifyPassword" parameterType="com.spring.dto.admin.AdminUserAuthentication">
+	<update id="modifyPassword" parameterType="com.spring.vo.admin.AdminUserAuthenticationVO">
 		UPDATE `admin_user` SET `password`=#{password}, `updateTime`=#{updateTime} WHERE `username`=#{username}
 	</update>
 	
@@ -24,7 +24,7 @@
 		SELECT COUNT(*) AS count FROM `admin_user` WHERE `username`=#{username}
 	</select>
 	
-	<select id="getAdminUserByUsername" resultType="com.spring.dto.admin.AdminUser">
+	<select id="getAdminUserByUsername" resultType="com.spring.vo.admin.AdminUserVO">
 		SELECT `groupId`, `username`, `password`, `contactMobile`, `contactName`, `status` FROM `admin_user` WHERE `username`=#{username}
 	</select>
 	
@@ -32,11 +32,11 @@
 		SELECT `groupId` FROM `admin_user` WHERE `username`=#{username}
 	</select>
 
-	<select id="getAdminUserAuthentication" parameterType="com.spring.dto.admin.AdminUserAuthentication" resultType="com.spring.dto.admin.AdminUser">
+	<select id="getAdminUserAuthentication" parameterType="com.spring.vo.admin.AdminUserAuthenticationVO" resultType="com.spring.vo.admin.AdminUserVO">
 		SELECT `username`, `password`, `status` FROM `admin_user` WHERE `username`=#{username} AND `password`=#{password}
 	</select>
 
-	<select id="getAdminUsers" parameterType="com.spring.dto.admin.AdminUser" resultType="com.spring.dto.admin.AdminUser">
+	<select id="getAdminUsers" parameterType="com.spring.vo.admin.AdminUserVO" resultType="com.spring.vo.admin.AdminUserVO">
 		SELECT 
 			`admin_group`.`groupName`, `admin_user`.`username`, `admin_user`.`contactMobile`, `admin_user`.`contactName`, `admin_user`.`status`, `admin_user`.`isDel` 
 		FROM 
@@ -50,7 +50,7 @@
 		ORDER BY `admin_user`.`id` DESC
 	</select>
 	
-	<update id="deleteAdminUser" parameterType="com.spring.dto.admin.AdminUser">
+	<update id="deleteAdminUser" parameterType="com.spring.vo.admin.AdminUserVO">
 		UPDATE `admin_user` SET `isDel`=1, `updateTime`=#{updateTime} WHERE `username`=#{username}
 	</update>
 

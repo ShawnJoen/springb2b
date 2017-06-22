@@ -8,7 +8,7 @@
 	</insert>
 	
 	<!-- for List -->
-	<select id="getOperationRecords" parameterType="com.spring.dto.admin.OperationRecord" resultType="com.spring.dto.admin.OperationRecord">
+	<select id="getOperationRecords" parameterType="com.spring.vo.admin.OperationRecordVO" resultType="com.spring.vo.admin.OperationRecordVO">
 		SELECT 
 			`id`, `username`, `content`, `createTime` 
 		FROM 

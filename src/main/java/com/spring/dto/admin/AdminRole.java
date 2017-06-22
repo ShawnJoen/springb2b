@@ -1,7 +1,5 @@
 package com.spring.dto.admin;
 
-import java.util.List;
-
 public class AdminRole {
 
 	private int roleId;
@@ -13,14 +11,6 @@ public class AdminRole {
 	private int childCount = 0;
 	private int sort;
 	private int isDel;
-	
-	//被选中menu
-	private boolean selected;
-	
-	private List<AdminRole> adminRoles;
-	
-	//获取已授权的权限Menu列表时
-	private int groupId;
 	
 	public AdminRole() {
 		super();
@@ -83,23 +73,4 @@ public class AdminRole {
 	public void setIsDel(int isDel) {
 		this.isDel = isDel;
 	}
-	public boolean isSelected() {
-		return selected;
-	}
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
-	public List<AdminRole> getAdminRoles() {
-		return adminRoles;
-	}
-	public void setAdminRoles(List<AdminRole> adminRoles) {
-		this.adminRoles = adminRoles;
-	}
-	public int getGroupId() {
-		return groupId;
-	}
-	public void setGroupId(int groupId) {
-		this.groupId = groupId;
-	}
-	
 }

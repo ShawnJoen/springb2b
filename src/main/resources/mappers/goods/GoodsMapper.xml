@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.mappers.GoodsMapper">
+
+<!-- 	<insert id="createAdminUser" parameterType="com.spring.dto.admin.AdminUser">
+		INSERT INTO `admin_user`(`groupId`, `username`, `password`, `contactMobile`, `contactName`) VALUES
+		(#{groupId}, #{username}, #{password}, #{contactMobile}, #{contactName})
+	</insert>
+	
+	<update id="modifyAdminUser" parameterType="com.spring.dto.admin.AdminUser">
+		UPDATE `admin_user` SET `groupId`=#{groupId}, `contactMobile`=#{contactMobile}, `contactName`=#{contactName}, `updateTime`=#{updateTime} WHERE `username`=#{username}
+	</update>
+	
+	<update id="modifyAdminUserAndPassword" parameterType="com.spring.dto.admin.AdminUser">
+		UPDATE `admin_user` SET `groupId`=#{groupId}, `password`=#{password}, `contactMobile`=#{contactMobile}, `contactName`=#{contactName}, `updateTime`=#{updateTime} WHERE `username`=#{username}
+	</update>
+	
+	<update id="modifyPassword" parameterType="com.spring.dto.admin.AdminUserAuthentication">
+		UPDATE `admin_user` SET `password`=#{password}, `updateTime`=#{updateTime} WHERE `username`=#{username}
+	</update>
+	
+	<select id="hasAdminUserByUsername" resultType="int">
+		SELECT COUNT(*) AS count FROM `admin_user` WHERE `username`=#{username}
+	</select>
+	
+	<select id="getAdminUserByUsername" resultType="com.spring.dto.admin.AdminUser">
+		SELECT `groupId`, `username`, `password`, `contactMobile`, `contactName`, `status` FROM `admin_user` WHERE `username`=#{username}
+	</select>
+	
+	<select id="getGroupIdByUsername" resultType="int">
+		SELECT `groupId` FROM `admin_user` WHERE `username`=#{username}
+	</select>
+
+	<select id="getAdminUserAuthentication" parameterType="com.spring.dto.admin.AdminUserAuthentication" resultType="com.spring.dto.admin.AdminUser">
+		SELECT `username`, `password`, `status` FROM `admin_user` WHERE `username`=#{username} AND `password`=#{password}
+	</select>
+
+	<select id="getAdminUsers" parameterType="com.spring.dto.admin.AdminUser" resultType="com.spring.dto.admin.AdminUser">
+		SELECT 
+			`admin_group`.`groupName`, `admin_user`.`username`, `admin_user`.`contactMobile`, `admin_user`.`contactName`, `admin_user`.`status`, `admin_user`.`isDel` 
+		FROM 
+			`admin_user` LEFT JOIN `admin_group`
+		ON	`admin_user`.`groupId` = `admin_group`.`groupId`
+ 		<where>
+			<if test="keywords !=''">
+				`admin_user`.`username` LIKE CONCAT(CONCAT('%', #{keywords}),'%')  
+			</if>
+		</where>
+		ORDER BY `admin_user`.`id` DESC
+	</select>
+	
+	<update id="deleteAdminUser" parameterType="com.spring.dto.admin.AdminUser">
+		UPDATE `admin_user` SET `isDel`=1, `updateTime`=#{updateTime} WHERE `username`=#{username}
+	</update>
+
+	<select id="getTime" resultType="String">
+		SELECT NOW()
+	</select> -->
+
+</mapper>

@@ -14,24 +14,29 @@
     	<intercept-url pattern="/admin/user/login.do" access="permitAll"/>
     	<intercept-url pattern="/admin/user/logout.do" access="permitAll"/>
     	<intercept-url pattern="/admin/user/modifyPassword.do" access="permitAll"/>
-    	<intercept-url pattern="/admin/statistics.do" access="hasRole('Statistics')"/>
-    	<intercept-url pattern="/admin/user/adminUserList.do" access="hasRole('AdminUserList')"/>
-    	<intercept-url pattern="/admin/user/createAdminUser.do" access="hasRole('CreateAdminUser')"/>
-    	<intercept-url pattern="/admin/user/modifyAdminUser.do" access="hasRole('ModifyAdminUser')"/>
-    	<intercept-url pattern="/admin/user/deleteAdminUser.do" access="hasRole('DeleteAdminUser')"/>
-    	<intercept-url pattern="/admin/user/adminGroupList.do" access="hasRole('AdminGroupList')"/>
-    	<intercept-url pattern="/admin/user/createAdminGroup.do" access="hasRole('CreateAdminGroup')"/>
-    	<intercept-url pattern="/admin/user/modifyAdminGroup.do" access="hasRole('ModifyAdminGroup')"/>
-    	<intercept-url pattern="/admin/user/deleteAdminGroup.do" access="hasRole('DeleteAdminGroup')"/>
-    	<intercept-url pattern="/admin/user/operationRecordList.do" access="hasRole('OperationRecordList')"/>
+    	<intercept-url pattern="/admin/statistics.do" access="hasRole('Statistics') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/user/adminUserList.do" access="hasRole('AdminUserList') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/user/createAdminUser.do" access="hasRole('CreateAdminUser') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/user/modifyAdminUser.do" access="hasRole('ModifyAdminUser') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/user/deleteAdminUser.do" access="hasRole('DeleteAdminUser') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/user/adminGroupList.do" access="hasRole('AdminGroupList') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/user/createAdminGroup.do" access="hasRole('CreateAdminGroup') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/user/modifyAdminGroup.do" access="hasRole('ModifyAdminGroup') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/user/deleteAdminGroup.do" access="hasRole('DeleteAdminGroup') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/user/operationRecordList.do" access="hasRole('OperationRecordList') or hasRole('ADMIN')"/>
     	<!-- 用户端广告 -->
-    	<intercept-url pattern="/admin/buyer/buyerAppBannerList.do" access="hasRole('BuyerAppBannerList')"/>
-    	<intercept-url pattern="/admin/buyer/createBuyerAppBanner.do" access="hasRole('CreateBuyerAppBanner')"/>
-    	<intercept-url pattern="/admin/buyer/modifyBuyerAppBanner.do" access="hasRole('ModifyBuyerAppBanner')"/>
-    	<intercept-url pattern="/admin/buyer/ddeleteBuyerAppBanner.do" access="hasRole('DeleteBuyerAppBanner')"/>
+    	<intercept-url pattern="/admin/buyer/buyerAppBannerList.do" access="hasRole('BuyerAppBannerList') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/buyer/createBuyerAppBanner.do" access="hasRole('CreateBuyerAppBanner') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/buyer/modifyBuyerAppBanner.do" access="hasRole('ModifyBuyerAppBanner') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/buyer/deleteBuyerAppBanner.do" access="hasRole('DeleteBuyerAppBanner') or hasRole('ADMIN')"/>
     	<!-- APP配置 -->
-    	<intercept-url pattern="/admin/config/buyerAppConfigList.do" access="hasRole('BuyerAppConfigList')"/>
-    	<intercept-url pattern="/admin/config/modifySiteConfig.do" access="hasRole('ModifySiteConfig')"/>
+    	<intercept-url pattern="/admin/config/buyerAppConfigList.do" access="hasRole('BuyerAppConfigList') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/config/modifySiteConfig.do" access="hasRole('ModifySiteConfig') or hasRole('ADMIN')"/>
+    	<!-- 商品库 商品-->
+    	<intercept-url pattern="/admin/goods/goodsStandardList.do" access="hasRole('GoodsStandardList') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/goods/createGoodsStandard.do" access="hasRole('CreateGoodsStandard') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/goods/modifyGoodsStandard.do" access="hasRole('ModifyGoodsStandard') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/goods/deleteGoodsStandard.do" access="hasRole('DeleteGoodsStandard') or hasRole('ADMIN')"/>
     	
         <form-login
 		    login-page="/admin/user/login.do"

@@ -9,8 +9,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.spring.dao.buyer.BuyerAppBannerDAO;
-import com.spring.dto.buyer.BuyerAppBanner;
 import com.spring.service.admin.OperationRecordService;
+import com.spring.vo.buyer.BuyerAppBannerVO;
 
 @Service("adServiceImpl")
 public class AdServiceImpl implements AdService {
@@ -24,39 +24,41 @@ public class AdServiceImpl implements AdService {
 	
 	@Transactional("transaction")
 	@Override
-	public Map<String, Object> createBuyerAppBanner(BuyerAppBanner buyerAppBanner, Locale locale) throws Exception {
+	public Map<String, Object> createBuyerAppBanner(BuyerAppBannerVO buyerAppBannerVO, Locale locale) throws Exception {
 
-		buyerAppBannerDAO.createBuyerAppBanner(buyerAppBanner);
+		buyerAppBannerDAO.createBuyerAppBanner(buyerAppBannerVO);
 		
-		operationRecordService.createOperationRecord("¥¥Ω®¬Úº“APPπ„∏Ê  ±ÍÃ‚£∫" + buyerAppBanner.getAdName());
+		operationRecordService.createOperationRecord("ÂàõÂª∫‰π∞ÂÆ∂APPÂπøÂëä  Ê†áÈ¢òÔºö" + buyerAppBannerVO.getAdName());
 
 		return output("0", null, messageSource.getMessage("create_seccess", null, locale));
 	}
+	@Transactional("transaction")
 	@Override
-	public Map<String, Object> modifyBuyerAppBanner(BuyerAppBanner buyerAppBanner, Locale locale) throws Exception {
+	public Map<String, Object> modifyBuyerAppBanner(BuyerAppBannerVO buyerAppBannerVO, Locale locale) throws Exception {
 		
-		final int hasBuyerAppBanner = this.hasBuyerAppBanner(buyerAppBanner.getAdId());
+		final int hasBuyerAppBanner = this.hasBuyerAppBanner(buyerAppBannerVO.getAdId());
         if(hasBuyerAppBanner == 0) {
         	return output("1", null, messageSource.getMessage("buyer_ad_cant_found", null, locale));
         }
 		
-		final int result = buyerAppBannerDAO.modifyBuyerAppBanner(buyerAppBanner);
+		final int result = buyerAppBannerDAO.modifyBuyerAppBanner(buyerAppBannerVO);
 		if (result == 0) {
 			
 			return output("1", null, messageSource.getMessage("modify_fail", null, locale));
 		} else {
 			
-			operationRecordService.createOperationRecord("–ﬁ∏ƒ¬Úº“APPπ„∏Ê  ±ÍÃ‚£∫" + buyerAppBanner.getAdName());
+			operationRecordService.createOperationRecord("‰øÆÊîπ‰π∞ÂÆ∂APPÂπøÂëä  Ê†áÈ¢òÔºö" + buyerAppBannerVO.getAdName());
 			
 			return output("0", null, messageSource.getMessage("modify_seccess", null, locale));
 		}
 	}
+	@Transactional("transaction")
 	@Override
 	public Map<String, Object> deleteBuyerAppBanner(int adId, Locale locale) throws Exception {
 		
 		buyerAppBannerDAO.deleteBuyerAppBanner(adId);
 		
-		operationRecordService.createOperationRecord("…æ≥˝¬Úº“APPπ„∏Ê  ±‡∫≈£∫" + adId);
+		operationRecordService.createOperationRecord("Âà†Èô§‰π∞ÂÆ∂APPÂπøÂëä  ÁºñÂè∑Ôºö" + adId);
 
 		return output("0", null, messageSource.getMessage("delete_seccess", null, locale));
 	}
@@ -67,13 +69,13 @@ public class AdServiceImpl implements AdService {
 		return buyerAppBannerDAO.hasBuyerAppBanner(adId);
 	}
 	@Override
-	public BuyerAppBanner getBuyerAppBanner(int adId) {
+	public BuyerAppBannerVO getBuyerAppBanner(int adId) {
 		
 		return buyerAppBannerDAO.getBuyerAppBanner(adId);
 	}
 	@Override
-	public List<BuyerAppBanner> getBuyerAppBanners(BuyerAppBanner buyerAppBanner) {
+	public List<BuyerAppBannerVO> getBuyerAppBanners(BuyerAppBannerVO buyerAppBannerVO) {
 		
-		return buyerAppBannerDAO.getBuyerAppBanners(buyerAppBanner);
+		return buyerAppBannerDAO.getBuyerAppBanners(buyerAppBannerVO);
 	}
 }

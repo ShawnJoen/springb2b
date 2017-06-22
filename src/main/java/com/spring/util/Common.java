@@ -11,22 +11,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class Common {
 	
-	public static String getLogInUsername() {
+	final public static String getLogInUsername() {
 		
 		return SecurityContextHolder.getContext().getAuthentication().getName();
 	}
 	
-	public static boolean isLogIn(String username) {
+	final public static boolean isLogIn(String username) {
 		
 		return !username.equals("anonymousUser");
 	}
 	
-	public static boolean isNotLogIn(String username) {
+	final public static boolean isNotLogIn(String username) {
 		
 		return username.equals("anonymousUser");
 	}
 	
-	public static Map<String, Object> output(String code, Object object, String message) {
+	final public static Map<String, Object> output(String code, Object object, String message) {
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("code", code);
@@ -35,7 +35,7 @@ public class Common {
 		return map;
 	}
 	
-	public static String upperCase(String str) { 
+	final public static String upperCase(String str) { 
 		
 	    char[] ch = str.toCharArray();  
 	    if (ch[0] >= 'a' && ch[0] <= 'z') {  
@@ -45,12 +45,12 @@ public class Common {
 	    return new String(ch);  
 	}
 	
-	public static String getTimeStamps() {
+	final public static String getTimeStamps() {
 		
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
 	}
 	
-	public static <T> List<T> compareDifferentArray(T[] baseArray, T[] differentArray) {
+	final public static <T> List<T> compareDifferentArray(T[] baseArray, T[] differentArray) {
 	
 		List<T> baseList = Arrays.asList(baseArray);
 		List<T> resultList = new ArrayList<>();

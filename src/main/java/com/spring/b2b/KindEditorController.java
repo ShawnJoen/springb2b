@@ -26,7 +26,7 @@ public class KindEditorController extends BaseController {
 	 
 		if (!ServletFileUpload.isMultipartContent(request)) {
 		
-			return getError("ÇëÑ¡ÔñÎÄ¼ş¡£");
+			return getError("è¯·é€‰æ‹©æ–‡ä»¶ã€‚");
 		}
 	 
 		String dirName = request.getParameter("dir");
@@ -34,7 +34,7 @@ public class KindEditorController extends BaseController {
 			   
 			dirName = "image";
 		}
-		//¶¨ÒåÔÊĞíÉÏ´«µÄÎÄ¼şÀ©Õ¹Ãû  
+		//å®šä¹‰å…è®¸ä¸Šä¼ çš„æ–‡ä»¶æ‰©å±•å  
 		final Map<String, String> extMap = new HashMap<>();
 		extMap.put("image", "gif,jpg,jpeg,png");//bmp
 		extMap.put("flash", "swf,flv");
@@ -42,7 +42,7 @@ public class KindEditorController extends BaseController {
 		extMap.put("file", "doc,docx,xls,xlsx,ppt,htm,html,xml,txt,zip,rar,gz,bz2");
 		if (!extMap.containsKey(dirName)) {
 			   
-			return getError("Ä¿Â¼Ãû²»ÕıÈ·¡£");
+			return getError("ç›®å½•åä¸æ­£ç¡®ã€‚");
 		}
 		
 		final String[] fileExts = extMap.get(dirName).split(",");
@@ -54,16 +54,16 @@ public class KindEditorController extends BaseController {
 				String fileExt = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
 				if (!Arrays.<String>asList(fileExts).contains(fileExt)) {
 					   
-					return getError("ÉÏ´«ÎÄ¼şÀ©Õ¹ÃûÊÇ²»ÔÊĞíµÄÀ©Õ¹Ãû¡£\nÖ»ÔÊĞí" + extMap.get(dirName) + "¸ñÊ½¡£");  
+					return getError("ä¸Šä¼ æ–‡ä»¶æ‰©å±•åæ˜¯ä¸å…è®¸çš„æ‰©å±•åã€‚\nåªå…è®¸" + extMap.get(dirName) + "æ ¼å¼ã€‚");  
 				}  
 			}
 		}
-		//ÉÏ´«ÎÄ¼ş
+		//ä¸Šä¼ æ–‡ä»¶
 		final StringBuilder filePaths = FileUtil.uploadFiles("temp", imgFile, super.propertiesService.getProperty("image.baseUrl"));
 		
 		if (filePaths.length() == 0) {
 		
-			return getError("ÇëÑ¡ÔñÎÄ¼ş¡£");
+			return getError("è¯·é€‰æ‹©æ–‡ä»¶ã€‚");
 		}
 
 		Map<String, Object> succMap = new HashMap<>();

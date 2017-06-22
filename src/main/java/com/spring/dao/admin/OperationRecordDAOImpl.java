@@ -5,6 +5,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.spring.dto.admin.OperationRecord;
+import com.spring.vo.admin.OperationRecordVO;
 
 @Repository
 public class OperationRecordDAOImpl implements OperationRecordDAO {
@@ -21,8 +22,8 @@ public class OperationRecordDAOImpl implements OperationRecordDAO {
 	}
 
 	@Override
-	public List<OperationRecord> getOperationRecords(OperationRecord operationRecord) {
+	public List<OperationRecordVO> getOperationRecords(OperationRecordVO operationRecordVO) {
 		
-		return sqlSession.selectList(OPERATION_RECORD_MAPPER + "getOperationRecords", operationRecord);
+		return sqlSession.selectList(OPERATION_RECORD_MAPPER + "getOperationRecords", operationRecordVO);
 	}
 }

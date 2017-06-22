@@ -13,6 +13,7 @@
 	<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;"/>
 	<title>Insert title here</title>
     <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -24,12 +25,30 @@
 	<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.4.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/bootstrap/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/bootstrap/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.bootpag.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/jquery.form.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/underscore-min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/ImageMultiUpload.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/kindeditor/kindeditor-all-min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/kindeditor/lang/zh-CN.js"></script>
+<script>
+$(function() {
+	$('.form_datetime').datetimepicker({
+	    language:  'zh-CN',
+	    format: 'yyyy-mm-dd',
+	    weekStart: 1,
+	    todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		minView: 2,
+		forceParse: 0,
+		defaultDate : new Date()
+	});
+});
+</script>
 </head>
 <body>
 <style>

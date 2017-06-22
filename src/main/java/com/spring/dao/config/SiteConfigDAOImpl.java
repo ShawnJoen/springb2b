@@ -4,7 +4,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import com.spring.dto.config.SiteConfig;
+import com.spring.vo.config.SiteConfigVO;
 
 @Repository
 public class SiteConfigDAOImpl implements SiteConfigDAO {
@@ -15,13 +15,13 @@ public class SiteConfigDAOImpl implements SiteConfigDAO {
 	static final String SITE_CONFIG_MAPPER = "com.spring.mappers.SiteConfigMapper.";
 	
 	@Override
-	public int modifySiteConfig(SiteConfig siteConfig) throws Exception {
+	public int modifySiteConfig(SiteConfigVO siteConfigVO) throws Exception {
 		
-		return sqlSession.update(SITE_CONFIG_MAPPER + "modifySiteConfig", siteConfig);
+		return sqlSession.update(SITE_CONFIG_MAPPER + "modifySiteConfig", siteConfigVO);
 	}
 	@Override
-	public List<SiteConfig> getSiteConfigs(SiteConfig siteConfig) {
+	public List<SiteConfigVO> getSiteConfigs(SiteConfigVO siteConfigVO) {
 		
-		return sqlSession.selectList(SITE_CONFIG_MAPPER + "getSiteConfigs", siteConfig);
+		return sqlSession.selectList(SITE_CONFIG_MAPPER + "getSiteConfigs", siteConfigVO);
 	}
 }

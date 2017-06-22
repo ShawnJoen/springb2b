@@ -1,27 +1,27 @@
-package com.spring.dto.admin;
+package com.spring.vo.admin;
 
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-public class AdminUserAuthentication {
+public class AdminUserAuthenticationVO {
 	
-	@NotBlank(message="{10001}")//ÕËºÅ²»ÄÜÎª¿Õ
-	@Length(min=5,max=10,message="{10002}")//ÕËºÅ±ØĞëÓÉ5~12¸ö×Ö×é³É
+	@NotBlank(message="{10001}")//è´¦å·ä¸èƒ½ä¸ºç©º
+	@Length(min=5,max=10,message="{10002}")//è´¦å·å¿…é¡»ç”±5~12ä¸ªå­—ç»„æˆ
 	private String username = "";
 	
-	@Pattern(regexp="(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}",message="{10003}")//ÃÜÂë±ØĞëÊÇ6~12Î»Êı×ÖºÍ×ÖÄ¸µÄ×éºÏ
+	@Pattern(regexp="(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}",message="{10003}")//å¯†ç å¿…é¡»æ˜¯6~12ä½æ•°å­—å’Œå­—æ¯çš„ç»„åˆ
 	private String password;
 	
-	@Pattern(regexp="(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}",message="{10003}")//ÃÜÂë±ØĞëÊÇ6~12Î»Êı×ÖºÍ×ÖÄ¸µÄ×éºÏ
+	@Pattern(regexp="(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}",message="{10003}")//å¯†ç å¿…é¡»æ˜¯6~12ä½æ•°å­—å’Œå­—æ¯çš„ç»„åˆ
 	private String newPassword = "";
 	
 	private int status;
 	
 	private String updateTime;
 	
-	public AdminUserAuthentication() {
+	public AdminUserAuthenticationVO() {
 		super();
 	}
 	public String getUsername() {

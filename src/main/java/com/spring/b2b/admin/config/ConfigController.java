@@ -1,31 +1,25 @@
 package com.spring.b2b.admin.config;
 
 import static com.spring.util.Common.*;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.spring.b2b.admin.EnvController;
-import com.spring.dto.config.SiteConfig;
 import com.spring.service.config.SiteConfigService;
 import com.spring.util.file.FileUtil;
+import com.spring.vo.config.SiteConfigVO;
 
 @Controller
 @RequestMapping("/admin/config")
@@ -39,21 +33,21 @@ public class ConfigController extends EnvController {
     private MessageSource messageSource;
 	
 	/*
-	 * Âò¼Òapp»·¾³ÉèÖÃ ÁĞ±í
+	 * ä¹°å®¶appç¯å¢ƒè®¾ç½® åˆ—è¡¨
 	 * */
 	@RequestMapping(value = "/buyerAppConfigList.do", method = RequestMethod.GET)
 	public String buyerAppConfigList(ModelMap model) {
 
-		final SiteConfig siteConfig = new SiteConfig("buyer");
+		final SiteConfigVO siteConfigVO = new SiteConfigVO("buyer");
 		
-		List<SiteConfig> siteConfigs = siteConfigService.getSiteConfigs(siteConfig);
+		List<SiteConfigVO> siteConfigVOs = siteConfigService.getSiteConfigs(siteConfigVO);
 
-		model.addAttribute("siteConfigs", siteConfigs);
+		model.addAttribute("siteConfigs", siteConfigVOs);
 		
 		return "admin/config/buyerAppConfigList";
 	}
 	/*
-	 * ĞŞ¸Ä»·¾³´¦Àí
+	 * ä¿®æ”¹ç¯å¢ƒå¤„ç†
 	 * */
 	@RequestMapping(value = "/modifySiteConfig.do", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> modifySiteConfig(@RequestParam(value = "configCode[]", required = true) String[] configCodes,
@@ -73,7 +67,7 @@ public class ConfigController extends EnvController {
 			return output("1", null, messageSource.getMessage("program_error", null, locale));
 		}
 		
-		final List<SiteConfig> siteConfigs = new ArrayList<>();
+		final List<SiteConfigVO> siteConfigVOs = new ArrayList<>();
 		
 		int index = 0;
 		for (String code : configCodes) {
@@ -85,126 +79,59 @@ public class ConfigController extends EnvController {
 			
 			if ("".equals(configVals[index])) {
 			
-				return output("1", null, messageSource.getMessage("not_empty_config_val", null, locale));//ÅäÖÃÄÚÈİ²»ÄÜÎª¿Õ
+				return output("1", null, messageSource.getMessage("not_empty_config_val", null, locale));//é…ç½®å†…å®¹ä¸èƒ½ä¸ºç©º
 			}
 			
 			index++;
 		}
-		//´Ë´Î¸üĞÂºóÒª´æ´¢µÄÍ¼Url
+		//æ­¤æ¬¡æ›´æ–°åè¦å­˜å‚¨çš„å›¾Url
 		final Map<String, String> configValImages = new HashMap<>(); 
-		//ÁÙÊ±´æ´¢Url
-		final String docbase = FileUtil.DOCBASE;
-		final String baseUrl = super.propertiesService.getProperty("image.baseUrl");
-		//ÁÙÊ±´æ´¢Url
-		final String tempUrl = baseUrl + "temp/";// (/upload/temp/)
-		//ĞÂ´æ´¢Url
-		final String newUrl = baseUrl + "config/";// (/upload/config/)
-		//ÁÙÊ±´æ´¢Pattern
-		final Pattern tempUrlPattern = Pattern.compile(tempUrl + "[^\"]+");
-		//Í¼Æ¬PathUrlPattern
-		final Pattern newUrlPattern = Pattern.compile(newUrl + "[^\"]+");
 		index = 0;
 		for (String type : editTypes) {
 			
 			if ("editor".equals(type)) {
 				
-				StringBuffer imagesUrlBuffer = new StringBuffer();
-				
-				if (configVals[index].contains("/temp/")) {
-					
-			        Matcher matchers = tempUrlPattern.matcher(configVals[index]);  
-			        while (matchers.find()) {  
-			            //ÒªĞÂÉú³ÉµÄÎÄ¼şPath
-			            String newFilePath = matchers.group().replace(tempUrl, "config/");// D:/xampp/htdocs/java/upload/config/2017/06/18/??.??
-			            FileOutputStream fos = new FileOutputStream(FileUtil.makeEmptyFile(newFilePath));
-			            //Ô­ÎÄ¼şPath
-			            String oldFilePath = docbase + matchers.group().replace(baseUrl, "");// file::/xampp/htdocs/java/upload/temp/2017/06/18/??.??
-			            FileSystemResource resource = new FileSystemResource(oldFilePath);
-			            //resource ¸´ÖÆ¸ø fos
-			            FileCopyUtils.copy(resource.getInputStream(), fos);
-			            //É¾³ıÔ´ÎÄ¼ş
-			            FileUtil.deleteFile(oldFilePath);
-			            //ÒªĞÂÉú³ÉµÄÎÄ¼şUrl
-			            String newFileUrl = matchers.group().replace(tempUrl, newUrl);
-			            //¸Äºó ĞÂÉú³ÉµÄÎÄ¼şPath
-			            configVals[index] = configVals[index].replace(matchers.group(), newFileUrl);
-			            
-			            if (imagesUrlBuffer.length() > 0) {
-			            	
-			            	imagesUrlBuffer.append(",");
-			            }
-			            //´Ë±à¼­Æ÷´Ë´ÎĞÂÉÏ´«µÄÍ¼Url(,)·Ö¸î·û´æ
-			            imagesUrlBuffer.append(newFileUrl);
-			        }
-				}
-				
-				Matcher matchers = newUrlPattern.matcher(configVals[index]);  
-		        while (matchers.find()) {  
+		        //editerä¸­tempå›¾ç§»åŠ¨åˆ°æ­£å¼ç›®å½•
+		        Map<String, String> editorContentMap = FileUtil.editorContentFilesUpload("config", configVals[index], super.propertiesService.getProperty("image.baseUrl"));
+		        if (!"".equals(editorContentMap.get("fileUrl"))) {
 		        	
-		        	if (imagesUrlBuffer.length() > 0) {
-		            	
-		            	imagesUrlBuffer.append(",");
-		            }
-		            //´Ë±à¼­Æ÷Ö®Ç°ÒÑÉÏ´«µÄÍ¼Url(,)·Ö¸î·û´æ
-		            imagesUrlBuffer.append(matchers.group());
+		        	configValImages.put(configCodes[index], editorContentMap.get("fileUrl"));
 		        }
-				
-		        if (imagesUrlBuffer.length() > 0) {
-		        	
-		        	//´æ´Ë±à¼­Æ÷ËùÓĞÍ¼Url
-		        	configValImages.put(configCodes[index], imagesUrlBuffer.toString());
-	            }
+		        //tempåœ°å€çš„æ–‡ä»¶ç§»é™¤è½¬æ¢æ­£å¼åœ°å€
+		        configVals[index] = editorContentMap.get("editorContent");
 			}
 			
 			index++;
 		}
-		//´Ë´ÎÉÏ´«µÄÍ¼tempÄ¿Â¼ÒÆµ½ÕıÊ½Ä¿Â¼ºóÖØĞÂ¸³Öµ
+		//æ­¤æ¬¡ä¸Šä¼ çš„å›¾tempç›®å½•ç§»åˆ°æ­£å¼ç›®å½•åé‡æ–°èµ‹å€¼
 		index = 0;
 		for (String code : configCodes) {
 			
-			siteConfigs.add(new SiteConfig(code, configVals[index]));
+			siteConfigVOs.add(new SiteConfigVO(code, configVals[index]));
 			
 			index++;
 		}
-		//»ñÈ¡Ö®Ç°´æµÄÍ¼Url
-		final SiteConfig siteConfig = new SiteConfig("buyer");
-		siteConfig.setEditType("editor");
-		final List<SiteConfig> configValForCheckImages = siteConfigService.getSiteConfigs(siteConfig);
+		//è·å–ä¹‹å‰å­˜çš„å›¾Url
+		final SiteConfigVO siteConfigVO = new SiteConfigVO("buyer");
+		siteConfigVO.setEditType("editor");
+		final List<SiteConfigVO> configValForCheckImages = siteConfigService.getSiteConfigs(siteConfigVO);
 		
 		index = 0;
 		for (String type : editTypes) {
 			
 			if ("editor".equals(type)) {
 				
-				for (SiteConfig _siteConfig : configValForCheckImages) {
+				for (SiteConfigVO _siteConfigVO : configValForCheckImages) {
 					
-					if (configCodes[index].equals(_siteConfig.getConfigCode())) {
-
-						StringBuffer imagesUrlBuffer = new StringBuffer();
+					if (configCodes[index].equals(_siteConfigVO.getConfigCode())) {
 						
-				        Matcher matchers = newUrlPattern.matcher(_siteConfig.getConfigVal());  
-				        while (matchers.find()) {  
-				            
-				            if (imagesUrlBuffer.length() > 0) {
-				            	
-				            	imagesUrlBuffer.append(",");
-				            }
-				            //´Ë±à¼­Æ÷ËùÓĞÍ¼Url(,)·Ö¸î·û´æ
-				            imagesUrlBuffer.append(matchers.group());
-				        }
-				        //Ö®Ç°´æ¹ıÍ¼Ê±
-						if (imagesUrlBuffer.length() > 0) {
+						String imageUrls = "";
+						if (configValImages.containsKey(configCodes[index])) {
 							
-							String imageUrls = "";
-							if (configValImages.containsKey(configCodes[index])) {
-								
-								imageUrls = configValImages.get(configCodes[index]);
-							}
-							//É¾³ıÖ®Ç°ÒÑÉÏ´«ÖĞÈ¡ÏûµÄÍ¼link
-							List<String> willDeleteImages = compareDifferentArray(imageUrls.split("\\,"), imagesUrlBuffer.toString().split("\\,"));
-							//É¾³ıÍ¼Æ¬
-							FileUtil.deleteFiles(StringUtils.join(willDeleteImages.toArray(), ","), baseUrl);
+							imageUrls = configValImages.get(configCodes[index]);
 						}
+						//å·²æœ‰æ–‡ä»¶ä¸­åˆ é™¤æ­¤æ¬¡å»æ‰çš„æ–‡ä»¶
+						FileUtil.editorContentFileFilterDelete("config", _siteConfigVO.getConfigVal(), super.propertiesService.getProperty("image.baseUrl"), imageUrls);
 					}
 				}
 			}
@@ -212,6 +139,6 @@ public class ConfigController extends EnvController {
 			index++;
 		}
 
-		return siteConfigService.modifySiteConfig(siteConfigs, locale);
+		return siteConfigService.modifySiteConfig(siteConfigVOs, locale);
 	}
 }

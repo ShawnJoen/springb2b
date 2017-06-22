@@ -1,20 +1,20 @@
 package com.spring.dao.admin.user;
 
 import java.util.List;
-import com.spring.dto.admin.AdminUser;
-import com.spring.dto.admin.AdminUserAuthentication;
+import com.spring.vo.admin.AdminUserVO;
+import com.spring.vo.admin.AdminUserAuthenticationVO;
 
 public interface AdminUserDAO {
 	
-	void createAdminUser(AdminUser adminUser) throws Exception;
+	void createAdminUser(AdminUserVO adminUserVO) throws Exception;
 	int hasAdminUserByUsername(String username);
-	AdminUser getAdminUserByUsername(String username);
+	AdminUserVO getAdminUserByUsername(String username);
 	int getGroupIdByUsername(String username);
-	AdminUser getAdminUserAuthentication(AdminUserAuthentication adminUserAuthentication);
-	int modifyPassword(AdminUserAuthentication adminUserAuthentication) throws Exception;
-	int modifyAdminUser(AdminUser adminUser) throws Exception;
-	int modifyAdminUserAndPassword(AdminUser adminUser) throws Exception;
-	List<AdminUser> getAdminUsers(AdminUser adminUser);
-	int deleteAdminUser(AdminUser adminUser) throws Exception;
+	AdminUserVO getAdminUserAuthentication(AdminUserAuthenticationVO adminUserAuthenticationVO);
+	int modifyPassword(AdminUserAuthenticationVO adminUserAuthenticationVO) throws Exception;
+	int modifyAdminUser(AdminUserVO adminUserVO) throws Exception;
+	int modifyAdminUserAndPassword(AdminUserVO adminUserVO) throws Exception;
+	List<AdminUserVO> getAdminUsers(AdminUserVO adminUserVO);
+	int deleteAdminUser(AdminUserVO adminUserVO) throws Exception;
 	String getTime();
 }

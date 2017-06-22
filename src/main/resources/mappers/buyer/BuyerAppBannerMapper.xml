@@ -3,12 +3,12 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.mappers.BuyerAppBannerMapper">
 
-	<insert id="createBuyerAppBanner" parameterType="com.spring.dto.buyer.BuyerAppBanner">
+	<insert id="createBuyerAppBanner" parameterType="com.spring.vo.buyer.BuyerAppBannerVO">
 		INSERT INTO `buyer_app_banner`(`adName`, `adImage`, `sort`, `status`) VALUES
 		(#{adName}, #{adImage}, #{sort}, #{status})
 	</insert>
 	
-	<update id="modifyBuyerAppBanner" parameterType="com.spring.dto.buyer.BuyerAppBanner">
+	<update id="modifyBuyerAppBanner" parameterType="com.spring.vo.buyer.BuyerAppBannerVO">
 		UPDATE `buyer_app_banner` SET `adName`=#{adName}, `adImage`=#{adImage}, `sort`=#{sort}, `status`=#{status} WHERE `adId`=#{adId}
 	</update>
 	
@@ -20,11 +20,11 @@
 		SELECT COUNT(*) AS count FROM `buyer_app_banner` WHERE `adId`=#{adId}
 	</select>
   
-  	<select id="getBuyerAppBanner" resultType="com.spring.dto.buyer.BuyerAppBanner">
+  	<select id="getBuyerAppBanner" resultType="com.spring.vo.buyer.BuyerAppBannerVO">
 		SELECT `adId`, `adName`, `adImage`, `sort`, `status`, `createTime` FROM `buyer_app_banner` WHERE `adId`=#{adId}
 	</select>
 	
-	<select id="getBuyerAppBanners"  parameterType="com.spring.dto.buyer.BuyerAppBanner" resultType="com.spring.dto.buyer.BuyerAppBanner">
+	<select id="getBuyerAppBanners"  parameterType="com.spring.vo.buyer.BuyerAppBannerVO" resultType="com.spring.vo.buyer.BuyerAppBannerVO">
 		SELECT 
 			`adId`, `adName`, `adImage`, `status`, `createTime` 
 		FROM 

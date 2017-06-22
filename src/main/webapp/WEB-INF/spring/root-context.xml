@@ -121,6 +121,7 @@
 	</bean>
 
 	<context:component-scan base-package="com.spring.dao" />
+	<context:component-scan base-package="com.spring.vo" />
 	<context:component-scan base-package="com.spring.dto" />
 	<context:component-scan base-package="com.spring.service" />
 

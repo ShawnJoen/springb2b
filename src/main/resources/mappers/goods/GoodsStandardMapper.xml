@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.mappers.GoodsStandardMapper">
+
+ 	<insert id="createGoodsStandard" parameterType="com.spring.vo.goods.GoodsStandardVO">
+		INSERT INTO `goods_standard`(`cateId`, `boxNum`, `goodsName`, `goodsNorms`, `goodsBrief`, `goodsImages`, `goodsBarcode`) VALUES
+		(#{cateId}, #{boxNum}, #{goodsName}, #{goodsNorms}, #{goodsBrief}, #{goodsImages}, #{goodsBarcode})
+	</insert>
+	
+	<select id="hasGoodsStandardById" resultType="int">
+		SELECT COUNT(*) AS count FROM `goods_standard` WHERE `goodsStandardId`=#{goodsStandardId}
+	</select>
+	
+	<select id="getGoodsStandardById" resultType="com.spring.vo.goods.GoodsStandardVO">
+		SELECT 
+			`goodsStandardId`, `cateId`, `boxNum`, `goodsName`, `goodsNorms`, `goodsBrief`, `goodsImages`, `goodsBarcode`,`goodsStatus`, `isDel`, `createTime` 
+		FROM 
+			`goods_standard` 
+		WHERE 
+			`goodsStandardId`=#{goodsStandardId}
+	</select>
+	
+	<select id="getGoodsBriefById" resultType="com.spring.dto.goods.GoodsStandard">
+		SELECT 
+			`goodsBrief`
+		FROM 
+			`goods_standard` 
+		WHERE 
+			`goodsStandardId`=#{goodsStandardId}
+	</select>
+	<!-- `goodsBrief`, `goodsBarcode`,  -->
+	<select id="getGoodsStandards" parameterType="com.spring.vo.goods.GoodsStandardVO" resultType="com.spring.vo.goods.GoodsStandardVO">
+		SELECT 
+			`goodsStandardId`, `cateId`, `boxNum`, `goodsName`, `goodsNorms`, `goodsImages`, `goodsStatus`, `isDel`, `createTime`
+		FROM 
+			`goods_standard`
+		WHERE 
+			1
+		<if test="goodsStandardId !=''">
+			AND `goodsStandardId`=#{goodsStandardId}
+		</if>
+		<if test="startCreateDate !='' and endCreateDate !=''">
+			AND `createTime` BETWEEN CONCAT(#{startCreateDate}, ' 00:00:00.000000') AND CONCAT(#{endCreateDate}, ' 23:59:59.999999')
+		</if>
+		<if test="goodsName !=''">
+			AND `goodsName` LIKE CONCAT(CONCAT('%', #{goodsName}),'%')  
+		</if>
+		ORDER BY `goodsStandardId` DESC
+	</select>
+
+	<update id="modifyGoodsStandard" parameterType="com.spring.vo.goods.GoodsStandardVO">
+		UPDATE `goods_standard` SET 
+			`cateId`=#{cateId}, 
+			`boxNum`=#{boxNum}, 
+			`goodsName`=#{goodsName}, 
+			`goodsNorms`=#{goodsNorms}, 
+			`goodsBrief`=#{goodsBrief}, 
+			`goodsImages`=#{goodsImages}, 
+			`goodsBarcode`=#{goodsBarcode}, 
+			`goodsStatus`=#{goodsStatus}, 
+			`updateTime`=#{updateTime} 
+		WHERE `goodsStandardId`=#{goodsStandardId}
+	</update>
+	
+	<update id="deleteGoodsStandard" parameterType="com.spring.vo.goods.GoodsStandardVO">
+		UPDATE `goods_standard` SET `isDel`=1, `updateTime`=#{updateTime} WHERE `goodsStandardId`=#{goodsStandardId}
+	</update>
+
+</mapper>

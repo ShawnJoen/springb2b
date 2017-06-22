@@ -9,9 +9,6 @@ public class OperationRecord {
 	private String content;
 	private Date createTime;
 	
-	//管理人员列表搜索
-	private String keywords = "";
-	
 	public OperationRecord() {
 		super();
 	}
@@ -44,11 +41,4 @@ public class OperationRecord {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	public String getKeywords() {
-		return keywords;
-	}
-	public void setKeywords(String keywords) {
-		this.keywords = keywords;
-	}
-	
 }

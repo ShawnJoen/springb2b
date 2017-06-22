@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.mappers.AdminRoleMapper">
 
-	<select id="getAdminRolesForMenu" parameterType="com.spring.dto.admin.AdminRole" resultType="com.spring.dto.admin.AdminRole">
+	<select id="getAdminRolesForMenu" parameterType="com.spring.vo.admin.AdminRoleVO" resultType="com.spring.vo.admin.AdminRoleVO">
 		SELECT 
 			`pageTree`, `pageName`, `roleCode`, `pageURI`, `childCount`
 		FROM 
@@ -19,7 +19,7 @@
 			`sort` ASC
 	</select>
 	
-	<select id="getPageTreeByRoleCode" parameterType="com.spring.dto.admin.AdminRole" resultType="String">
+	<select id="getPageTreeByRoleCode" parameterType="com.spring.vo.admin.AdminRoleVO" resultType="String">
 		SELECT 
 			`pageTree`
 		FROM 
@@ -30,7 +30,7 @@
 			`roleCode` = #{roleCode}
 	</select>
 		
-	<select id="getAdminRoleAccessByPageDeepNGroupId" parameterType="com.spring.dto.admin.AdminRole" resultType="com.spring.dto.admin.AdminRole">
+	<select id="getAdminRoleAccessByPageDeepNGroupId" parameterType="com.spring.vo.admin.AdminRoleVO" resultType="com.spring.vo.admin.AdminRoleVO">
 		SELECT  
 			`admin_role`.pageURI, `admin_role`.pageTree
 		FROM 
@@ -49,7 +49,7 @@
 			`admin_role`.`sort` ASC
 	</select>
 		
-	<select id="getAdminRoles" parameterType="com.spring.dto.admin.AdminRole" resultType="com.spring.dto.admin.AdminRole">
+	<select id="getAdminRoles" parameterType="com.spring.vo.admin.AdminRoleVO" resultType="com.spring.vo.admin.AdminRoleVO">
 		SELECT 
 			`pageTree`, `pageName`, `roleCode`, `pageDeep`
 		FROM 

@@ -11,9 +11,9 @@ import org.apache.commons.collections.CollectionUtils;
 
 public class ValidationUtils {
 	
-	private static Validator validator =  Validation.buildDefaultValidatorFactory().getValidator();
+	final private static Validator validator =  Validation.buildDefaultValidatorFactory().getValidator();
 	
-	public static <T> ValidationResult validateEntity(T obj) {
+	final public static <T> ValidationResult validateEntity(T obj) {
 		
 		ValidationResult result = new ValidationResult();
 		
@@ -34,7 +34,7 @@ public class ValidationUtils {
 		return result;
 	}
 	
-	public static <T> ValidationResult validateProperty(T obj,String propertyName) {
+	final public static <T> ValidationResult validateProperty(T obj,String propertyName) {
 		
 		ValidationResult result = new ValidationResult();
 		
@@ -56,7 +56,7 @@ public class ValidationUtils {
 		return result;
 	}
 	
-	public static <T> ValidationResult validation(T obj) {
+	final public static <T> ValidationResult validation(T obj) {
 		
 		ValidationResult result = new ValidationResult();
 		

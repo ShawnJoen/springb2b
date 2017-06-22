@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import com.spring.b2b.ViewController;
-import com.spring.dto.admin.AdminRole;
 import com.spring.service.admin.user.AdminUserService;
 import com.spring.service.buyer.AdService;
+import com.spring.service.goods.GoodsStandardService;
+import com.spring.vo.admin.AdminRoleVO;
 
 public class EnvController extends ViewController {
 	
@@ -24,14 +25,16 @@ public class EnvController extends ViewController {
 	@Autowired
 	protected AdService adService;
 	@Autowired
+	protected GoodsStandardService goodsStandardService;
+	@Autowired
 	protected MessageSource messageSource;
 	
 	@ModelAttribute("adminMenu")
-	protected Map<String, List<AdminRole>> getAdminMenu() {
+	protected Map<String, List<AdminRoleVO>> getAdminMenu() {
 		
 		if ("GET".equals(request.getMethod())) {
 			
-			//µ±Ç°URIpath
+			//å½“å‰URIpath
 			final String pagePath = request.getServletPath();
 
 			if (forbidMenuList
@@ -39,7 +42,7 @@ public class EnvController extends ViewController {
 					.filter(path -> path.equals(pagePath))
 					.count() == 0) {
 				
-				//Êä³ö¹ÜÀíÔ±Ä¿Â¼ ¸ø ModelMap
+				//è¾“å‡ºç®¡ç†å‘˜ç›®å½• ç»™ ModelMap
 				return adminUserService.getAdminRolesForMenu(pagePath);
 			}
 		}

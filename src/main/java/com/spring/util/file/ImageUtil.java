@@ -6,10 +6,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class ImageUtil {
 	
-	//¿ÉÉÏ´«Í¼Æ¬ÖÖÀà
+	//å¯ä¸Šä¼ å›¾ç‰‡ç§ç±»
 	final public static List<String> IMAGE_FILE_CONTENT_TYPES = Arrays.asList("image/jpeg", "image/gif", "image/png");
 
-	public static boolean checkImageFiles(MultipartFile images[]) {
+	final public static boolean checkImageFiles(MultipartFile images[]) {
 		
 		for (MultipartFile image : images) {
 			
@@ -22,7 +22,7 @@ public class ImageUtil {
 		return true;
 	}
 	
-	public static boolean isImageFile(MultipartFile image) {
+	final public static boolean isImageFile(MultipartFile image) {
 
 		if (ImageUtil.IMAGE_FILE_CONTENT_TYPES.contains(image.getContentType())) {
 			

@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import com.github.pagehelper.PageInfo;
 import com.spring.b2b.admin.EnvController;
-import com.spring.dto.buyer.BuyerAppBanner;
 import com.spring.util.file.FileUtil;
 import com.spring.util.file.ImageUtil;
 import com.spring.util.validation.ValidationResult;
 import com.spring.util.validation.ValidationUtils;
+import com.spring.vo.buyer.BuyerAppBannerVO;
 import static com.spring.util.Common.*;
 
 @Controller
@@ -36,28 +36,28 @@ public class AdController extends EnvController {
     private MessageSource messageSource;
 	
 	/*
-	 * ¹ã¸æ ÁĞ±í
+	 * å¹¿å‘Š åˆ—è¡¨
 	 * */
 	@RequestMapping(value = "/buyerAppBannerList.do", method = RequestMethod.GET)
 	public String buyerAppBannerList(@RequestParam(value = "pageNum", required = false, defaultValue="1") Integer pageNum,
             @RequestParam(value = "pageSize", required = false, defaultValue="20") Integer pageSize, 
-            @ModelAttribute("buyerAppBanner") BuyerAppBanner buyerAppBanner, 
+            @ModelAttribute("buyerAppBanner") BuyerAppBannerVO buyerAppBannerVO, 
             ModelMap model) {
 
 		super.setPageHelper(pageNum, pageSize);
 		
-		List<BuyerAppBanner> buyerAppBanners = adService.getBuyerAppBanners(buyerAppBanner);
+		List<BuyerAppBannerVO> buyerAppBannerVOs = adService.getBuyerAppBanners(buyerAppBannerVO);
 		
-		PageInfo<BuyerAppBanner> pageInfo = new PageInfo<>(buyerAppBanners);
+		PageInfo<BuyerAppBannerVO> pageInfo = new PageInfo<>(buyerAppBannerVOs);
 		model.addAttribute("pageInfo", pageInfo);
 
-		//ËÑË÷¿ò°ó¶¨ËÑË÷×Ö¶Î
-		model.addAttribute("buyerAppBanner", buyerAppBanner);
+		//æœç´¢æ¡†ç»‘å®šæœç´¢å­—æ®µ
+		model.addAttribute("buyerAppBanner", buyerAppBannerVO);
 		
 		return "admin/buyer/buyerAppBannerList";
 	}
 	/*
-	 * ´´½¨¹ã¸æ from
+	 * åˆ›å»ºå¹¿å‘Š from
 	 * */
 	@RequestMapping(value = "/createBuyerAppBanner.do", method = RequestMethod.GET)
 	public String createBuyerAppBannerForm() {
@@ -65,10 +65,10 @@ public class AdController extends EnvController {
 		return "admin/buyer/createBuyerAppBanner";
 	}
 	/*
-	 * ´´½¨¹ã¸æ´¦Àí
+	 * åˆ›å»ºå¹¿å‘Šå¤„ç†
 	 * */
 	@RequestMapping(value = "/createBuyerAppBanner.do", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> createAppAd(@ModelAttribute("buyerAppBanner") BuyerAppBanner buyerAppBanner, 
+	public @ResponseBody Map<String, Object> createAppAd(@ModelAttribute("buyerAppBanner") BuyerAppBannerVO buyerAppBannerVO, 
 			BindingResult result,
 			MultipartFile adImages[],
 			Locale locale) throws Exception {
@@ -78,30 +78,30 @@ public class AdController extends EnvController {
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
-		final ValidationResult ValidResult = ValidationUtils.validation(buyerAppBanner);
+		final ValidationResult ValidResult = ValidationUtils.validation(buyerAppBannerVO);
 		if (ValidResult.isHasErrors()) {
 			
 			return output("1", null, ValidResult.getErrorMessage());
 		}
-		//²éÊÇ·ñÎªÍ¼
+		//æŸ¥æ˜¯å¦ä¸ºå›¾
 		if (!ImageUtil.checkImageFiles(adImages)) {
 			
-			return output("1", null, messageSource.getMessage("select_image", null, locale));//ÇëÑ¡ÔñÍ¼Æ¬
+			return output("1", null, messageSource.getMessage("select_image", null, locale));//è¯·é€‰æ‹©å›¾ç‰‡
 		}
-		//ÉÏ´«ÎÄ¼ş
+		//ä¸Šä¼ æ–‡ä»¶
 		final StringBuilder imagePaths = FileUtil.uploadFiles("adImage", adImages, super.propertiesService.getProperty("image.baseUrl"));
 		
 		if (imagePaths.length() == 0) {
 			
-			return output("1", null, messageSource.getMessage("select_image", null, locale));//ÇëÑ¡ÔñÍ¼Æ¬
+			return output("1", null, messageSource.getMessage("select_image", null, locale));//è¯·é€‰æ‹©å›¾ç‰‡
 		}
 		
-		buyerAppBanner.setAdImage(imagePaths.toString());
+		buyerAppBannerVO.setAdImage(imagePaths.toString());
 
-		return adService.createBuyerAppBanner(buyerAppBanner, locale);
+		return adService.createBuyerAppBanner(buyerAppBannerVO, locale);
 	}
 	/*
-	 * ¹ã¸æ É¾³ı
+	 * å¹¿å‘Š åˆ é™¤
 	 * */
 	@RequestMapping(value = "/deleteBuyerAppBanner.do", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> deleteBuyerAppBanner(@RequestParam(value = "adId", required = false, defaultValue="0") Integer adId,  
@@ -112,38 +112,38 @@ public class AdController extends EnvController {
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
-		final BuyerAppBanner buyerAppBanner = adService.getBuyerAppBanner(adId);
-		if (buyerAppBanner == null) {
+		final BuyerAppBannerVO buyerAppBannerVO = adService.getBuyerAppBanner(adId);
+		if (buyerAppBannerVO == null) {
 			
 			return output("1", null, messageSource.getMessage("program_error", null, locale));
 		}
 		
-		if (buyerAppBanner.getIsDel() == 1) {
+		if (buyerAppBannerVO.getIsDel() == 1) {
 			
 			return output("1", null, messageSource.getMessage("delete_seccess", null, locale));
 		}
-		//É¾³ıÍ¼Æ¬
-		FileUtil.deleteFiles(buyerAppBanner.getAdImage(), super.propertiesService.getProperty("image.baseUrl"));
+		//åˆ é™¤å›¾ç‰‡
+		FileUtil.deleteFiles(buyerAppBannerVO.getAdImage(), super.propertiesService.getProperty("image.baseUrl"));
 		
 		return adService.deleteBuyerAppBanner(adId, locale);
 	}
 	/*
-	 * ĞŞ¸Ä¹ã¸æ from
+	 * ä¿®æ”¹å¹¿å‘Š from
 	 * */
 	@RequestMapping(value = "/modifyBuyerAppBanner.do", method = RequestMethod.GET)
 	public String modifyBuyerAppBannerForm(@RequestParam(value = "adId", required = false, defaultValue="0") Integer adId, 
 			ModelMap model) {
 		
-		final BuyerAppBanner buyerAppBanner = adService.getBuyerAppBanner(adId);
-		model.addAttribute("buyerAppBanner", buyerAppBanner);
+		final BuyerAppBannerVO buyerAppBannerVO = adService.getBuyerAppBanner(adId);
+		model.addAttribute("buyerAppBanner", buyerAppBannerVO);
 		
 		return "admin/buyer/modifyBuyerAppBanner";
 	}
 	/*
-	 * ĞŞ¸Ä¹ã¸æ´¦Àí
+	 * ä¿®æ”¹å¹¿å‘Šå¤„ç†
 	 * */
 	@RequestMapping(value = "/modifyBuyerAppBanner.do", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> modifyBuyerAppBanner(@ModelAttribute("buyerAppBanner") BuyerAppBanner buyerAppBanner, 
+	public @ResponseBody Map<String, Object> modifyBuyerAppBanner(@ModelAttribute("buyerAppBanner") BuyerAppBannerVO buyerAppBannerVO, 
 			BindingResult result,
 			MultipartFile adImages[],
 			@RequestParam(value = "adImagesUploaded[]", required = false) String[] adImagesUploaded,
@@ -154,25 +154,25 @@ public class AdController extends EnvController {
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
-		final ValidationResult ValidResult = ValidationUtils.validation(buyerAppBanner);
+		final ValidationResult ValidResult = ValidationUtils.validation(buyerAppBannerVO);
 		if (ValidResult.isHasErrors()) {
 			
 			return output("1", null, ValidResult.getErrorMessage());
 		}
-		//±à¼­ÉÏ´«ÎÄ¼ş
+		//ç¼–è¾‘ä¸Šä¼ æ–‡ä»¶
 		final StringBuilder imagePaths = FileUtil.uploadAndDeleteFiles("adImage", adImages, adImagesUploaded, super.propertiesService.getProperty("image.baseUrl"));
 		
 		if (imagePaths.length() == 0) {
 			
-			return output("1", null, messageSource.getMessage("select_image", null, locale));//ÇëÑ¡ÔñÍ¼Æ¬
+			return output("1", null, messageSource.getMessage("select_image", null, locale));//è¯·é€‰æ‹©å›¾ç‰‡
 		}
-		//É¾³ıÖ®Ç°ÒÑÉÏ´«ÖĞÈ¡ÏûµÄÍ¼link
-		List<String> willDeleteImages = compareDifferentArray(imagePaths.toString().split("\\,"), buyerAppBanner.getAdImage().split("\\,"));
-		//É¾³ıÍ¼Æ¬
+		//åˆ é™¤ä¹‹å‰å·²ä¸Šä¼ ä¸­å–æ¶ˆçš„å›¾link
+		final List<String> willDeleteImages = compareDifferentArray(imagePaths.toString().split("\\,"), buyerAppBannerVO.getAdImage().split("\\,"));
+		//åˆ é™¤å›¾ç‰‡
 		FileUtil.deleteFiles(StringUtils.join(willDeleteImages.toArray(), ","), super.propertiesService.getProperty("image.baseUrl"));
 		
-		buyerAppBanner.setAdImage(imagePaths.toString());
+		buyerAppBannerVO.setAdImage(imagePaths.toString());
 
-		return adService.modifyBuyerAppBanner(buyerAppBanner, locale);
+		return adService.modifyBuyerAppBanner(buyerAppBannerVO, locale);
 	}
 }

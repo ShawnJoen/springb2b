@@ -23,18 +23,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import com.github.pagehelper.PageInfo;
 import com.spring.b2b.admin.EnvController;
-import com.spring.dto.admin.AdminGroup;
-import com.spring.dto.admin.AdminRoleAccess;
-import com.spring.dto.admin.AdminUser;
-import com.spring.dto.admin.AdminUserAuthentication;
 import com.spring.dto.admin.OperationRecord;
 import com.spring.service.admin.OperationRecordService;
 import static com.spring.util.Common.*;
 import com.spring.util.validation.ValidationResult;
 import com.spring.util.validation.ValidationUtils;
-/**
- * Handles requests for the application home page.
- */
+import com.spring.vo.admin.AdminGroupVO;
+import com.spring.vo.admin.AdminRoleAccessVO;
+import com.spring.vo.admin.AdminUserVO;
+import com.spring.vo.admin.OperationRecordVO;
+import com.spring.vo.admin.AdminUserAuthenticationVO;
+
 @Controller
 @RequestMapping("/admin/user")
 public class UserController extends EnvController {
@@ -60,7 +59,7 @@ public class UserController extends EnvController {
 	@RequestMapping(value = "/modifyPasswordNotLoggedIn.do", method = RequestMethod.GET)
 	public String modifyPasswordForm(ModelMap model) {
 		
-		model.addAttribute("adminUserAuthentication", new AdminUserAuthentication());
+		model.addAttribute("adminUserAuthentication", new AdminUserAuthenticationVO());
 
 		return "admin/user/modifyPasswordNotLoggedIn";
 	}
@@ -70,7 +69,7 @@ public class UserController extends EnvController {
 	@RequestMapping(value = "/modifyPassword.do", method = RequestMethod.GET)
 	public String modifyPasswordLoggedInForm(ModelMap model) {
 		
-		model.addAttribute("adminUserAuthentication", new AdminUserAuthentication());
+		model.addAttribute("adminUserAuthentication", new AdminUserAuthenticationVO());
 			
 		return "admin/user/modifyPasswordLoggedIn";
 	}
@@ -78,7 +77,7 @@ public class UserController extends EnvController {
 	 * 修改密码处理
 	 * */
 	@RequestMapping(value = "/modifyPassword.do", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> modifyPassword(@ModelAttribute("adminUserAuthentication") AdminUserAuthentication adminUserAuthentication, 
+	public @ResponseBody Map<String, Object> modifyPassword(@ModelAttribute("adminUserAuthentication") AdminUserAuthenticationVO adminUserAuthenticationVO, 
 			BindingResult result,
 			Locale locale) throws Exception {
 		
@@ -87,7 +86,7 @@ public class UserController extends EnvController {
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
-		final ValidationResult ValidResult = ValidationUtils.validation(adminUserAuthentication);
+		final ValidationResult ValidResult = ValidationUtils.validation(adminUserAuthenticationVO);
 		if (ValidResult.isHasErrors()) {
 			
 			return output("1", null, ValidResult.getErrorMessage());
@@ -96,10 +95,10 @@ public class UserController extends EnvController {
 		final String username = getLogInUsername();
 		if (isLogIn(username)) {
 			
-			adminUserAuthentication.setUsername(username);
+			adminUserAuthenticationVO.setUsername(username);
 		}
 		
-		return adminUserService.modifyPassword(adminUserAuthentication, locale);
+		return adminUserService.modifyPassword(adminUserAuthenticationVO, locale);
 	}
 	/*
 	 * 创建用户 from
@@ -107,10 +106,10 @@ public class UserController extends EnvController {
 	@RequestMapping(value = "/createAdminUser.do", method = RequestMethod.GET)
 	public String createAdminUserForm(ModelMap model) {
 
-		model.addAttribute("adminUser", new AdminUser());
+		model.addAttribute("adminUser", new AdminUserVO());
 		
-		List<AdminGroup> adminGroups = adminUserService.getAdminGroupSelectBox();
-		model.addAttribute("adminGroup", adminGroups);
+		List<AdminGroupVO> adminGroupVOs = adminUserService.getAdminGroupSelectBox();
+		model.addAttribute("adminGroup", adminGroupVOs);
 		
 		return "admin/user/createAdminUser";
 	}
@@ -118,7 +117,7 @@ public class UserController extends EnvController {
 	 * 创建用户处理
 	 * */
 	@RequestMapping(value = "/createAdminUser.do", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> createAdminUser(@ModelAttribute("adminUser") AdminUser adminUser, 
+	public @ResponseBody Map<String, Object> createAdminUser(@ModelAttribute("adminUser") AdminUserVO adminUserVO, 
 			BindingResult result,
 			Locale locale) throws Exception {
 
@@ -127,13 +126,13 @@ public class UserController extends EnvController {
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
-		final ValidationResult ValidResult = ValidationUtils.validation(adminUser);
+		final ValidationResult ValidResult = ValidationUtils.validation(adminUserVO);
 		if (ValidResult.isHasErrors()) {
 			
 			return output("1", null, ValidResult.getErrorMessage());
 		}
 		
-		return adminUserService.createAdminUser(adminUser, locale);
+		return adminUserService.createAdminUser(adminUserVO, locale);
 	}
 	/*
 	 * 修改用户 from
@@ -150,11 +149,11 @@ public class UserController extends EnvController {
 		
 		final String toUsername = "".equals(username) ? logInUsername : username;
 		
-		final AdminUser adminUser = adminUserService.getAdminUserByUsername(toUsername);
-		model.addAttribute("adminUser", adminUser);
+		final AdminUserVO adminUserVO = adminUserService.getAdminUserByUsername(toUsername);
+		model.addAttribute("adminUser", adminUserVO);
 		
-		final List<AdminGroup> adminGroups = adminUserService.getAdminGroupSelectBox();
-		model.addAttribute("adminGroup", adminGroups);
+		final List<AdminGroupVO> adminGroupVOs = adminUserService.getAdminGroupSelectBox();
+		model.addAttribute("adminGroup", adminGroupVOs);
 		
 		return "admin/user/modifyAdminUser";
 	}
@@ -162,7 +161,7 @@ public class UserController extends EnvController {
 	 * 修改用户处理
 	 * */
 	@RequestMapping(value = "/modifyAdminUser.do", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> modifyAdminUser(@ModelAttribute("adminUser") AdminUser adminUser, 
+	public @ResponseBody Map<String, Object> modifyAdminUser(@ModelAttribute("adminUser") AdminUserVO adminUserVO, 
 			BindingResult result,
 			Locale locale) throws Exception {
 		
@@ -171,18 +170,18 @@ public class UserController extends EnvController {
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
-		final ValidationResult ValidResult = ValidationUtils.validation(adminUser);
+		final ValidationResult ValidResult = ValidationUtils.validation(adminUserVO);
 		if (ValidResult.isHasErrors()) {
 			
 			return output("1", null, ValidResult.getErrorMessage());
 		}
 
-		if ("".equals(adminUser.getPassword())) {
+		if ("".equals(adminUserVO.getPassword())) {
 			
-			return adminUserService.modifyAdminUser(adminUser, locale);
+			return adminUserService.modifyAdminUser(adminUserVO, locale);
 		} else {
 			
-			return adminUserService.modifyAdminUserAndPassword(adminUser, locale);
+			return adminUserService.modifyAdminUserAndPassword(adminUserVO, locale);
 		}
 	}
 	/*
@@ -191,18 +190,18 @@ public class UserController extends EnvController {
 	@RequestMapping(value = "/adminUserList.do", method = RequestMethod.GET)
 	public String adminUserList(@RequestParam(value = "pageNum", required = false, defaultValue="1") Integer pageNum,
             @RequestParam(value = "pageSize", required = false, defaultValue="20") Integer pageSize, 
-            @ModelAttribute("adminUser") AdminUser adminUser, 
+            @ModelAttribute("adminUser") AdminUserVO adminUserVO, 
             ModelMap model) {
 
 		super.setPageHelper(pageNum, pageSize);
 		
-		List<AdminUser> adminUsers = adminUserService.getAdminUsers(adminUser);
+		List<AdminUserVO> adminUserVOs = adminUserService.getAdminUsers(adminUserVO);
 		
-		PageInfo<AdminUser> pageInfo = new PageInfo<>(adminUsers);
+		PageInfo<AdminUserVO> pageInfo = new PageInfo<>(adminUserVOs);
 		model.addAttribute("pageInfo", pageInfo);
 
 		//搜索框绑定搜索字段
-		model.addAttribute("adminUser", adminUser);
+		model.addAttribute("adminUser", adminUserVO);
 		
 		return "admin/user/adminUserList";
 	}
@@ -210,7 +209,7 @@ public class UserController extends EnvController {
 	 * 管理员用户删除
 	 * */
 	@RequestMapping(value = "/deleteAdminUser.do", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> deleteAdminUser(@ModelAttribute("adminUser") AdminUser adminUser, 
+	public @ResponseBody Map<String, Object> deleteAdminUser(@ModelAttribute("adminUser") AdminUserVO adminUserVO, 
 			BindingResult result,
 			Locale locale) throws Exception {
 		
@@ -219,7 +218,7 @@ public class UserController extends EnvController {
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
-		return adminUserService.deleteAdminUser(adminUser, locale);
+		return adminUserService.deleteAdminUser(adminUserVO, locale);
 	}
 	/*
 	 * 退出登入
@@ -246,7 +245,7 @@ public class UserController extends EnvController {
 	 * 创建管理组处理
 	 * */
 	@RequestMapping(value = "/createAdminGroup.do", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> createAdminGroup(@ModelAttribute("adminGroup") AdminGroup adminGroup, 
+	public @ResponseBody Map<String, Object> createAdminGroup(@ModelAttribute("adminGroup") AdminGroupVO adminGroupVO, 
 			BindingResult result,
 			Locale locale) throws Exception {
 		
@@ -255,13 +254,13 @@ public class UserController extends EnvController {
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
-		final ValidationResult ValidResult = ValidationUtils.validation(adminGroup);
+		final ValidationResult ValidResult = ValidationUtils.validation(adminGroupVO);
 		if (ValidResult.isHasErrors()) {
 			
 			return output("1", null, ValidResult.getErrorMessage());
 		}
 		
-		return adminUserService.createAdminGroup(adminGroup, locale);
+		return adminUserService.createAdminGroup(adminGroupVO, locale);
 	}
 	/*
 	 * 修改管理组 from
@@ -275,8 +274,8 @@ public class UserController extends EnvController {
 			return "redirect:/admin/user/adminGroupList";
 		}
 		
-		final AdminGroup adminGroup = adminUserService.getAdminGroup(groupId);
-		model.addAttribute("adminGroup", adminGroup);
+		final AdminGroupVO adminGroupVO = adminUserService.getAdminGroup(groupId);
+		model.addAttribute("adminGroup", adminGroupVO);
 		
 		return "admin/user/modifyAdminGroup";
 	}
@@ -284,7 +283,7 @@ public class UserController extends EnvController {
 	 * 修改管理组 处理
 	 * */
 	@RequestMapping(value = "/modifyAdminGroup.do", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> modifyAdminGroup(@ModelAttribute("adminGroup") AdminGroup adminGroup, 
+	public @ResponseBody Map<String, Object> modifyAdminGroup(@ModelAttribute("adminGroup") AdminGroupVO adminGroupVO, 
 			@RequestParam(value = "roleCode[]", required = false) String[] roleCode,
 			BindingResult result,
 			Locale locale) throws Exception {
@@ -294,26 +293,26 @@ public class UserController extends EnvController {
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
-		final ValidationResult ValidResult = ValidationUtils.validation(adminGroup);
+		final ValidationResult ValidResult = ValidationUtils.validation(adminGroupVO);
 		if (ValidResult.isHasErrors()) {
 			
 			return output("1", null, ValidResult.getErrorMessage());
 		}
 
-		final List<AdminRoleAccess> selectedRoleCode = new ArrayList<>();
+		final List<AdminRoleAccessVO> selectedRoleCodeVO = new ArrayList<>();
 		if (roleCode != null) {
 
 			for (String role : roleCode) {
 				
-				AdminRoleAccess adminRoleAccess = new AdminRoleAccess();
-				adminRoleAccess.setGroupId(adminGroup.getGroupId());
-				adminRoleAccess.setRole(role);
+				AdminRoleAccessVO adminRoleAccessVO = new AdminRoleAccessVO();
+				adminRoleAccessVO.setGroupId(adminGroupVO.getGroupId());
+				adminRoleAccessVO.setRole(role);
 				
-				selectedRoleCode.add(adminRoleAccess);
+				selectedRoleCodeVO.add(adminRoleAccessVO);
 			}
 		}
 
-		return adminUserService.modifyAdminGroup(adminGroup, selectedRoleCode, locale);
+		return adminUserService.modifyAdminGroup(adminGroupVO, selectedRoleCodeVO, locale);
 	}
 	/*
 	 * 管理组 列表
@@ -325,9 +324,9 @@ public class UserController extends EnvController {
 
 		super.setPageHelper(pageNum, pageSize);
 		
-		List<AdminGroup> adminGroups = adminUserService.getAdminGroups();
+		List<AdminGroupVO> adminGroupVOs = adminUserService.getAdminGroups();
 		
-		PageInfo<AdminGroup> pageInfo = new PageInfo<>(adminGroups);
+		PageInfo<AdminGroupVO> pageInfo = new PageInfo<>(adminGroupVOs);
 		model.addAttribute("pageInfo", pageInfo);
 		
 		return "admin/user/adminGroupList";
@@ -336,7 +335,7 @@ public class UserController extends EnvController {
 	 * 管理组 删除
 	 * */
 	@RequestMapping(value = "/deleteAdminGroup.do", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> deleteAdminGroup(@ModelAttribute("adminGroup") AdminGroup adminGroup, 
+	public @ResponseBody Map<String, Object> deleteAdminGroup(@ModelAttribute("adminGroup") AdminGroupVO adminGroupVO, 
 			BindingResult result,
 			Locale locale) throws Exception {
 		
@@ -345,7 +344,7 @@ public class UserController extends EnvController {
             return output("1", null, messageSource.getMessage("program_error", null, locale));
         }
 		
-		return adminUserService.deleteAdminGroup(adminGroup, locale);
+		return adminUserService.deleteAdminGroup(adminGroupVO, locale);
 	}
 	/*
 	 * 管理员用户 列表
@@ -353,22 +352,19 @@ public class UserController extends EnvController {
 	@RequestMapping(value = "/operationRecordList.do", method = RequestMethod.GET)
 	public String operationRecordList(@RequestParam(value = "pageNum", required = false, defaultValue="1") Integer pageNum,
             @RequestParam(value = "pageSize", required = false, defaultValue="20") Integer pageSize, 
-            @ModelAttribute("operationRecord") OperationRecord operationRecord, 
+            @ModelAttribute("operationRecord") OperationRecordVO operationRecordVO, 
             ModelMap model) {
 
 		super.setPageHelper(pageNum, pageSize);
 		
-		List<OperationRecord> operationRecords = operationRecordService.getOperationRecords(operationRecord);
+		List<OperationRecordVO> operationRecordVOs = operationRecordService.getOperationRecords(operationRecordVO);
 		
-		PageInfo<OperationRecord> pageInfo = new PageInfo<>(operationRecords);
+		PageInfo<OperationRecordVO> pageInfo = new PageInfo<>(operationRecordVOs);
 		model.addAttribute("pageInfo", pageInfo);
 
 		//搜索框绑定搜索字段
-		model.addAttribute("operationRecord", operationRecord);
+		model.addAttribute("operationRecord", operationRecordVO);
 		
 		return "admin/user/operationRecordList";
 	}
-	
-	
-	
 }

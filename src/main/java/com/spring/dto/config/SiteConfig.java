@@ -4,11 +4,11 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class SiteConfig {
 
-	@NotBlank(message="{10012}")//配置编码不能为空
+	@NotBlank(message="{10012}")//閰嶇疆缂栫爜涓嶈兘涓虹┖
 	private String configCode = "";
 	private String groupCode;
 	private String configName;
-	@NotBlank(message="{10013}")//内容不能为空
+	@NotBlank(message="{10013}")//鍐呭涓嶈兘涓虹┖
 	private String configVal = "";
 	private String editType;
 	private int isShow = 1;

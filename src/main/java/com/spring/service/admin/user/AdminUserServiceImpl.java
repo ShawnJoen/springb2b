@@ -14,13 +14,14 @@ import com.spring.dao.admin.user.AdminGroupDAO;
 import com.spring.dao.admin.user.AdminRoleAccessDAO;
 import com.spring.dao.admin.user.AdminRoleDAO;
 import com.spring.dao.admin.user.AdminUserDAO;
-import com.spring.dto.admin.AdminGroup;
-import com.spring.dto.admin.AdminRole;
-import com.spring.dto.admin.AdminRoleAccess;
-import com.spring.dto.admin.AdminUser;
-import com.spring.dto.admin.AdminUserAuthentication;
 import com.spring.service.admin.OperationRecordService;
 import com.spring.util.Common;
+import com.spring.vo.admin.AdminGroupVO;
+import com.spring.vo.admin.AdminRoleVO;
+import com.spring.vo.admin.AdminRoleAccessVO;
+import com.spring.vo.admin.AdminUserVO;
+import com.spring.vo.admin.AdminUserAuthenticationVO;
+
 import static com.spring.util.Common.*;
 import static java.util.stream.Collectors.*; 
 
@@ -44,7 +45,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 	
 	@Transactional("transaction")
 	@Override
-	public Map<String, Object> createAdminUser(AdminUser adminUser, Locale locale) throws Exception {
+	public Map<String, Object> createAdminUser(AdminUserVO adminUser, Locale locale) throws Exception {
 
 		final int hasAdminUser = this.hasAdminUserByUsername(adminUser.getUsername());
         if(hasAdminUser > 0) {
@@ -55,13 +56,13 @@ public class AdminUserServiceImpl implements AdminUserService {
 
 		adminUserDAO.createAdminUser(adminUser);
 		
-		operationRecordService.createOperationRecord("´´½¨¹ÜÀíÔ±  ÕËºÅ£º" + adminUser.getUsername());
+		operationRecordService.createOperationRecord("åˆ›å»ºç®¡ç†å‘˜  è´¦å·ï¼š" + adminUser.getUsername());
 
 		return output("0", null, messageSource.getMessage("create_seccess", null, locale));
 	}
 	@Transactional("transaction")
 	@Override
-	public Map<String, Object> modifyAdminUser(AdminUser adminUser, Locale locale) throws Exception {
+	public Map<String, Object> modifyAdminUser(AdminUserVO adminUser, Locale locale) throws Exception {
 
 		final int hasAdminUser = this.hasAdminUserByUsername(adminUser.getUsername());
         if(hasAdminUser == 0) {
@@ -77,14 +78,14 @@ public class AdminUserServiceImpl implements AdminUserService {
 			return output("1", null, messageSource.getMessage("modify_fail", null, locale));
 		} else {
 			
-			operationRecordService.createOperationRecord("ĞŞ¸Ä¹ÜÀíÔ±ĞÅÏ¢  ÕËºÅ£º" + adminUser.getUsername());
+			operationRecordService.createOperationRecord("ä¿®æ”¹ç®¡ç†å‘˜ä¿¡æ¯  è´¦å·ï¼š" + adminUser.getUsername());
 			
 			return output("0", null, messageSource.getMessage("modify_seccess", null, locale));
 		}
 	}
 	@Transactional("transaction")
 	@Override
-	public Map<String, Object> modifyAdminUserAndPassword(AdminUser adminUser, Locale locale) throws Exception {
+	public Map<String, Object> modifyAdminUserAndPassword(AdminUserVO adminUser, Locale locale) throws Exception {
 		
 		final int hasAdminUser = this.hasAdminUserByUsername(adminUser.getUsername());
         if(hasAdminUser == 0) {
@@ -102,7 +103,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 			return output("1", null, messageSource.getMessage("modify_fail", null, locale));
 		} else {
 			
-			operationRecordService.createOperationRecord("ĞŞ¸Ä¹ÜÀíÔ±ÃÜÂëºÍĞÅÏ¢  ÕËºÅ£º" + adminUser.getUsername());
+			operationRecordService.createOperationRecord("ä¿®æ”¹ç®¡ç†å‘˜å¯†ç å’Œä¿¡æ¯  è´¦å·ï¼š" + adminUser.getUsername());
 			
 			return output("0", null, messageSource.getMessage("modify_seccess", null, locale));
 		}
@@ -113,22 +114,22 @@ public class AdminUserServiceImpl implements AdminUserService {
 		return adminUserDAO.hasAdminUserByUsername(username);
 	}
 	@Override
-	public AdminUser getAdminUserByUsername(String username) {
+	public AdminUserVO getAdminUserByUsername(String username) {
 		
 		return adminUserDAO.getAdminUserByUsername(username);
 	}
 	@Override
-	public AdminUser getAdminUserAuthentication(AdminUserAuthentication adminUserAuthentication) {
+	public AdminUserVO getAdminUserAuthentication(AdminUserAuthenticationVO adminUserAuthentication) {
 		
 		return adminUserDAO.getAdminUserAuthentication(adminUserAuthentication);
 	}
 	@Transactional("transaction")
 	@Override
-	public Map<String, Object> modifyPassword(AdminUserAuthentication adminUserAuthentication, Locale locale) throws Exception {
+	public Map<String, Object> modifyPassword(AdminUserAuthenticationVO adminUserAuthentication, Locale locale) throws Exception {
 		
 		adminUserAuthentication.setPassword(passwordEncoder.encodePassword(adminUserAuthentication.getPassword(), adminUserAuthentication.getUsername()));
 		
-		AdminUser checkAdminUser = this.getAdminUserAuthentication(adminUserAuthentication);
+		AdminUserVO checkAdminUser = this.getAdminUserAuthentication(adminUserAuthentication);
 		if (checkAdminUser == null || "".equals(checkAdminUser.getUsername()) || 
 				!checkAdminUser.getPassword().equals(adminUserAuthentication.getPassword())) {
 			
@@ -142,7 +143,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
 		/*if (checkAdminUser.getStatus() == 0) {
 			
-			return output("1", null, "´ËÕËºÅÒÑÍ£Ö¹Ê¹ÓÃ");
+			return output("1", null, "æ­¤è´¦å·å·²åœæ­¢ä½¿ç”¨");
 		}*/
 		
 		final int result = adminUserDAO.modifyPassword(adminUserAuthentication);
@@ -151,14 +152,14 @@ public class AdminUserServiceImpl implements AdminUserService {
 			return output("1", null, messageSource.getMessage("modify_fail", null, locale));
 		} else {
 			
-			operationRecordService.createOperationRecord("ĞŞ¸Ä¹ÜÀíÔ±ÃÜÂë  ÕËºÅ£º" + adminUserAuthentication.getUsername());
+			operationRecordService.createOperationRecord("ä¿®æ”¹ç®¡ç†å‘˜å¯†ç   è´¦å·ï¼š" + adminUserAuthentication.getUsername());
 			
 			return output("0", null, messageSource.getMessage("modify_seccess", null, locale));
 		}
 	}
 	@Transactional("transaction")
 	@Override
-	public void createAdminRoleAccess(List<AdminRoleAccess> adminRoleAccess) throws Exception {
+	public void createAdminRoleAccess(List<AdminRoleAccessVO> adminRoleAccess) throws Exception {
 		
 		adminRoleAccessDAO.createAdminRoleAccess(adminRoleAccess);
 	}
@@ -173,18 +174,18 @@ public class AdminUserServiceImpl implements AdminUserService {
 		return adminRoleAccessDAO.getAdminRoleAccessByGroupId(groupId);
 	}
 	@Override
-	public List<AdminGroup> getAdminGroupSelectBox() {
+	public List<AdminGroupVO> getAdminGroupSelectBox() {
 
 		return adminGroupDAO.getAdminGroupSelectBox();
 	}
 	@Override
-	public List<AdminUser> getAdminUsers(AdminUser adminUser) {
+	public List<AdminUserVO> getAdminUsers(AdminUserVO adminUser) {
 		
 		return adminUserDAO.getAdminUsers(adminUser);
 	}
 	@Transactional("transaction")
 	@Override
-	public Map<String, Object> deleteAdminUser(AdminUser adminUser, Locale locale) throws Exception {
+	public Map<String, Object> deleteAdminUser(AdminUserVO adminUser, Locale locale) throws Exception {
 		
 		final String timeStamps = getTimeStamps();
 		adminUser.setUpdateTime(timeStamps);
@@ -195,46 +196,46 @@ public class AdminUserServiceImpl implements AdminUserService {
 			return output("1", null, messageSource.getMessage("delete_fail", null, locale));
 		} else {
 			
-			operationRecordService.createOperationRecord("É¾³ı¹ÜÀíÔ±  ÕËºÅ£º" + adminUser.getUsername());
+			operationRecordService.createOperationRecord("åˆ é™¤ç®¡ç†å‘˜  è´¦å·ï¼š" + adminUser.getUsername());
 			
 			return output("0", null, messageSource.getMessage("delete_seccess", null, locale));
 		}
 	}
 	@Transactional("transaction")
 	@Override
-	public Map<String, Object> createAdminGroup(AdminGroup adminGroup, Locale locale) throws Exception {
+	public Map<String, Object> createAdminGroup(AdminGroupVO adminGroup, Locale locale) throws Exception {
 		
 		adminGroupDAO.createAdminGroup(adminGroup);
 		
-		operationRecordService.createOperationRecord("´´½¨¹ÜÀí×é  Ãû³Æ£º" + adminGroup.getGroupName());
+		operationRecordService.createOperationRecord("åˆ›å»ºç®¡ç†ç»„  åç§°ï¼š" + adminGroup.getGroupName());
 		
 		return output("0", null, messageSource.getMessage("create_seccess", null, locale));
 	}
 	@Override
-	public List<AdminGroup> getAdminGroups() {
+	public List<AdminGroupVO> getAdminGroups() {
 		
 		return adminGroupDAO.getAdminGroups();
 	}
 	@Override
-	public AdminGroup getAdminGroup(int groupId) {
+	public AdminGroupVO getAdminGroup(int groupId) {
 		
-		final AdminGroup adminGroup = adminGroupDAO.getAdminGroup(groupId);
+		final AdminGroupVO adminGroup = adminGroupDAO.getAdminGroup(groupId);
 		
-		//»ñÈ¡Ö¸¶¨¹ÜÀí×éÈ¨ÏŞ
+		//è·å–æŒ‡å®šç®¡ç†ç»„æƒé™
 		final List<String> adminRoleAccess = this.getAdminRoleAccessByGroupId(groupId);
 		adminGroup.setAdminRoleAccess(adminRoleAccess);
 		/*
-		 * È¨ÏŞÁĞ±í
+		 * æƒé™åˆ—è¡¨
 		 * */
-		AdminRole adminRole = new AdminRole();
-		//Ò»¼¶
-		final List<AdminRole> adminRoles = this.getAdminRoles(adminRole);
+		AdminRoleVO adminRole = new AdminRoleVO();
+		//ä¸€çº§
+		final List<AdminRoleVO> adminRoles = this.getAdminRoles(adminRole);
 		int deep0Count = adminRoles.size();
 		for (int deep0 = 0; deep0 < deep0Count; deep0++) {
 			
 			adminRole.setPageDeep(adminRoles.get(deep0).getPageDeep() + 1);
 			adminRole.setPageTree(adminRoles.get(deep0).getPageTree());
-			//¶ş¼¶
+			//äºŒçº§
 			adminRoles.get(deep0).setAdminRoles(
 						this.getAdminRoles(adminRole)
 					);
@@ -244,7 +245,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 				
 				adminRole.setPageDeep(adminRoles.get(deep0).getAdminRoles().get(deep1).getPageDeep() + 1);
 				adminRole.setPageTree(adminRoles.get(deep0).getAdminRoles().get(deep1).getPageTree());
-				//Èı¼¶
+				//ä¸‰çº§
 				adminRoles.get(deep0).getAdminRoles().get(deep1).setAdminRoles(
 							this.getAdminRoles(adminRole)
 						);
@@ -258,7 +259,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 	}
 	@Transactional("transaction")
 	@Override
-	public Map<String, Object> modifyAdminGroup(AdminGroup adminGroup, List<AdminRoleAccess> selectedRoleCode, Locale locale) throws Exception {
+	public Map<String, Object> modifyAdminGroup(AdminGroupVO adminGroup, List<AdminRoleAccessVO> selectedRoleCode, Locale locale) throws Exception {
 		
 		this.deleteAdminRoleAccess(adminGroup.getGroupId());
 		if (selectedRoleCode.size() > 0)
@@ -272,14 +273,14 @@ public class AdminUserServiceImpl implements AdminUserService {
 			return output("1", null, messageSource.getMessage("modify_fail", null, locale));
 		} else {
 			
-			operationRecordService.createOperationRecord("ĞŞ¸Ä¹ÜÀí×é  Ãû³Æ£º" + adminGroup.getGroupName());
+			operationRecordService.createOperationRecord("ä¿®æ”¹ç®¡ç†ç»„  åç§°ï¼š" + adminGroup.getGroupName());
 			
 			return output("0", null, messageSource.getMessage("modify_seccess", null, locale));
 		}
 	}
 	@Transactional("transaction")
 	@Override
-	public Map<String, Object> deleteAdminGroup(AdminGroup adminGroup, Locale locale) throws Exception {
+	public Map<String, Object> deleteAdminGroup(AdminGroupVO adminGroup, Locale locale) throws Exception {
 	
 		final int result = adminGroupDAO.deleteAdminGroup(adminGroup);
 		if (result == 0) {
@@ -287,26 +288,26 @@ public class AdminUserServiceImpl implements AdminUserService {
 			return output("1", null, messageSource.getMessage("delete_fail", null, locale));
 		} else {
 
-			operationRecordService.createOperationRecord("É¾³ı¹ÜÀí×é  ±àºÅ£º" + adminGroup.getGroupId());
+			operationRecordService.createOperationRecord("åˆ é™¤ç®¡ç†ç»„  ç¼–å·ï¼š" + adminGroup.getGroupId());
 			
 			return output("0", null, messageSource.getMessage("delete_seccess", null, locale));
 		}
 	}
 	@Override
-	public Map<String, List<AdminRole>> getAdminRolesForMenu(String pagePath) {
+	public Map<String, List<AdminRoleVO>> getAdminRolesForMenu(String pagePath) {
 		
-		final Map<String, List<AdminRole>> menuAll = new HashMap<>();
-		final AdminRole adminRole = new AdminRole(0);
-		//Ò»¼¶Ä¿Â¼ TOP
-		final List<AdminRole> adminTopMenu = adminRoleDAO.getAdminRolesForMenu(adminRole);
-		//»ñÈ¡¶ş¼¶menu
+		final Map<String, List<AdminRoleVO>> menuAll = new HashMap<>();
+		final AdminRoleVO adminRole = new AdminRoleVO(0);
+		//ä¸€çº§ç›®å½• TOP
+		final List<AdminRoleVO> adminTopMenu = adminRoleDAO.getAdminRolesForMenu(adminRole);
+		//è·å–äºŒçº§menu
 		adminRole.setPageDeep(1);
 		adminRole.setGroupId(
 					this.getGroupIdByUsername(
 						Common.getLogInUsername()
 					)
 				);
-		//µ±Ç°URIpathÖÆ³ÉroleCodeÀ´»ñÈ¡pageTree
+		//å½“å‰URIpathåˆ¶æˆroleCodeæ¥è·å–pageTree
 		adminRole.setRoleCode(
 				Common.upperCase(
 					Arrays.asList(pagePath.split("[\\/]+"))
@@ -318,42 +319,42 @@ public class AdminUserServiceImpl implements AdminUserService {
 				);
 		final String currentPageTree = this.getPageTreeByRoleCode(adminRole);
 		if(currentPageTree != null) {
-			//»ñÈ¡ÒÑÊÚÈ¨µÄ¶ş¼¶ËùÓĞÈ¨ÏŞ
-			final List<AdminRole> adminRoleAccess = this.getAdminRoleAccessByPageDeepNGroupId(adminRole);
-			//µ±Ç°Ñ¡ÖĞmenuÒ»¼¶tree
+			//è·å–å·²æˆæƒçš„äºŒçº§æ‰€æœ‰æƒé™
+			final List<AdminRoleVO> adminRoleAccess = this.getAdminRoleAccessByPageDeepNGroupId(adminRole);
+			//å½“å‰é€‰ä¸­menuä¸€çº§tree
 			final String currentDeep0PageTree = currentPageTree.substring(0, 3);
 			final Map<String, String> menuPageTreeURI = new HashMap<>();
-			for (AdminRole role : adminRoleAccess) {
-				//Ã¿Ò»¸öÒ»¼¶Ä¿Â¼Ö»»á¼ÓÒ»´ÎURI
+			for (AdminRoleVO role : adminRoleAccess) {
+				//æ¯ä¸€ä¸ªä¸€çº§ç›®å½•åªä¼šåŠ ä¸€æ¬¡URI
 				String pageTree = role.getPageTree().substring(0, 3);
 				if (!menuPageTreeURI.containsKey(pageTree)) {
 					
 					menuPageTreeURI.put(pageTree, role.getPageURI());
 				}
 			}
-			for (AdminRole role : adminTopMenu) {
-				//ÉèÖÃÒ»¼¶Ä¿Â¼link(ÒòÒ»¼¶Ä¬ÈÏÎŞlinkĞèÒªÉèÖÃÄ¬ÈÏ¶ş¼¶link)
+			for (AdminRoleVO role : adminTopMenu) {
+				//è®¾ç½®ä¸€çº§ç›®å½•link(å› ä¸€çº§é»˜è®¤æ— linkéœ€è¦è®¾ç½®é»˜è®¤äºŒçº§link)
 				String pageURI = menuPageTreeURI.get(role.getPageTree());
 				if (pageURI != null) {
 					
 					role.setPageURI(pageURI);
-					//Ñ¡ÖĞÒ»¼¶menu
+					//é€‰ä¸­ä¸€çº§menu
 					if (currentDeep0PageTree.equals(role.getPageTree())) {
 						
 						role.setSelected(true);
 					}
 				}
 			}
-			//Ò»¼¶Ä¿Â¼ TOP
+			//ä¸€çº§ç›®å½• TOP
 			menuAll.put("top", adminTopMenu);
-			//ÉèÖÃÒ»¼¶µ±Ç°Ä¿Â¼tree
+			//è®¾ç½®ä¸€çº§å½“å‰ç›®å½•tree
 			adminRole.setPageTree(currentDeep0PageTree);
-			//¶ş¼¶Ä¿Â¼ LEFT
-			final List<AdminRole> adminLeftMenu = adminRoleDAO.getAdminRolesForMenu(adminRole);
-			//µ±Ç°Ñ¡ÖĞmenu¶ş¼¶tree
+			//äºŒçº§ç›®å½• LEFT
+			final List<AdminRoleVO> adminLeftMenu = adminRoleDAO.getAdminRolesForMenu(adminRole);
+			//å½“å‰é€‰ä¸­menuäºŒçº§tree
 			final String currentDeep1PageTree = currentPageTree.substring(0, 5);
-			for (AdminRole role : adminLeftMenu) {
-				//Ñ¡ÖĞ¶ş¼¶menu
+			for (AdminRoleVO role : adminLeftMenu) {
+				//é€‰ä¸­äºŒçº§menu
 				if (currentDeep1PageTree.equals(role.getPageTree())) {
 					
 					role.setSelected(true);
@@ -366,7 +367,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 		return menuAll;
 	}
 	@Override
-	public List<AdminRole> getAdminRoleAccessByPageDeepNGroupId(AdminRole adminRole) {
+	public List<AdminRoleVO> getAdminRoleAccessByPageDeepNGroupId(AdminRoleVO adminRole) {
 		
 		return adminRoleDAO.getAdminRoleAccessByPageDeepNGroupId(adminRole);
 	}
@@ -376,12 +377,12 @@ public class AdminUserServiceImpl implements AdminUserService {
 		return adminUserDAO.getGroupIdByUsername(username);
 	}
 	@Override
-	public List<AdminRole> getAdminRoles(AdminRole adminRole) {
+	public List<AdminRoleVO> getAdminRoles(AdminRoleVO adminRole) {
 
 		return adminRoleDAO.getAdminRoles(adminRole);
 	}
 	@Override
-	public String getPageTreeByRoleCode(AdminRole adminRole) {
+	public String getPageTreeByRoleCode(AdminRoleVO adminRole) {
 		
 		return adminRoleDAO.getPageTreeByRoleCode(adminRole);
 	}

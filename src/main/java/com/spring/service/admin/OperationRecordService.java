@@ -1,15 +1,15 @@
 package com.spring.service.admin;
 
 import java.util.List;
-import com.spring.dto.admin.OperationRecord;
+import com.spring.vo.admin.OperationRecordVO;
 
 public interface OperationRecordService {
 	/*
-	 * 创建操作记录
+	 * 鍒涘缓鎿嶄綔璁板綍
 	 * */
 	void createOperationRecord(String content) throws Exception;
 	/*
-	 * 操作记录列表
+	 * 鎿嶄綔璁板綍鍒楄〃
 	 * */
-	List<OperationRecord> getOperationRecords(OperationRecord operationRecord);
+	List<OperationRecordVO> getOperationRecords(OperationRecordVO operationRecordVO);
 }

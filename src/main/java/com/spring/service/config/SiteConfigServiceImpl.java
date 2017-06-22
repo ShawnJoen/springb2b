@@ -1,7 +1,6 @@
 package com.spring.service.config;
 
 import static com.spring.util.Common.*;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -11,8 +10,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.spring.dao.config.SiteConfigDAO;
-import com.spring.dto.config.SiteConfig;
 import com.spring.service.admin.OperationRecordService;
+import com.spring.vo.config.SiteConfigVO;
 
 @Service("siteConfigServiceImpl")
 public class SiteConfigServiceImpl implements SiteConfigService {
@@ -26,22 +25,21 @@ public class SiteConfigServiceImpl implements SiteConfigService {
 	
 	@Transactional("transaction")
 	@Override
-	public Map<String, Object> modifySiteConfig(List<SiteConfig> siteConfigs, Locale locale) throws Exception {
+	public Map<String, Object> modifySiteConfig(List<SiteConfigVO> siteConfigVOs, Locale locale) throws Exception {
 		
-		Iterator<SiteConfig> siteConfigIterator = siteConfigs.iterator();
+		Iterator<SiteConfigVO> siteConfigIterator = siteConfigVOs.iterator();
 		while (siteConfigIterator.hasNext()) {
 
 			siteConfigDAO.modifySiteConfig(siteConfigIterator.next());
 		}
 		
-		operationRecordService.createOperationRecord("–ﬁ∏ƒ¡ÀAPP≈‰÷√–≈œ¢ ");
+		operationRecordService.createOperationRecord("‰øÆÊîπ‰∫ÜAPPÈÖçÁΩÆ‰ø°ÊÅØ ");
 		
 		return output("0", null, messageSource.getMessage("modify_seccess", null, locale));
 	}
 	@Override
-	public List<SiteConfig> getSiteConfigs(SiteConfig siteConfig) {
+	public List<SiteConfigVO> getSiteConfigs(SiteConfigVO siteConfigVO) {
 		
-		return siteConfigDAO.getSiteConfigs(siteConfig);
+		return siteConfigDAO.getSiteConfigs(siteConfigVO);
 	}
-
 }
