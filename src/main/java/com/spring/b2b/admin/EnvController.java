@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import com.spring.b2b.ViewController;
 import com.spring.service.admin.user.AdminUserService;
 import com.spring.service.buyer.AdService;
+import com.spring.service.config.ErrorLogService;
 import com.spring.service.goods.GoodsStandardService;
 import com.spring.vo.admin.AdminRoleVO;
 
@@ -26,6 +27,8 @@ public class EnvController extends ViewController {
 	protected AdService adService;
 	@Autowired
 	protected GoodsStandardService goodsStandardService;
+	@Autowired
+	protected ErrorLogService errorLogService;
 	@Autowired
 	protected MessageSource messageSource;
 	

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.mappers.ErrorLogMapper">
+
+	<insert id="createErrorLog" parameterType="com.spring.dto.config.ErrorLog">
+		INSERT INTO `error_log`(`userId`, `appVersion`, `error`, `device`, `projectName`) VALUES
+								(#{userId}, #{appVersion}, #{error}, #{device}, #{projectName})
+	</insert>
+	
+	<select id="getErrorLogById" resultType="com.spring.dto.config.ErrorLog">
+		SELECT 
+			`id`, `userId`, `appVersion`, `error`, `device`, `projectName`, `createTime` 
+		FROM 
+			`error_log` 
+		WHERE 
+			`id`=#{id}
+	</select>
+	
+	<select id="getErrorLogs" parameterType="com.spring.vo.config.ErrorLogVO" resultType="com.spring.vo.config.ErrorLogVO">
+		SELECT 
+			`id`, `userId`, `appVersion`, `device`, `projectName`, `createTime` 
+		FROM 
+			`error_log`
+		WHERE 
+			1
+		<if test="startCreateDate !='' and endCreateDate !=''">
+			AND `createTime` BETWEEN CONCAT(#{startCreateDate}, ' 00:00:00.000000') AND CONCAT(#{endCreateDate}, ' 23:59:59.999999')
+		</if>
+		ORDER BY `id` DESC
+	</select>
+
+</mapper>

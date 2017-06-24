@@ -7,7 +7,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.springframework.security.core.context.SecurityContextHolder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
 public class Common {
 	
@@ -64,12 +70,22 @@ public class Common {
 		  
 		return resultList;    
 	}
-	/*public static long getTimeStampsLength10() {
+	
+	final public static String serializeAndFilterValueObject(String filterName, Object voClassObject, Set<String> filterSet) 
+			throws JsonProcessingException {
+	
+		String jsonString = null;
+		final ObjectMapper mapper = new ObjectMapper();
+		try {
+			
+			FilterProvider filterProvider = new SimpleFilterProvider().addFilter(filterName, 
+					SimpleBeanPropertyFilter.serializeAllExcept(filterSet));
+			
+			jsonString = mapper.writer(filterProvider).writeValueAsString(voClassObject);
+		} finally {
+
+		}
 		
-		return Long.parseLong(
-				String.valueOf(
-						com.spring.util.Common.getTimeStamps()
-						).substring(0, 10)
-				);
-	}*/
+		return jsonString;
+	}
 }
