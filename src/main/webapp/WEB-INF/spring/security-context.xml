@@ -29,6 +29,9 @@
     	<intercept-url pattern="/admin/goods/createGoodsStandard.do" access="hasRole('CreateGoodsStandard') or hasRole('ADMIN')"/>
     	<intercept-url pattern="/admin/goods/modifyGoodsStandard.do" access="hasRole('ModifyGoodsStandard') or hasRole('ADMIN')"/>
     	<intercept-url pattern="/admin/goods/deleteGoodsStandard.do" access="hasRole('DeleteGoodsStandard') or hasRole('ADMIN')"/>
+    	<!-- 支付方式 -->
+    	<intercept-url pattern="/admin/finance/paymentList.do" access="hasRole('PaymentList') or hasRole('ADMIN')"/>
+    	<intercept-url pattern="/admin/finance/modifyPayment.do" access="hasRole('ModifyPayment') or hasRole('ADMIN')"/>
     	<!-- 用户端广告 -->
     	<intercept-url pattern="/admin/buyer/buyerAppBannerList.do" access="hasRole('BuyerAppBannerList') or hasRole('ADMIN')"/>
     	<intercept-url pattern="/admin/buyer/createBuyerAppBanner.do" access="hasRole('CreateBuyerAppBanner') or hasRole('ADMIN')"/>

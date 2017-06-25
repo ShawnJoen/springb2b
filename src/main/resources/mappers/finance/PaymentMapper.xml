@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.mappers.PaymentMapper">
+	
+	<update id="modifyPayment" parameterType="com.spring.dto.finance.Payment">
+		UPDATE 
+		`payment` 
+		SET 
+		`paymentName`=#{paymentName}, `paymentName`=#{paymentName}, `paymentConfig`=#{paymentConfig}, `paymentStatus`=#{paymentStatus}, `sort`=#{sort} 
+		WHERE 
+		`paymentCode`=#{paymentCode}
+	</update>
+  
+  	<select id="getPaymentByPaymentCode" resultType="com.spring.vo.finance.PaymentVO">
+		SELECT `paymentCode`, `paymentName`, `paymentConfig`, `paymentStatus`, `paymentType`, `sort` FROM `payment` WHERE `paymentCode`=#{paymentCode}
+	</select>
+	
+	<select id="getPayments"  parameterType="com.spring.vo.finance.PaymentVO" resultType="com.spring.vo.finance.PaymentVO">
+		SELECT 
+			`paymentCode`, `paymentName`, `paymentStatus`, `paymentType` 
+		FROM 
+			`payment`
+		WHERE 
+			1
+		ORDER BY 
+			`sort` ASC
+	</select>
+
+</mapper>

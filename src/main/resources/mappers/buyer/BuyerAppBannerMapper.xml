@@ -32,7 +32,7 @@
 		WHERE 
 			`isDel` = 0
 		ORDER BY 
-			`sort` DESC
+			`sort` ASC
 	</select>
 
 </mapper>

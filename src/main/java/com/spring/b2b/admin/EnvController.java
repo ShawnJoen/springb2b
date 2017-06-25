@@ -11,6 +11,7 @@ import com.spring.b2b.ViewController;
 import com.spring.service.admin.user.AdminUserService;
 import com.spring.service.buyer.AdService;
 import com.spring.service.config.ErrorLogService;
+import com.spring.service.finance.PaymentService;
 import com.spring.service.goods.GoodsStandardService;
 import com.spring.vo.admin.AdminRoleVO;
 
@@ -29,6 +30,8 @@ public class EnvController extends ViewController {
 	protected GoodsStandardService goodsStandardService;
 	@Autowired
 	protected ErrorLogService errorLogService;
+	@Autowired
+	protected PaymentService paymentService;
 	@Autowired
 	protected MessageSource messageSource;
 	
