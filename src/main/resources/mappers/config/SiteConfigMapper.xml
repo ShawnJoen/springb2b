@@ -17,6 +17,12 @@
 		<if test="configCode !=''">
 			AND `configCode` LIKE CONCAT(#{configCode},'%')
 		</if>
+		<if test="groupCode !=null">
+			AND `groupCode`=#{groupCode}
+		</if>
+		<if test="configCode !='' and deviceType !=null">
+			AND `configCode` LIKE '${configCode}_${deviceType}_%'
+		</if>
 		ORDER BY 
 			`sort` ASC
 	</select>

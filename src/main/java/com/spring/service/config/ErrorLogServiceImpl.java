@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.spring.dao.config.ErrorLogDAO;
 import com.spring.dto.config.ErrorLog;
+import com.spring.util.validation.ValidationResult;
+import com.spring.util.validation.ValidationUtils;
 import com.spring.vo.config.ErrorLogVO;
 
 @Service("errorLogServiceImpl")
@@ -25,6 +27,20 @@ public class ErrorLogServiceImpl implements ErrorLogService {
 	@Transactional("transaction")
 	@Override
 	public Map<String, Object> createErrorLog(ErrorLog errorLog, Locale locale) throws Exception {
+		
+		String[] fieldNames = {"userType","deviceType","deviceId","brandName","osVersion","appVersion","error"};
+		ValidationResult ValidResult = null;
+		for (String fieldName: fieldNames) {
+
+			ValidResult = ValidationUtils.validateProperty(errorLog, fieldName);
+			if (ValidResult.isHasErrors()) {
+				
+				return output("1", null, 
+						ValidResult.getErrorMsg().get(fieldName));
+			}
+		}
+		
+		errorLog.setProjectName(messageSource.getMessage("project_name", null, locale));
 		
 		errorLogDAO.createErrorLog(errorLog);
 		

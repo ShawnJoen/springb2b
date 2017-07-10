@@ -13,6 +13,8 @@ public class SiteConfigVO {
 	private String editType;
 	private int isShow = 1;
 	private int sort;
+	//device类型 App基本信息
+	private String deviceType;
 	
 	public SiteConfigVO() {
 		super();
@@ -23,6 +25,11 @@ public class SiteConfigVO {
 	public SiteConfigVO(String configCode, String configVal) {
 		this.configCode = configCode;
 		this.configVal = configVal;
+	}
+	public SiteConfigVO(int isShow, String configCode, String deviceType) {
+		this.isShow = isShow;
+		this.configCode = configCode;
+		this.deviceType = deviceType;
 	}
 	public String getConfigCode() {
 		return configCode;

@@ -4,13 +4,16 @@
 <mapper namespace="com.spring.mappers.ErrorLogMapper">
 
 	<insert id="createErrorLog" parameterType="com.spring.dto.config.ErrorLog">
-		INSERT INTO `error_log`(`userId`, `appVersion`, `error`, `device`, `projectName`) VALUES
-								(#{userId}, #{appVersion}, #{error}, #{device}, #{projectName})
+<!-- 		INSERT INTO `error_log`(`userId`, `appVersion`, `error`, `device`, `projectName`) VALUES
+								(#{userId}, #{appVersion}, #{error}, #{device}, #{projectName}) -->
+			INSERT INTO `error_log`(`userId`, `userType`, `deviceType`, `deviceId`, `brandName`, `osVersion`, `appVersion`, `error`, `projectName`) VALUES
+			(#{userId}, #{userType}, #{deviceType}, #{deviceId}, #{brandName}, #{osVersion}, #{appVersion}, #{error}, #{projectName})
 	</insert>
 	
 	<select id="getErrorLogById" resultType="com.spring.dto.config.ErrorLog">
 		SELECT 
-			`id`, `userId`, `appVersion`, `error`, `device`, `projectName`, `createTime` 
+			<!-- `id`, `userId`, `appVersion`, `error`, `device`, `projectName`, `createTime`  -->
+			`id`, `userId`, `userType`, `deviceType`, `deviceId`, `brandName`, `osVersion`, `appVersion`, `error`, `projectName`, `createTime`
 		FROM 
 			`error_log` 
 		WHERE 
@@ -19,7 +22,8 @@
 	
 	<select id="getErrorLogs" parameterType="com.spring.vo.config.ErrorLogVO" resultType="com.spring.vo.config.ErrorLogVO">
 		SELECT 
-			`id`, `userId`, `appVersion`, `device`, `projectName`, `createTime` 
+			<!-- `id`, `userId`, `appVersion`, `device`, `projectName`, `createTime`  -->
+			`id`, `userId`, `userType`, `deviceType`, `deviceId`, `brandName`, `osVersion`, `appVersion`, `error`, `projectName`, `createTime`
 		FROM 
 			`error_log`
 		WHERE 

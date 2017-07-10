@@ -7,6 +7,8 @@ public class Payment {
 	private String paymentConfig;
 	private int paymentStatus;
 	private String paymentType;
+	private String paymentIcon;
+	private String isDefault;
 	private int sort;
 	public Payment() {
 		super();
@@ -40,6 +42,18 @@ public class Payment {
 	}
 	public void setPaymentType(String paymentType) {
 		this.paymentType = paymentType;
+	}
+	public String getPaymentIcon() {
+		return paymentIcon;
+	}
+	public void setPaymentIcon(String paymentIcon) {
+		this.paymentIcon = paymentIcon;
+	}
+	public String getIsDefault() {
+		return isDefault;
+	}
+	public void setIsDefault(String isDefault) {
+		this.isDefault = isDefault;
 	}
 	public int getSort() {
 		return sort;

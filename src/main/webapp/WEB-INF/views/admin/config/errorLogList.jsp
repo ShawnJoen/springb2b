@@ -22,8 +22,12 @@
 <tr>
 	<td width="100">序号</td>
 	<td width="100">用户编号</td>
-	<td width="100">版本</td>
-	<td width="120">Device类型</td>
+	<td width="100">用户类型</td>
+	<td width="100">设备类型</td>
+	<td width="100">设备ID</td>
+	<td width="100">品牌</td>
+	<td width="100">系统版本</td>
+	<td width="100">APP版本</td>
 	<td width="100">操作</td>
 </tr>
 <tbody id="content">
@@ -31,9 +35,12 @@
 <tr>
 	<td>${sequence - status.count}</td>
 	<td>${errorLog.userId}</td>
+	<td>${errorLog.userType}</td>
+	<td>${errorLog.deviceType}</td>
+	<td>${errorLog.deviceId}</td>
+	<td>${errorLog.brandName}</td>
+	<td>${errorLog.osVersion}</td>
 	<td>${errorLog.appVersion}</td>
-	<td>${errorLog.device}</td>
-	<td>${errorLog.projectName}</td>
 	<td><a href="/admin/config/viewErrorLog.do?id=${errorLog.id}">查看</a></td>
 </tr>
 </c:forEach>

@@ -4,9 +4,13 @@ public class ErrorLogVO {
 	
 	private int id = 0;
 	private int userId;
+	private String userType;
+	private String deviceType;
+	private String deviceId;
+	private String brandName;
+	private String osVersion;
 	private String appVersion;
 	private String error;
-	private String device;
 	private String projectName;
 	private String createTime;
 	
@@ -30,6 +34,36 @@ public class ErrorLogVO {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+	public String getDeviceType() {
+		return deviceType;
+	}
+	public void setDeviceType(String deviceType) {
+		this.deviceType = deviceType;
+	}
+	public String getDeviceId() {
+		return deviceId;
+	}
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
+	public String getBrandName() {
+		return brandName;
+	}
+	public void setBrandName(String brandName) {
+		this.brandName = brandName;
+	}
+	public String getOsVersion() {
+		return osVersion;
+	}
+	public void setOsVersion(String osVersion) {
+		this.osVersion = osVersion;
+	}
 	public String getAppVersion() {
 		return appVersion;
 	}
@@ -41,12 +75,6 @@ public class ErrorLogVO {
 	}
 	public void setError(String error) {
 		this.error = error;
-	}
-	public String getDevice() {
-		return device;
-	}
-	public void setDevice(String device) {
-		this.device = device;
 	}
 	public String getProjectName() {
 		return projectName;

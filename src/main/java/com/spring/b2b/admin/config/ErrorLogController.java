@@ -21,7 +21,6 @@ import com.spring.b2b.admin.EnvController;
 import com.spring.dto.config.ErrorLog;
 import com.spring.util.validation.ValidationResult;
 import com.spring.util.validation.ValidationUtils;
-import com.spring.vo.buyer.BuyerAppBannerVO;
 import com.spring.vo.config.ErrorLogVO;
 
 @Controller

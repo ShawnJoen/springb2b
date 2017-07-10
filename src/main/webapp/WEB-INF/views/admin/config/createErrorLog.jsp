@@ -10,15 +10,23 @@
 	<h3>插入错误日志</h3><br>
 	用户编号:
 	<form:input type="number" path="userId" placeholder="请输入用户编号" maxlength="10"/><br>
-	版本:
-	<form:input type="text" path="appVersion" placeholder="请输入本" maxlength="10"/><br>
+	用户类型:
+	<form:input type="text" path="userType" placeholder="请输入用户类型" maxlength="10"/><br>
+	设备类型:
+	<form:input type="text" path="deviceType" placeholder="请输入设备类型" maxlength="10"/><br>
+	设备ID:
+	<form:input type="text" path="deviceId" placeholder="请输入设备ID" maxlength="10"/><br>
+	品牌:
+	<form:input type="text" path="brandName" placeholder="请输入品牌" maxlength="10"/><br>
+	系统版本:
+	<form:input type="text" path="osVersion" placeholder="请输入系统版本" maxlength="10"/><br>
+	APP版本:
+	<form:input type="text" path="appVersion" placeholder="请输入APP版本" maxlength="10"/><br>
 	错误信息:
-	<form:input type="text" path="error" placeholder="请输入箱入数" maxlength="1000"/><br>
-	Device类型:
-	<form:input type="text" path="device" placeholder="请输入Device类型" maxlength="10"/><br>
+	<form:input type="text" path="error" placeholder="请输入错误信息" maxlength="1000"/><br>
 	项目名称:
-	<form:input type="text" path="projectName" maxlength="10" value="StringB2B"/><br>
-				
+	<form:input type="text" path="projectName" maxlength="10" value="B2B项目"/><br>
+	
 	<div class="btn btn-default" onclick="createErrorLog()">创建</div>
 
 </form:form>

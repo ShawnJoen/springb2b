@@ -3,26 +3,29 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.mappers.PaymentMapper">
 	
-	<update id="modifyPayment" parameterType="com.spring.dto.finance.Payment">
+	<update id="modifyPayment" parameterType="com.spring.dto.finance.Payment"><!-- paymentIcon -->
 		UPDATE 
 		`payment` 
 		SET 
-		`paymentName`=#{paymentName}, `paymentName`=#{paymentName}, `paymentConfig`=#{paymentConfig}, `paymentStatus`=#{paymentStatus}, `sort`=#{sort} 
+		`paymentName`=#{paymentName}, `paymentName`=#{paymentName}, `paymentConfig`=#{paymentConfig}, `paymentStatus`=#{paymentStatus}, `isDefault`=#{isDefault}, `sort`=#{sort} 
 		WHERE 
 		`paymentCode`=#{paymentCode}
 	</update>
   
-  	<select id="getPaymentByPaymentCode" resultType="com.spring.vo.finance.PaymentVO">
+  	<select id="getPaymentByPaymentCode" resultType="com.spring.vo.finance.PaymentVO"><!-- paymentIcon, isDefault -->
 		SELECT `paymentCode`, `paymentName`, `paymentConfig`, `paymentStatus`, `paymentType`, `sort` FROM `payment` WHERE `paymentCode`=#{paymentCode}
 	</select>
 	
 	<select id="getPayments"  parameterType="com.spring.vo.finance.PaymentVO" resultType="com.spring.vo.finance.PaymentVO">
 		SELECT 
-			`paymentCode`, `paymentName`, `paymentStatus`, `paymentType` 
+			`paymentCode`, `paymentName`, `paymentStatus`, `paymentType`, `paymentIcon`, `isDefault`
 		FROM 
 			`payment`
 		WHERE 
 			1
+		<if test="paymentStatus != -1">
+			AND `paymentStatus`= #{paymentStatus}
+		</if>
 		ORDER BY 
 			`sort` ASC
 	</select>
